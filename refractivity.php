@@ -789,123 +789,11 @@ function sign( $number )
 { 
     return ( $number > 0 ) ? 1 : ( ( $number < 0 ) ? -1 : 0 ); 
 } 
-function Sa($conn, $LatA, $LonA, $LatB, $LonB)
+
+function SelectFromGtopo($conn, $Lat, $Lon)
 {
-	$midlat=($LatA+$LatB)/2;
-	$midlon=($LonA+$LonB)/2;
-	$lat=(ceil($midlat*2))/2;
-	$lon=(ceil($midlon*2))/2;
-	if($lat==0)$latd=0.5; else $latd=1;
-	if($lon==0)$lond=0.5; else $lond=1;
-	if((sign($midlat)<0) && (filter_var($midlat*2, FILTER_VALIDATE_INT)))
-	{
-		$lat=$lat+0.5;
-	}
-	if((sign($midlon)<0) && (filter_var($midlon*2, FILTER_VALIDATE_INT)))
-	{
-		$lon=$lon+0.5;
-	}
-	for($i=$lat-$latd;$i<=$lat+0.5;$i+=0.5)
-	{
-		for($j=$lon-$lond;$j<=$lon+0.5;$j+=0.5)
-		{
-			$sql="Select Gtopo from gtopo Where Lat=$i and Lon=$j";
-			$obj=$conn->query($sql);
-			$arr=$obj->fetch_assoc();
-			$Gtopo[2*$i][2*$j]=$arr['Gtopo'];
-		}
-	}
-	$p[0]['lat']=$midlat+0.5;
-	$p[0]['lon']=$midlon+0.5;
-
-	$p[1]['lat']=$midlat+0.5;
-	$p[1]['lon']=$midlon-0.5;
-
-	$p[2]['lat']=$midlat-0.5;
-	$p[2]['lon']=$midlon+0.5;
-
-	$p[3]['lat']=$midlat-0.5;
-	$p[3]['lon']=$midlon-0.5;
-
-for($i=0;$i<=3;$i++)
-{
-	$p[$i]['steplat']=$p[$i]['lat']*2;
-	$p[$i]['steplon']=$p[$i]['lon']*2;
-	$p[$i]['latc']=ceil(abs($p[$i]['steplat']));
-	$p[$i]['latc-1']=ceil(abs($p[$i]['steplat']))-1;
-	$p[$i]['lonc']=ceil(abs($p[$i]['steplon']))-1;
-	$p[$i]['lonc-1']=ceil(abs($p[$i]['steplon']));
-	if(sign($midlat)==1){$p[$i]['latsign']=181-$p[$i]['latc-1'];} else {$p[$i]['latsign']=181+$p[$i]['latc-1'];}
-	if(sign($midlon)==1){$p[$i]['lonsign-1']=363-$p[$i]['lonc-1'];} else {$p[$i]['lonsign-1']=363+$p[$i]['lonc-1'];}
-	if(sign($midlat)==1){$p[$i]['latsign-1']=181-$p[$i]['latc'];} else {$p[$i]['latsign-1']=181+$p[$i]['latc'];}
-	if(sign($midlon)==1){$p[$i]['lonsign']=363-$p[$i]['lonc'];} else {$p[$i]['lonsign']=363+$p[$i]['lonc'];}
-	if(sign($midlat)==1){$p[$i]['latsignabs']=181-abs($p[$i]['steplat']);} else {$p[$i]['latsignabs']=181+abs($p[$i]['steplat']);}
-	if(sign($midlon)==1){$p[$i]['lonsignabs']=363-abs($p[$i]['steplon']);} else {$p[$i]['lonsignabs']=363+abs($p[$i]['steplon']);}
-	$p[$i]['lonadr-1']=$p[$i]['lonc-1']*0.5*sign($p[$i]['lon']);
-	$p[$i]['lonadr']=$p[$i]['lonc']*0.5*sign($p[$i]['lon']);
-	if(sign($p[$i]['lat'])==1) {$p[$i]['latadr']=$p[$i]['latsign-1'];} else {$p[$i]['latadr']=$p[$i]['latsign'];}
-	$p[$i]['lonadr']=$p[$i]['lonc']*0.5*sign($p[$i]['lon']);
-	if(sign($p[$i]['lat'])==1) {$p[$i]['latadr-1']=$p[$i]['latsign'];} else {$p[$i]['latadr-1']=$p[$i]['latsign-1'];}
-	$p[$i]['lonadr-1']=$p[$i]['lonc-1']*0.5*sign($p[$i]['lon']);
-	$p[$i]['latadr']=($p[$i]['latadr']-181)*-0.5;
-	$p[$i]['latadr-1']=($p[$i]['latadr-1']-181)*-0.5;
-	$p[$i]['v1']=$Gtopo[2*$p[$i]['latadr']][2*$p[$i]['lonadr']];
-	$p[$i]['v2']=$Gtopo[2*$p[$i]['latadr-1']][2*$p[$i]['lonadr-1']];
-	$p[$i]['v3']=$Gtopo[2*$p[$i]['latadr']][2*$p[$i]['lonadr-1']];
-	$p[$i]['v4']=$Gtopo[2*$p[$i]['latadr-1']][2*$p[$i]['lonadr']];
-	$p[$i]['vid']=$p[$i]['v1']*($p[$i]['latsignabs']-$p[$i]['latsign'])*($p[$i]['lonsign-1']-$p[$i]['lonsignabs'])+
-	$p[$i]['v2']*($p[$i]['latsign-1']-$p[$i]['latsignabs'])*($p[$i]['lonsignabs']-$p[$i]['lonsign'])+
-	$p[$i]['v3']*($p[$i]['latsignabs']-$p[$i]['latsign'])*($p[$i]['lonsignabs']-$p[$i]['lonsign'])+
-	$p[$i]['v4']*($p[$i]['latsign-1']-$p[$i]['latsignabs'])*($p[$i]['lonsign-1']-$p[$i]['lonsignabs']);  
-}
-	$p[4]['v1']=$Gtopo[2*$p[1]['latadr-1']][2*$p[1]['lonadr']];
-	$p[4]['v2']=$Gtopo[2*$p[2]['latadr']][2*$p[1]['lonadr-1']];
-	$p[4]['v3']=$Gtopo[2*$p[0]['latadr-1']][2*$p[1]['lonadr-1']];
-	$p[4]['v4']=$Gtopo[2*$p[2]['latadr']][2*$p[1]['lonadr']];
-	$p[4]['vid']=$p[4]['v1']*(($p[0]['latsignabs']+1)-$p[2]['latsign-1'])*($p[1]['lonsign-1']-$p[1]['lonsignabs'])+
-	$p[4]['v2']*($p[1]['latsign']-($p[0]['latsignabs']+1))*($p[1]['lonsignabs']-$p[1]['lonsign'])+
-	$p[4]['v3']*(($p[0]['latsignabs']+1)-$p[2]['latsign-1'])*($p[1]['lonsignabs']-$p[1]['lonsign'])+
-	$p[4]['v4']*($p[1]['latsign']-($p[0]['latsignabs']+1))*($p[1]['lonsign-1']-$p[1]['lonsignabs']);
-
-	$p[5]['v1']=$Gtopo[2*$p[0]['latadr']][2*$p[1]['lonadr-1']];
-	$p[5]['v2']=$Gtopo[2*$p[0]['latadr-1']][2*$p[0]['lonadr']];
-	$p[5]['v3']=$Gtopo[2*$p[0]['latadr']][2*$p[0]['lonadr']];
-	$p[5]['v4']=$Gtopo[2*$p[1]['latadr-1']][2*$p[1]['lonadr-1']];
-	$p[5]['vid']=$p[5]['v1']*($p[1]['latsignabs']-$p[1]['latsign'])*($p[2]['lonsign']-($p[0]['lonsignabs']+1))+
-	$p[5]['v2']*($p[1]['latsign-1']-$p[1]['latsignabs'])*(($p[0]['lonsignabs']+1)-$p[1]['lonsign-1'])+
-	$p[5]['v3']*($p[1]['latsignabs']-$p[1]['latsign'])*(($p[0]['lonsignabs']+1)-$p[1]['lonsign-1'])+
-	$p[5]['v4']*($p[1]['latsign-1']-$p[1]['latsignabs'])*($p[2]['lonsign']-($p[0]['lonsignabs']+1));
-
-	$p[6]['v1']=$Gtopo[2*$p[1]['latadr-1']][2*$p[0]['lonadr']];
-	$p[6]['v2']=$Gtopo[2*$p[2]['latadr']][2*$p[2]['lonadr-1']];
-	$p[6]['v3']=$Gtopo[2*$p[0]['latadr-1']][2*$p[0]['lonadr-1']];
-	$p[6]['v4']=$Gtopo[2*$p[2]['latadr']][2*$p[0]['lonadr']];
-	$p[6]['vid']=$p[6]['v1']*(($p[0]['latsignabs']+1)-$p[2]['latsign-1'])*($p[1]['lonsign-1']-$p[1]['lonsignabs'])+
-	$p[6]['v2']*($p[1]['latsign']-($p[0]['latsignabs']+1))*($p[1]['lonsignabs']-$p[1]['lonsign'])+
-	$p[6]['v3']*(($p[0]['latsignabs']+1)-$p[2]['latsign-1'])*($p[1]['lonsignabs']-$p[1]['lonsign'])+
-	$p[6]['v4']*($p[1]['latsign']-($p[0]['latsignabs']+1))*($p[1]['lonsign-1']-$p[1]['lonsignabs']);
-
-	$p[7]['v1']=$Gtopo[2*$p[3]['latadr']][2*$p[3]['lonadr-1']];
-	$p[7]['v2']=$Gtopo[2*$p[3]['latadr-1']][2*$p[2]['lonadr']];
-	$p[7]['v3']=$Gtopo[2*$p[3]['latadr']][2*$p[2]['lonadr']];
-	$p[7]['v4']=$Gtopo[2*$p[3]['latadr-1']][2*$p[3]['lonadr-1']];
-	$p[7]['vid']=$p[7]['v1']*($p[1]['latsignabs']-$p[1]['latsign'])*($p[2]['lonsign']-($p[0]['lonsignabs']+1))+
-	$p[7]['v2']*($p[1]['latsign-1']-$p[1]['latsignabs'])*(($p[0]['lonsignabs']+1)-$p[1]['lonsign-1'])+
-	$p[7]['v3']*($p[1]['latsignabs']-$p[1]['latsign'])*(($p[0]['lonsignabs']+1)-$p[1]['lonsign-1'])+
-	$p[7]['v4']*($p[1]['latsign-1']-$p[1]['latsignabs'])*($p[2]['lonsign']-($p[0]['lonsignabs']+1));
-
-	$p[8]['v1']=$p[1]['v2'];
-	$p[8]['v2']=$p[2]['v1'];
-	$p[8]['v3']=$p[0]['v4'];
-	$p[8]['v4']=$p[3]['v3'];
-	$p[8]['vid']=(($p[8]['v1'])*(($p[0]['latsignabs']+1)-$p[2]['latsign-1'])*($p[2]['lonsign']-($p[0]['lonsignabs']+1)))+
-	(($p[8]['v2'])*($p[1]['latsign']-($p[0]['latsignabs']+1))*(($p[0]['lonsignabs']+1)-$p[1]['lonsign-1']))+
-	(($p[8]['v3'])*(($p[0]['latsignabs']+1)-$p[2]['latsign-1'])*(($p[0]['lonsignabs']+1)-$p[1]['lonsign-1']))+
-	(($p[8]['v4'])*($p[1]['latsign']-($p[0]['latsignabs']+1))*($p[2]['lonsign']-($p[0]['lonsignabs']+1)));
-	$p['vid']=($p[0]['vid']+$p[1]['vid']+$p[2]['vid']+$p[3]['vid']+$p[4]['vid']+$p[5]['vid']+$p[6]['vid']+$p[7]['vid']+$p[8]['vid'])/9;
-	$Sa=sqrt((1/9)*(pow($p[0]['vid']-$p['vid'],2)+pow($p[1]['vid']-$p['vid'],2)+pow($p[2]['vid']-$p['vid'],2)+pow($p[3]['vid']-$p['vid'],2)+pow($p[4]['vid']-$p['vid'],2)
-	+pow($p[5]['vid']-$p['vid'],2)+pow($p[6]['vid']-$p['vid'],2)+pow($p[7]['vid']-$p['vid'],2)+pow($p[8]['vid']-$p['vid'],2)))*1000; 
-	return $Sa;  
+	$result = mysqli_fetch_array($conn->query("SELECT `Gtopo` FROM `gtopo` WHERE `Lat` = $Lat and `Lon` = $Lon LIMIT 1"));
+	return $result[0]; 
 }
 
 function calc_points_for_SA($conn, $latitude, $longitude)
@@ -914,67 +802,141 @@ function calc_points_for_SA($conn, $latitude, $longitude)
 	$rounded_latitude = round($latitude * 2) / 2;
 	$rounded_longitude = round($longitude * 2) / 2;
 	
-	if($rounded_latitude < 0) $rounded_latitude = $rounded_latitude * -1; 
-	if($rounded_longitude < 0) $rounded_longitude = $rounded_longitude * -1; 
+	//echo $rounded_latitude." ".$rounded_longitude." <br>"; 
 	
 	$lower_latitude = $rounded_latitude - 0.5; 
-	$lower_longitude = $rounded_longitude - 0.5; 
+	$lower_longitude = $rounded_longitude - 0.5;
+	
+	//if($rounded_latitude < 0) $rounded_latitude = $rounded_latitude * -1; 
+	//if($rounded_longitude < 0) $rounded_longitude = $rounded_longitude * -1; 
 
-	if($lower_latitude < 0) $lower_latitude = $lower_latitude * -1; 
-	if($lower_longitude < 0) $lower_longitude = $lower_longitude * -1; 
+	//if($lower_latitude < 0) $lower_latitude = $lower_latitude * -1; 
+	//if($lower_longitude < 0) $lower_longitude = $lower_longitude * -1; 
 	
-	$result = $conn->query("SELECT `Gtopo` FROM `gtopo` WHERE `Lat` = $rounded_latitude and `Lon` = $rounded_longitude LIMIT 1");
-	$p3 = mysqli_fetch_array($result);
-	
-	//Ja Latitude iziet ārpus robežas, turpina izmantojot latitude no otra gala.
-	if($rounded_latitude == -90) $tmp_Latitude = ($lower_latitude * -1);
+	$p3 = SelectFromGtopo($conn, $rounded_latitude, $rounded_longitude);
+	//echo $rounded_latitude." ".$rounded_longitude."<br>"; 
+	echo $p3."<br>"; 
+	if($rounded_latitude == -90) $tmp_Latitude = ($lower_latitude * -1); //Ja Latitude iziet ārpus robežas, turpina izmantojot latitude no otra gala.
 	else $tmp_Latitude = $lower_latitude;
 	
-	$result = $conn->query("SELECT `Gtopo` FROM `gtopo` WHERE `Lat` = $tmp_Latitude and `Lon` = $rounded_longitude LIMIT 1");
-	$p2 = mysqli_fetch_array($result);	
+	$p2 = SelectFromGtopo($conn, $tmp_Latitude, $rounded_longitude);
 	
 	if($rounded_longitude == -180) $tmp_Longitude = ($lower_longitude * -1);
 	else $tmp_Longitude = $lower_longitude;
-	$result = $conn->query("SELECT `Gtopo` FROM `gtopo` WHERE `Lat` = $tmp_Latitude and `Lon` = $tmp_Longitude LIMIT 1");
-	$p4 = mysqli_fetch_array($result);	
 
-	$result = $conn->query("SELECT `Gtopo` FROM `gtopo` WHERE `Lat` = $rounded_latitude and `Lon` = $tmp_Longitude LIMIT 1");
-	$p1 = mysqli_fetch_array($result);	
-
+	$p4 = SelectFromGtopo($conn, $tmp_Latitude, $tmp_Longitude);
+	$p1 = SelectFromGtopo($conn, $rounded_latitude, $tmp_Longitude);
 			
-	$Point= $p4[0] * (($rounded_latitude - $latitude) * -2) * (($rounded_longitude - $longitude) * -2) + 
-			$p1[0] * (($latitude - $lower_latitude) * -2) * (($rounded_longitude - $longitude) * -2) + 
-			$p2[0] * (($rounded_latitude - $latitude) * -2) * (($longitude - $lower_longitude) * -2) + 
-			$p3[0] * (($latitude - $lower_latitude) * -2) * (($longitude - $lower_longitude) * -2);
+	$Point= $p4 * (($rounded_latitude - $latitude) * -2) * (($rounded_longitude - $longitude) * -2) + 
+			$p1 * (($latitude - $lower_latitude) * -2) * (($rounded_longitude - $longitude) * -2) + 
+			$p2 * (($rounded_latitude - $latitude) * -2) * (($longitude - $lower_longitude) * -2) + 
+			$p3 * (($latitude - $lower_latitude) * -2) * (($longitude - $lower_longitude) * -2);
 	
 	$out['Point'] = $Point;
 	$out['rounded_latitude'] = $rounded_latitude;
 	$out['lower_latitude'] = $lower_latitude;
 	$out['rounded_longitude'] = $rounded_longitude;
 	$out['lower_longitude'] = $lower_longitude; 
-	$out['$p1'] = $p1[0];
-	$out['$p2'] = $p2[0];
-	$out['$p3'] = $p3[0];
-	$out['$p4'] = $p4[0];	
+	$out['p1'] = $p1;
+	$out['p2'] = $p2;
+	$out['p3'] = $p3;
+	$out['p4'] = $p4;	
 	return $out; 
 }
 
-
-function SA2($conn, $LatA, $LonA, $LatB, $LonB)
+function Sa($conn, $LatA, $LonA, $LatB, $LonB)
 {
+	//Atrod viduspunktus platumam un augstumam. 
 	$midLat = ($LatA + $LatB)/2;
 	$midLon = ($LonA + $LonB)/2;
 	
 	
+	//No platuma viduspunkta un augstuma atrod četrus punktus, kur augstums un platums ir lielāks un mazāks par vidējo. 
 	$midLat = array($midLat + 0.5, $midLat - 0.5);
 	$midLon = array($midLon + 0.5, $midLon - 0.5);
+
 	
+	//Atrodot iespējamo kļūdu izmantojot calc_points_for_SA funkcijas pirmajiem četriem 110km x 110km kvadrātiem. 
 	$V1 = calc_points_for_SA($conn, $midLat[0], $midLon[0]);
 	$V2 = calc_points_for_SA($conn, $midLat[0], $midLon[1]);
 	$V3 = calc_points_for_SA($conn, $midLat[1], $midLon[0]);
-	$V4 = calc_points_for_SA($conn, $midLat[1], $midLon[1]);
+	$V4 = calc_points_for_SA($conn, $midLat[1], $midLon[1]);	 
 	
-	echo $V1['Point']." ".$V2['Point']." ".$V3['Point']." ".$V4['Point']; 
+	
+	//echo $V1['p1']." ".$V2['p2']." ".$V3['p3']." ".$V4['p4'];
+	//echo $V1['Point']." ".$V2['Point']." ".$V3['Point']." ".$V4['Point'];
+	
+	//110 km x 110km kvadrātā izvēlas četrus punktus no GTopo tabulas blakus augstuma un platuma viduspunktam. 
+	$p1 = array(
+		"v1" => SelectFromGtopo($conn, $V2['lower_latitude'], $V2['lower_longitude']),
+		"v2" => SelectFromGtopo($conn, $V3['rounded_latitude'], $V2['rounded_longitude']),
+		"v3" => SelectFromGtopo($conn, $V1['lower_latitude'], $V2['rounded_longitude']),
+		"v4" => SelectFromGtopo($conn, $V3['rounded_latitude'], $V2['lower_longitude']),
+	);
+
+	//echo $p1['v1']." ".$p1['v2']." ".$p1['v3']." ".$p1['v4'];
+	
+	$V5 = $p1['v4'] * (($V2['lower_latitude'] - ($midLat[0] - 0.5)) * -2) * (($V2['rounded_longitude'] - $midLon[1]) * -2) +
+			$p1['v1'] * ((($midLat[0] - 0.5) - $V3['rounded_latitude']) * -2) * (($V2['rounded_longitude'] - $midLon[1]) * -2) + 
+			$p1['v2'] * (($V2['lower_latitude'] - ($midLat[0] - 0.5)) * -2) * (($midLon[1] - $V2['lower_longitude']) * -2) + 
+			$p1['v3'] * ((($midLat[0] - 0.5) - $V3['rounded_latitude']) * -2) * (($midLon[1] - $V2['lower_longitude'])* -2); 
+	//Izvēlas citus četrus punktus no Gtopo tabulas.
+	$p2 = array(
+		"v1" => SelectFromGtopo($conn, $V1['rounded_latitude'], $V2['rounded_longitude']),
+		"v2" => SelectFromGtopo($conn, $V1['lower_latitude'], $V1['lower_longitude']),
+		"v3" => SelectFromGtopo($conn, $V1['rounded_latitude'], $V1['lower_longitude']),
+		"v4" => SelectFromGtopo($conn, $V2['lower_latitude'], $V2['rounded_longitude']),
+	);
+
+	$V6 = $p2['v4'] * (($V2['rounded_latitude'] - $midLat[0]) * -2) * (($V3['lower_longitude'] - ($midLon[0] - 0.5)) * -2) + 
+			$p2['v1'] * (($midLat[0] - $V2['lower_latitude']) * -2) * (($V3['lower_longitude'] - ($midLon[0] - 0.5)) * -2) + 
+			$p2['v2'] * (($V2['rounded_latitude'] - $midLat[0]) * -2) * ((($midLon[0] - 0.5) - $V2['rounded_longitude']) * -2) +
+			$p2['v3'] * ((($midLat[0] - 0.5) - $V3['rounded_latitude']) * -2) * ((($midLon[0] - 0.5) - $V2['rounded_longitude']) * -2);
+
+	//Izvēlas četrus punktus no Gtopo tabulas.	
+	$p3 = array(
+		"v1" => SelectFromGtopo($conn, $V2['lower_latitude'], $V1['lower_longitude']),
+		"v2" => SelectFromGtopo($conn, $V3['rounded_latitude'], $V3['rounded_longitude']), 
+		"v3" => SelectFromGtopo($conn, $V1['lower_latitude'], $V1['rounded_longitude']),
+		"v4" => SelectFromGtopo($conn, $V3['rounded_latitude'], $V1['lower_longitude']),
+	);
+	$V7 = $p3['v4'] * (($V2['lower_latitude'] - ($midLat[0] - 0.5)) * -2) * (($V2['rounded_longitude'] - $midLon[1]) * -2) +
+			$p3['v1'] * ((($midLat[0] - 0.5) - $V3['rounded_latitude']) * -2) * (($V2['rounded_longitude'] - $midLon[1]) * -2) +
+			$p3['v2'] * (($V2['lower_latitude'] - ($midLat[0] - 0.5)) * -2) * (($midLon[1] - $V2['lower_longitude']) * -2) +
+			$p3['v3'] * ((($midLat[0] - 0.5) - $V3['rounded_latitude']) * -2) * (($midLon[1] - $V2['lower_longitude']) * -2);
+	//Izvēlas četrus punktus no Gtopo tabulas.
+	$p4 = array(
+		"v1" => SelectFromGtopo($conn, $V4['rounded_latitude'], $V4['rounded_longitude']),
+		"v2" => SelectFromGtopo($conn, $V4['lower_latitude'], $V3['lower_longitude']), 
+		"v3" => SelectFromGtopo($conn, $V4['rounded_latitude'], $V3['lower_longitude']),
+		"v4" => SelectFromGtopo($conn, $V4['lower_latitude'], $V4['rounded_longitude']),
+	); 
+	$V8 = $p4['v4'] * (($V2['rounded_latitude'] - $midLat[0]) * -2) * (($V3['lower_longitude'] - ($midLon[0] - 0.5)) * -2) +
+			$p4['v1'] * (($midLat[0] - $V2['lower_latitude']) * -2) * (($V3['lower_longitude'] - ($midLon[0] - 0.5)) * -2) +
+			$p4['v2'] * (($V2['rounded_latitude'] - $midLat[0]) * -2) * ((($midLon[0] - 0.5) - $V2['rounded_longitude'])  * -2) +
+			$p4['v3'] * (($midLat[0] - $V2['lower_latitude']) * -2) * ((($midLon[0] - 0.5) - $V2['rounded_longitude'])  * -2);
+	//Izvēlas četrus Gtopo koeficientus no pirmajiem četriem kvadrātiem, no katra paņemot pa vienai vērtībai. 
+	$p5 = array(
+		"v1" => $V2['p2'],
+		"v2" => $V3['p1'],
+		"v3" => $V1['p4'],
+		"v4" => $V4['p3'],
+ 	); 
+	$V9 = 	$p5['v4'] * (($V2['lower_latitude'] - ($midLat[0] - 0.5)) * -2) * (($V3['lower_longitude'] - ($midLon[0] - 0.5)) * -2) + 
+			$p5['v1'] * ((($midLat[0] - 0.5) - $V3['rounded_latitude']) * -2) * (($V3['lower_longitude'] - ($midLon[0] - 0.5)) * -2) +
+			$p5['v2'] * (($V2['lower_latitude'] - ($midLat[0] - 0.5)) * -2) * ((($midLon[0]- 0.5) - $V2['rounded_longitude']) * -2) +
+			$p5['v3'] * ((($midLat[0] - 0.5) - $V3['rounded_latitude']) * -2) * ((($midLon[0]- 0.5) - $V2['rounded_longitude']) * -2); 
+	
+	//Tiek izvilkts vidējais aritmētiskais no visiem deviņiem punktiem. 
+	$Sum_Average = ($V1['Point'] + $V2['Point'] + $V3['Point'] + $V4['Point'] + $V5 + $V6 + $V7 + $V8 + $V9) / 9; 
+
+	//Tiek aprēķināts Sa, jeb reljefa nelīdzenums (terrain roughness). 
+	$Sa = sqrt((1/9) * (pow($V1['Point'] - $Sum_Average, 2) + pow($V2['Point'] - $Sum_Average, 2) + pow($V3['Point'] - $Sum_Average, 2) + 
+			pow($V4['Point'] - $Sum_Average, 2) + pow($V5 - $Sum_Average, 2) + pow($V6 - $Sum_Average, 2) + pow($V7 - $Sum_Average, 2) + 
+			pow($V8 - $Sum_Average, 2) + pow($V9 - $Sum_Average, 2))) * 1000;  
+	//echo $Sa; 
+	
+	return $Sa; 
 }
 
 
@@ -1193,8 +1155,7 @@ if(isset($_GET['Dec']))
 		$AntennasAmount = $_GET['AntennasAmount'];
 		$SDsepA = $_GET['SDsepA']; 
 		$SDsepB = $_GET['SDsepB'];
-		$a = Attenuation($Frequency,$Temperature,$LatA,$LatB,$Antenna1,$Antenna2,$distance);
-		$Sa2 = SA2($conn, $LatA, $LonA, $LatB, $LonB); 
+		$a = Attenuation($Frequency,$Temperature,$LatA,$LatB,$Antenna1,$Antenna2,$distance); 
 		$sa = Sa($conn, $LatA, $LonA, $LatB, $LonB);
 		$Losses = $_GET['Losses'];
 		$AntennaA = GetAnthenaParams($conn, $Manufacturer, $Frequency, $Diameter1);
