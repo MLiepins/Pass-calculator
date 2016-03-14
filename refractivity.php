@@ -941,19 +941,22 @@ function calc_points_for_SA($conn, $latitude, $longitude)
 	$result = $conn->query("SELECT `Gtopo` FROM `gtopo` WHERE `Lat` = $rounded_latitude and `Lon` = $tmp_Longitude LIMIT 1");
 	$p1 = mysqli_fetch_array($result);	
 
-	/*$Point= (2 * (($p4[0] * (1 - ($tmp_Latitude - $latitude)) * (($tmp_Longitude - $longitude))) + 
-			($p1[0] * (1 - ($latitude - $tmp_Latitude)) * ( ($tmp_Longitude - $longitude))) +
-			($p2[0] * (1 - ($tmp_Latitude - $latitude)) * ( ($longitude - $tmp_Longitude))) +
-			($p3[0] * (1 - ($latitude - $tmp_Latitude)) * ( ($longitude - $tmp_Longitude)))));*/
-
 			
-	$V1 = $p4[0] * (($rounded_latitude - $latitude) * -20);
-	echo $V1;
-	//echo $lower_latitude." ".$rounded_latitude; 
+	$Point= $p4[0] * (($rounded_latitude - $latitude) * -2) * (($rounded_longitude - $longitude) * -2) + 
+			$p1[0] * (($latitude - $lower_latitude) * -2) * (($rounded_longitude - $longitude) * -2) + 
+			$p2[0] * (($rounded_latitude - $latitude) * -2) * (($longitude - $lower_longitude) * -2) + 
+			$p3[0] * (($latitude - $lower_latitude) * -2) * (($longitude - $lower_longitude) * -2);
 	
-	
-	
-	
+	$out['Point'] = $Point;
+	$out['rounded_latitude'] = $rounded_latitude;
+	$out['lower_latitude'] = $lower_latitude;
+	$out['rounded_longitude'] = $rounded_longitude;
+	$out['lower_longitude'] = $lower_longitude; 
+	$out['$p1'] = $p1[0];
+	$out['$p2'] = $p2[0];
+	$out['$p3'] = $p3[0];
+	$out['$p4'] = $p4[0];	
+	return $out; 
 }
 
 
@@ -962,20 +965,16 @@ function SA2($conn, $LatA, $LonA, $LatB, $LonB)
 	$midLat = ($LatA + $LatB)/2;
 	$midLon = ($LonA + $LonB)/2;
 	
+	
 	$midLat = array($midLat + 0.5, $midLat - 0.5);
 	$midLon = array($midLon + 0.5, $midLon - 0.5);
 	
 	$V1 = calc_points_for_SA($conn, $midLat[0], $midLon[0]);
-	//$V2 = calc_points_for_SA($conn, $midLat[0], $midLon[1]);
-	//$V3 = calc_points_for_SA($conn, $midLat[1], $midLon[0]);
-	//$V4 = calc_points_for_SA($conn, $midLat[1], $midLon[1]);
-	//$average = ($V1['point'] + $V2['point'] + $V3['point'] + $V4['point']) / 4; 
-	//echo " Point 1 = ".$V1['point']." Point 2 = ".$V2['point']." Point 3 = ".$V3['point']." Point 4 = ".$V4['point'];
-//	echo $average; 
-
-
-
-	//echo $Point1['stepLat']."  ".$Point1['stepLon']." ".$Point1['adrr_1'][0]." ".$Point1['adrr_1'][1]." ".$Point1['adrr_1'][2]." ".$Point1['adrr_1'][3]." <br> ".$Point1['adrr_2'][0]." ".$Point1['adrr_2'][1]." ".$Point1['adrr_2'][2]." ".$Point1['adrr_2'][3] ;
+	$V2 = calc_points_for_SA($conn, $midLat[0], $midLon[1]);
+	$V3 = calc_points_for_SA($conn, $midLat[1], $midLon[0]);
+	$V4 = calc_points_for_SA($conn, $midLat[1], $midLon[1]);
+	
+	echo $V1['Point']." ".$V2['Point']." ".$V3['Point']." ".$V4['Point']; 
 }
 
 
