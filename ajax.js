@@ -1,48 +1,5 @@
 $(document).ready(function()
 {
-//Elementu slēpšana.
-	$('.field').hide();
-	//$('.odu').hide();
-	$('.AntennasAm').hide();
-	$('.ExtraFreq').hide();
-	$('.field3').hide();
-	$('.prod3').hide();
-	$('.prod4').hide();
-	$('.ExtraAntennas').hide();
-	$('.Antenna_Coupler').hide();
-	$('.Coupler').hide();
-	
-	
-	
-	
-	$('.AntennasAm').change(function()
-	{
-		var antennas = $('.AntennasAm').val();
-		switch(antennas)
-		{
-			case '1':
-				$('.field3').show();
-				$('.ExtraAntennas').show(); 
-				break;
-		}
-	});
-	$('.Antenna_Coupler').change(function()
-	{
-		var value = $('.Antenna_Coupler').val();
-		switch(value)
-		{
-			case '1':
-				$('.Coupler').show();
-				$('.ExtraAntennas').hide();
-				$('.HSB_hide').hide(); 
-				$('.HSB_Show').hide(); 				
-				break;
-			case '2':
-				$('.Coupler').hide();
-				$('.ExtraAntennas').show(); 
-				break;
-		}
-	});
 	
 });
 
@@ -52,71 +9,64 @@ function manageVersionChange(el)
 		//console.log(site);
 		//console.log($('.Version').val());
 		var version = $('.'+site+'').find('select[name = Version]').val();
-		$('.'+site+'').find('.AntennasAm').hide();
-		switch(version)
+		if(version == 1)
 		{
-			case '1':
-				$('.'+site+'').find('.odu').hide();
-				$('.'+site+'').find('.Antenna_Coupler').hide();
-				$('.'+site+'').find('.field').hide();
-				$('.'+site+'').find('.AntennasAm').hide();
-				$('.'+site+'').find('.ExtraFreq').hide();
-				$('.'+site+'').find('.prod4').hide();	
-				$('.'+site+'').find('.prod3').hide();
-				$('.'+site+'').find('.ExtraAntennas').hide();
-
-				$('.'+site+'').find('.Coupler').hide();
-				$('.'+site+'').find('.HSB_hide').hide(); 
-				$('.'+site+'').find('.HSB_Show').hide(); 					
-				break;
-			case '4':
-				$('.'+site+'').find('.field').show();
-				$('.'+site+'').find('.AntennasAm').show();
-				$('.'+site+'').find('.ExtraFreq').show();
-				$('.'+site+'').find('.odu').show();
-				$('.'+site+'').find('.prod4').show();	
-				$('.'+site+'').find('.prod3').hide();	
-				$('.'+site+'').find('.ExtraAntennas').hide(); 
-				$('.'+site+'').find('.Antenna_Coupler').hide();
-				$('.'+site+'').find('.Coupler').hide();
-				$('.'+site+'').find('.HSB_hide').hide(); 
-				$('.'+site+'').find('.HSB_Show').hide(); 					
-				break;
-			case '3':
-				$('.'+site+'').find('.field').show();
-				$('.'+site+'').find('.odu').show();
-				$('.'+site+'').find('.prod3').show();
-				$('.'+site+'').find('.ExtraAntennas').show(); 
-				$('.'+site+'').find('.Antenna_Coupler').hide();
-				$('.'+site+'').find('.AntennasAm').hide();
-				$('.'+site+'').find('.ExtraFreq').hide();
-				$('.'+site+'').find('.prod4').hide();	
-				$('.'+site+'').find('.Coupler').hide();
-				$('.'+site+'').find('.HSB_hide').hide(); 
-				$('.'+site+'').find('.HSB_Show').hide(); 	
-				break;
-			case '2':
-				$('.'+site+'').find('.odu').show();
-				$('.'+site+'').find('.Antenna_Coupler').show();
-				$('.'+site+'').find('.field').hide();
-				$('.'+site+'').find('.AntennasAm').hide();
-				$('.'+site+'').find('.ExtraFreq').hide();
-				$('.'+site+'').find('.prod4').hide();	
-				$('.'+site+'').find('.prod3').hide();
-				$('.'+site+'').find('.ExtraAntennas').hide(); 
-				$('.'+site+'').find('.Coupler').hide();
-				$('.'+site+'').find('.HSB_hide').hide(); 
-				$('.'+site+'').find('.HSB_Show').hide(); 	
-			break;
+			$('.'+site+'').find('.odu').hide();	
+			$('.'+site+'').find('tr[class = h_AntennaMode]').hide();
+			$('.'+site+'').find('td[class = extra_diameter]').hide();
+			$('.'+site+'').find('tr[class = Coupler_Atten]').hide();
+			$('.'+site+'').find('tr[class = Standby]').hide();
+			$('.'+site+'').find('tr[class = Antenna_SD]').hide();
+			$('.'+site+'').find('td[class = Antenna_SD]').hide();
+			$('.'+site+'').find('tr[class = Diversity]').hide();
+			$('.'+site+'').find('tr[class = Diversity]').hide();
+			$('.'+site+'').find('td[class = Antenna_FD]').hide();
+		}
+		if(version == 2)
+		{
+			$('.'+site+'').find('.odu').show();
+			$('.'+site+'').find('tr[class = h_AntennaMode]').show();
+			$('.'+site+'').find('td[class = extra_diameter]').hide();
+			$('.'+site+'').find('tr[class = Coupler_Atten]').hide();
+			$('.'+site+'').find('tr[class = Standby]').hide();
+			$('.'+site+'').find('tr[class = Antenna_SD]').hide();
+			$('.'+site+'').find('td[class = Antenna_SD]').hide();
+			$('.'+site+'').find('tr[class = Diversity]').hide();
+			$('.'+site+'').find('tr[class = Diversity]').hide();
+			$('.'+site+'').find('td[class = Antenna_FD]').hide();
+		}
+		if(version == 3)
+		{
+			$('.'+site+'').find('.odu').show();
+			$('.'+site+'').find('tr[class = h_AntennaMode]').hide();
+			$('.'+site+'').find('td[class = extra_diameter]').hide();
+			$('.'+site+'').find('tr[class = Coupler_Atten]').hide();
+			$('.'+site+'').find('tr[class = Standby]').hide();
+			$('.'+site+'').find('tr[class = Antenna_SD]').show();
+			$('.'+site+'').find('td[class = Antenna_SD]').show();
+			$('.'+site+'').find('tr[class = Diversity]').hide();
+			$('.'+site+'').find('td[class = Antenna_FD]').hide();
+		}
+		if(version == 4)
+		{
+			$('.'+site+'').find('.odu').show();
+			$('.'+site+'').find('tr[class = h_AntennaMode]').hide();
+			$('.'+site+'').find('td[class = extra_diameter]').hide();
+			$('.'+site+'').find('tr[class = Coupler_Atten]').hide();
+			$('.'+site+'').find('tr[class = Standby]').hide();
+			$('.'+site+'').find('tr[class = Antenna_SD]').hide();
+			$('.'+site+'').find('td[class = Antenna_SD]').hide();
+			$('.'+site+'').find('tr[class = Diversity]').show();
+			$('.'+site+'').find('td[class = Antenna_FD]').hide();
 		}
 }
-	
+
 	
 function verChange(el)
 {
 		var site = $(el).parent().parent().parent().parent().parent().parent().attr('class'); //Iegūst galvenā div elementa ID.  
 		var prodSelect = $('.'+site+'').find('select[name=Productx1]').empty();
-		var version = $('.'+site+'').find('select[name = Version]').val();	
+		var version = $('.'+site+'').find('select[name = Version]').val();		
 		//console.log($(el).val());
 		//console.log(version); 
 		$.post( "AjaxFunctions.php", { Version: version}, function(response){	
@@ -368,6 +318,56 @@ function change_A_Diameter(el)
 			$(AntennaA_tmp).val(Data);
 	});	
 }
+
+function change_A_Diameter_SD(el)
+{
+	var site = $(el).parent().parent().parent().parent().parent().parent().attr('class'); 
+	var Diameter = $('.'+site+'').find('select[name = diameter_A_SD]').val();
+	var antennaManuf = $('.'+site+'').find('select[name=AntennaManuf]').val();
+	var Frequency = $('.'+site+'').find('select[name=Frequency]').val();
+	var DiameterResult = $('.'+site+'').find('span[name=result_dA_SD').text('');
+	var AntennaA_tmp = $('.'+site+'').find('div[name=AntennaASD_tmp]').empty();
+	
+	$.post( "AjaxFunctions.php", { func: 'antenna_DBI', antennaManuf: antennaManuf, Frequency: Frequency, Diameter: Diameter}, function(response)
+	{	
+		var Data = $.parseJSON(response);
+			$(DiameterResult).text(''+Data+'dBi');
+			$(AntennaA_tmp).val(Data);
+	});	
+}
+function change_A_Diameter_FD(el)
+{
+	var site = $(el).parent().parent().parent().parent().parent().parent().attr('class'); 
+	var Diameter = $('.'+site+'').find('select[name = diameter_A_FD]').val();
+	var antennaManuf = $('.'+site+'').find('select[name=AntennaManuf]').val();
+	var Frequency = $('.'+site+'').find('select[name=Frequency]').val();
+	var DiameterResult = $('.'+site+'').find('span[name=result_dA_FD').text('');
+	var AntennaA_tmp = $('.'+site+'').find('div[name=AntennaAFD_tmp]').empty();
+	
+	$.post( "AjaxFunctions.php", { func: 'antenna_DBI', antennaManuf: antennaManuf, Frequency: Frequency, Diameter: Diameter}, function(response)
+	{	
+		var Data = $.parseJSON(response);
+			$(DiameterResult).text(''+Data+'dBi');
+			$(AntennaA_tmp).val(Data);
+	});	
+}
+function change_A2_Diameter(el)
+{
+	var site = $(el).parent().parent().parent().parent().parent().parent().attr('class'); 
+	var Diameter = $('.'+site+'').find('select[name = diameter_A2]').val();
+	var antennaManuf = $('.'+site+'').find('select[name=AntennaManuf]').val();
+	var Frequency = $('.'+site+'').find('select[name=Frequency]').val();
+	var DiameterResult = $('.'+site+'').find('span[name=result_dA2').text('');
+	var AntennaA_tmp = $('.'+site+'').find('div[name=AntennaA2_tmp]').empty();
+	
+	$.post( "AjaxFunctions.php", { func: 'antenna_DBI', antennaManuf: antennaManuf, Frequency: Frequency, Diameter: Diameter}, function(response)
+	{	
+		var Data = $.parseJSON(response);
+			$(DiameterResult).text(''+Data+'dBi');
+			$(AntennaA_tmp).val(Data);
+	});	
+}
+
 function change_B_Diameter(el)
 {
 	var site = $(el).parent().parent().parent().parent().parent().parent().attr('class'); 
@@ -384,7 +384,92 @@ function change_B_Diameter(el)
 		$(AntennaB_tmp).val(Data);
 	});	
 }
+function change_B2_Diameter(el)
+{
+	var site = $(el).parent().parent().parent().parent().parent().parent().attr('class'); 
+	var Diameter = $('.'+site+'').find('select[name = diameter_B2]').val();
+	var antennaManuf = $('.'+site+'').find('select[name=AntennaManuf]').val();
+	var Frequency = $('.'+site+'').find('select[name=Frequency]').val();
+	var DiameterResult = $('.'+site+'').find('span[name=result_dB2]').text('');
+	var AntennaB_tmp = $('.'+site+'').find('div[name=AntennaB2_tmp]').empty();
+	
+	$.post( "AjaxFunctions.php", { func: 'antenna_DBI', antennaManuf: antennaManuf, Frequency: Frequency, Diameter: Diameter}, function(response)
+	{	
+		var Data = $.parseJSON(response);
+		$(DiameterResult).text(''+Data+'dBi');
+		$(AntennaB_tmp).val(Data);
+	});	
+}
+function change_B_Diameter_SD(el)
+{
+	var site = $(el).parent().parent().parent().parent().parent().parent().attr('class'); 
+	var Diameter = $('.'+site+'').find('select[name = diameter_B_SD]').val();
+	var antennaManuf = $('.'+site+'').find('select[name=AntennaManuf]').val();
+	var Frequency = $('.'+site+'').find('select[name=Frequency]').val();
+	var DiameterResult = $('.'+site+'').find('span[name=result_dB_SD]').text('');
+	var AntennaB_tmp = $('.'+site+'').find('div[name=AntennaBSD_tmp]').empty();
+	
+	$.post( "AjaxFunctions.php", { func: 'antenna_DBI', antennaManuf: antennaManuf, Frequency: Frequency, Diameter: Diameter}, function(response)
+	{	
+		var Data = $.parseJSON(response);
+		$(DiameterResult).text(''+Data+'dBi');
+		$(AntennaB_tmp).val(Data);
+	});	
+}
+function change_B_Diameter_FD(el)
+{
+	var site = $(el).parent().parent().parent().parent().parent().parent().attr('class'); 
+	var Diameter = $('.'+site+'').find('select[name = diameter_B_FD]').val();
+	var antennaManuf = $('.'+site+'').find('select[name=AntennaManuf]').val();
+	var Frequency = $('.'+site+'').find('select[name=Frequency]').val();
+	var DiameterResult = $('.'+site+'').find('span[name=result_dB_FD]').text('');
+	var AntennaB_tmp = $('.'+site+'').find('div[name=AntennaBFD_tmp]').empty();
+	
+	$.post( "AjaxFunctions.php", { func: 'antenna_DBI', antennaManuf: antennaManuf, Frequency: Frequency, Diameter: Diameter}, function(response)
+	{	
+		var Data = $.parseJSON(response);
+		$(DiameterResult).text(''+Data+'dBi');
+		$(AntennaB_tmp).val(Data);
+	});	
+}
 
+
+function changeAntennaMode(el)
+{
+	var site = $(el).parent().parent().parent().parent().parent().parent().attr('class'); 
+	var Mode_Value = $('.'+site+'').find('select[name = AntennaMode]').val();
+	if(Mode_Value == 2)
+	{
+		$('.'+site+'').find('td[class = extra_diameter]').show();
+		$('.'+site+'').find('tr[class = Coupler_Atten]').hide();
+		$('.'+site+'').find('tr[class = Primary]').show();
+		$('.'+site+'').find('tr[class = Standby]').hide();
+	}
+	if(Mode_Value == 1)
+	{
+		$('.'+site+'').find('tr[class = Coupler_Atten]').show();
+		$('.'+site+'').find('td[class = extra_diameter]').hide();
+		$('.'+site+'').find('tr[class = Primary]').hide();
+		$('.'+site+'').find('tr[class = Standby]').show();
+	}
+}
+function ChangeAmountofAntenas(el)
+{
+	var site = $(el).parent().parent().parent().parent().parent().parent().attr('class'); 
+	var Select_Value = $('.'+site+'').find('select[name = Antenas_amount]').val();
+	console.log(Select_Value); 
+	if(Select_Value == 1)
+	{
+		$('.'+site+'').find('td[class = Antenna_FD]').hide();
+	}
+	if(Select_Value == 2)
+	{
+		$('.'+site+'').find('td[class = Antenna_FD]').show();
+	}	
+}
+
+
+/*
 function calculate(el)
 {
 	var site = $(el).parent().parent().parent().parent().parent().parent().attr('class'); 
@@ -441,7 +526,7 @@ function calculate(el)
 		if(!AntennaB_tmp) console.log("AntennaB_tmp is missing");
 	}
 }
-
+*/
 
 
 

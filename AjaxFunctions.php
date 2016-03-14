@@ -216,6 +216,50 @@ if(isset($_POST['func']) && !empty($_POST['func']))
 		
 		case 'antenna_DBI':  getAntennaGain($conn, $_POST['antennaManuf'], $_POST['Frequency'], $_POST['Diameter']);		
 		break;		
+		
+		/*case 'calculate':
+			
+			$Distance = calculateDistance($_POST['LatA'], $_POST['LonA'], $_POST['LatB'], $_POST['LonB']); 
+			$Variables = array(
+				"distance" => $Distance,
+				"Product" =>  $_POST['ProdID'];
+				"LatA" => $_POST['LatA'],
+				"LonA" =>  $_POST['LonA'],
+				"LatB" =>  $_POST['LatB'],
+				"LonB" =>  $_POST['LonB'], 
+				"Temperature" => $_POST['Temperature'],
+				//"Antenna_Coupler" => $Antenna_Coupler,
+				"Antenna_A" => $_POST['AntennaHeightA'],
+				"Antenna_B" => $_POST['AntennaHeightB'],
+				//"Manufacturer" => $_GET['Manufacturer'],
+				"Diameter_A_1" => $_GET['diameter1'],
+				"Diameter_B_1" => $_GET['diameter2'],
+	//"Diameter_A_2" => $_GET['diameter3'],
+	//"Diameter_B_2" => $_GET['diameter4'],
+	"Temp_Rain_Zone" => $_GET['Rainzone'], 
+	"Frequency" => $_GET['Frequency'],
+	"TransmitPow" => $_GET['Transmitter'],
+	"Main_Freq" => $_GET['MainFreq'],
+	"Div_Freq" => $_GET['DivFreq'],
+	"Frequency_FD" => $_GET['FrequencyFD'],
+	"Transmitter_FD" => $_GET['TransmitterFD'],
+	"Prim_Site_A" => $_GET['prim_SiteA'],
+	"Prim_Site_B" => $_GET['prim_SiteB'],
+	"Stand_Site_A" => $_GET['stand_SiteA'],
+	"Stand_Site_B" => $_GET['stand_SiteB'],
+	"Amount_Of_Antenas" => $_GET['AntennasAmount'],
+	"SD_Sep_A" => $_GET['SDsepA'],
+	"SD_Sep_B" => $_GET['SDsepB'],
+	"Losses" => $_GET['Losses'],
+	"Modulation" => $_GET['rModulation'],
+	"FEC" => $_GET['FEC'],
+	"Band_Width" => $BandwidthTMP[0],
+	"Standart" => $BandwidthTMP[1],
+);
+
+		break; 
+		$.post( "AjaxFunctions.php", { func: 'calculate', ProdID: ProdID, Frequency: Frequency, Bandwidth: Bandwidth, Standart: Standart, FEC: FEC, Temperature: Temperature, Modulation: Modulation, Rainzone: RainzoneTMP, LatA: LatA, LatB: LatB, LonA: LonA, LonB: LonB, AntennaHeightA: AntennaHeightA, AntennaHeightB: AntennaHeightB, Losses: Losses, AntennaA_tmp: AntennaA_tmp, AntennaB_tmp: AntennaB_tmp}, function(response)
+	*/
 	}	
 }
 

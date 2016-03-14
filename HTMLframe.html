@@ -4,7 +4,14 @@
 	<div name = "ProdID" value = "" hidden></div>
 	<div name = "RainZoneTMP" value = "" hidden></div>
 	<div name = "AntennaA_tmp" value = "" hidden></div>
+	<div name = "AntennaA2_tmp" value = "" hidden></div>
+	<div name = "AntennaAFD_tmp" value = "" hidden></div>
+	<div name = "AntennaASD_tmp" value = "" hidden></div>
+
 	<div name = "AntennaB_tmp" value = "" hidden></div>
+	<div name = "AntennaB2_tmp" value = "" hidden></div>
+	<div name = "AntennaBFD_tmp" value = "" hidden></div>			
+	<div name = "AntennaBSD_tmp" value = "" hidden></div>
 	<tr>
 		<td><h4>Version: </h4></td>
 		<td>
@@ -117,6 +124,16 @@
 					<option value="none">Please first select modulation</option>
 			</select>
 		</td>
+	</tr>
+	<tr class = "Diversity" hidden>
+		<td><h4>Amount of antenas</h4></td>
+		<td>
+			<select onchange = "ChangeAmountofAntenas(this)" name = "Antenas_amount">
+					<option value="0">Please select the amount of antenas</option>
+					<option value="1">Using 2 antenas</option>
+					<option value="2">Using 4 antenas</option>
+			</select>
+		</td>
 	</tr>	
 	<tr>
 		<td><h4>Antenna heights</h4></td>
@@ -124,6 +141,16 @@
 			 Antenna A height over sea level<input type="number" name="AntennaA"> 
 			<br>Antenna B height over sea level<input type="number" name="AntennaB">
 
+		</td>
+	</tr>
+	<tr class = "h_AntennaMode" hidden>
+		<td><h4>Mode</h4></td>
+		<td>
+			<select onchange = "changeAntennaMode(this)" name = "AntennaMode">
+					<option value="0">Please select the mode</option>
+					<option value="1">Using 2 antennas and coupler</option>
+					<option value="2">Using 4 antennas</option>
+			</select>
 		</td>
 	</tr>
 	<tr>
@@ -142,16 +169,162 @@
 			</select>
 			<span name = "result_dA"></span>
 		</td>
+		<td class = "Antenna_SD" hidden>Antenna A SD
+			<select onchange = "change_A_Diameter_SD(this)" name = "diameter_A_SD">
+					<option value="none">Please first choose Antenna manufacturer</option>
+			</select>
+			<span name = "result_dA_SD"></span>
+		</td>
+		<td class = "Antenna_FD" hidden>Antenna A FD
+			<select onchange = "change_A_Diameter_FD(this)" name = "diameter_A_FD">
+				<option value="none">Please first choose Antenna manufacturer</option>
+			</select>
+			<span name = "result_dA_FD"></span>
+		</td>
+		<td class = "extra_diameter" hidden >Antenna A2
+			<select onchange = "change_A2_Diameter(this)" name = "diameter_A2">
+					<option value="none">Please first choose Antenna manufacturer</option>
+			</select>
+			<span name = "result_dA_A2"></span>
+		</td>
 		<td>Antenna B
 			<select onchange = "change_B_Diameter(this)" name = "diameter_B">
 					<option value="none">Please first choose Antenna manufacturer</option>
 			</select>
 			<span name = "result_dB"></span>
 		</td>
-	</tr>	
+		<td class = "Antenna_SD"  hidden>Antenna B SD
+			<select onchange = "change_B_Diameter_SD(this)" name = "diameter_B_SD">
+					<option value="none">Please first choose Antenna manufacturer</option>
+			</select>
+			<span name = "result_dB_SD"></span>
+		</td>
+		<td class = "Antenna_FD" hidden>Antenna B FD
+			<select onchange = "change_B_Diameter_FD(this)" name = "diameter_B_FD">
+					<option value="none">Please first choose Antenna manufacturer</option>
+			</select>
+			<span name = "result_dB_FD"></span>
+		</td>
+		<td class = "extra_diameter" hidden>Antenna B2
+			<select onchange = "change_B_Diameter(this)" name = "diameter_B2">
+					<option value="none">Please first choose Antenna manufacturer</option>
+			</select>
+			<span name = "result_dB_B2"></span>
+		</td>
+	</tr>
+	<tr class = "Antenna_SD"  hidden>
+		<td><h4> Antenna vertical separation</h4></td>
+		<td>SD separation for A: <input type="text" name="SD_sep_A"></td>
+		<td>SD separation for B: <input type="text" name="SD_sep_B"></td>
+	</tr>
+	<tr class = "Coupler_Atten" hidden>
+		<td colspan="3"><h4> Coupler attenuations:</td>
+	</tr>
+	<tr class = "Coupler_Atten" hidden>
+		<td>Primary link:</td>
+		<td>Site A: <span name = "Prim_Site_A"></span></td>
+		<td>Site B: <span name = "Prim_Site_B"></span></td>
+	</tr>
+	<tr class = "Coupler_Atten" hidden>
+		<td> Standby link:</td>
+		<td>Site A: <span name = "Stand_Site_A"></span></td>
+		<td>Site B: <span name = "Stand_Site_B"></span></td>
+	</tr>
+	<tr class = "Diversity" hidden >
+		<td><h4>Main frequency<h4> <input type="text" name="Main_Freq"></td>
+		<td><h4>Diversity frequency <input type="text" name="Div_Freq"><h4></td>
+	</tr>
 	<tr>
 		<td><h4>Losses<h4></td>
 		<td><input type="text" name="Losses" onchange = "calculate(this)" placeholder="Losses"></td>
-	</tr>	
+	</tr>
 	</table> 
+	<table>
+	<tr>
+		<td><h4>Results</h4></td>	
+	</tr>
+	<tr class = "Primary">
+		<td>Received signal level: </td>
+		<td><span name = "signal_level"></span></td>
+	</tr>
+	<tr class = "Stand_By" hidden>
+		<td>Received signal level: </td>
+		<td>Primary link: <span name = "signal_level_prim"></span></td>
+		<td>Standby link: <span name = "signal_level_stand"></span></td>
+	</tr>
+	<tr class = "Primary">
+		<td >RSSI: </td>
+		<td><span name = "RSSI"></span></td>
+	</tr>
+	<tr class = "Standby" hidden>
+		<td >RSSI: </td>
+		<td>Primary link: <span name = "RSSI_prim"></span></td>
+		<td>Standby link: <span name = "RSSI_stand"></span></td>
+	</tr>
+	<tr class = "Primary">
+		<td>Fade margin: </td>
+		<td><span name = "Fade_Margin"></span></td>
+	</tr>
+	<tr class = "Standby" hidden>
+		<td>Fade margin: </td>
+		<td>Primary link: <span name = "Fade_Margin_prim"></span></td>
+		<td>Standby link: <span name = "Fade_Margin_stand"></span></td>
+	</tr>
+	<tr>
+		<td>Rx Threshold: </td>
+		<td><span name = "Rx_Threshold"></span></td>
+	</tr>
+	<tr>
+		<td>EIRP: </td>
+		<td><span name = "EIRP"></span></td>
+	</tr>
+	<tr class = "Primary">
+		<td>Multipath Availability (%): </td>
+		<td>Vertical <span name = "M_path_vert"></span></td>
+		<td>Horizontal <span name = "M_path_hori"></span></td>
+	</tr>
+	<tr class = "Standby" hidden>
+		<td>Multipath Availability (%): </td>
+		<td>Vertical(Primary) <span name = "M_path_vert_Prim"></span></td>
+		<td>Horizontal(Primary) <span name = "M_path_hori_Prim"></span></td>
+		<td>Vertical(Standby) <span name = "M_path_vert_Stand"></span></td>
+		<td>Horizontal(Standby) <span name = "M_path_hori_Stand"></span></td>
+	</tr>
+	<tr class = "Primary">
+		<td>Rain Availability (%): </td>
+		<td>Vertical <span name = "rain_vert"></span></td>
+		<td>Horizontal <span name = "rain_hori"></span></td>
+	</tr>
+	<tr class = "Standby" hidden>
+		<td>Rain Availability (%): </td>
+		<td>Vertical(Primary) <span name = "rain_vert_prim"></span></td>
+		<td>Horizontal(Primary) <span name = "rain_hori_prim"></span></td>
+		<td>Vertical(Standby) <span name = "rain_vert_stand"></span></td>
+		<td>Horizontal(Standby) <span name = "rain_hori_stand"></span></td>
+	</tr>
+	<tr class = "Primary">
+		<td>Multipath + Rain Availability (%): </td>
+		<td>Vertical <span name = "M_rain_vert"></span></td>
+		<td>Horizontal <span name = "M_rain_hori"></span></td>
+	</tr>
+	<tr class = "Standby" hidden>
+		<td>Multipath + Rain Availability (%): </td>
+		<td>Vertical(Primary) <span name = "M_rain_vert_prim"></span></td>
+		<td>Horizontal(Primary) <span name = "M_rain_hori_prim"></span></td>
+		<td>Vertical(Standby) <span name = "M_rain_vert_stand"></span></td>
+		<td>Horizontal(Standby) <span name = "M_rain_hori_stand"></span></td>
+	</tr>
+	<tr class = "Primary">
+		<td>Errored time per year (HH:MM:SS)</td>
+		<td>Vertical <span name = "error_Time_Vert"></span></td>
+		<td>Horizontal <span name = "error_Time_Hori"></span></td>
+	</tr>
+	<tr class = "Standby" hidden>
+		<td>Errored time per year (HH:MM:SS)</td>
+		<td>Vertical(Primary) <span name = "error_Time_Vert_prim"></span></td>
+		<td>Horizontal(Primary) <span name = "error_Time_Hori_prim"></span></td>
+		<td>Vertical(Standby) <span name = "error_Time_Vert_stand"></span></td>
+		<td>Horizontal(Standby) <span name = "error_Time_Hori_stand"></span></td>
+	</tr>
+	</table>
 </form>
