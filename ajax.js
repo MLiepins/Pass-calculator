@@ -147,7 +147,7 @@ function prodChange(el)
 			success: function(result)
 			{
 				getFrequency(el, result);
-				$(ProdID).val(result);	
+				$(ProdID).val(result);
 			}
 		});	
 	}
@@ -196,6 +196,7 @@ function FreqChange(el)
 	var ProdID =  $('.'+site+'').find('div[name = ProdID]').val();
 	var bandSelect = $('.'+site+'').find('select[name=Bandwidth]').empty();
 	var freqSelect = $('.'+site+'').find('select[name=Frequency]').val();
+	getAntennaManuf(el);
 	$.post( "AjaxFunctions.php", { func: 'bandwidth', ProdID: ProdID, Frequency: freqSelect}, function(response)
 	{	
 		var Data = $.parseJSON(response);
@@ -275,6 +276,7 @@ function changeRainzone(el)
 	var site = $(el).parent().parent().parent().parent().parent().parent().attr('class'); 
 	var RainZone = $(el).val(); 
 	var RainZoneValue = $('.'+site+'').find('span[name=RainZoneResult]').text('');
+	var RainZoneTMP = $('.'+site+'').find('div[name=RainZoneTMP]').empty();
 	console.log(RainZoneValue);
 	$.post( "AjaxFunctions.php", { func: 'RainZone', Zone: RainZone}, function(response)
 	{	
@@ -282,6 +284,7 @@ function changeRainzone(el)
 		$.each(Data, function(i, item)
 		{
 			$(RainZoneValue).text(''+item.Zone+'mm/h');
+			$(RainZoneTMP).val('+item.Zone+');
 		}); 
 	});		
 }
@@ -304,9 +307,144 @@ function changeCoordinates(el)
 				$(distanceResult).text('Distance: '+Data+'km');
 		});		
 	}
-	
-	
 }
+function getAntennaManuf(el)
+{
+	var site = $(el).parent().parent().parent().parent().parent().parent().attr('class'); 
+	var ProdID =  $('.'+site+'').find('div[name = ProdID]').val();
+	var Frequency = $('.'+site+'').find('select[name=Frequency]').val();
+	var antennaManuf = $('.'+site+'').find('select[name=AntennaManuf]').empty();
+	if(ProdID != 0)
+	{
+		$.post( "AjaxFunctions.php", { func: 'antennaManuf', ProdID: ProdID, Frequency: Frequency}, function(response)
+		{	
+			var Data = $.parseJSON(response);
+			$('<option value="0">Please select antenna manufacturer</option>').appendTo(antennaManuf);
+			$.each(Data, function(i, item)
+			{
+				$('<option value="'+item.ID+'">'+item.Name+'</option>').appendTo(antennaManuf);
+			});
+		});	
+		
+		
+	}
+}
+function changeAntennaManuf(el)
+{
+	var site = $(el).parent().parent().parent().parent().parent().parent().attr('class'); 
+	var antennaManuf = $('.'+site+'').find('select[name=AntennaManuf]').val();
+	var diameter_a = $('.'+site+'').find('select[name = diameter_A]').empty();
+	var diameter_b = $('.'+site+'').find('select[name = diameter_B]').empty();
+	var Frequency = $('.'+site+'').find('select[name=Frequency]').val();
+	if(antennaManuf != 0)
+	{
+		$.post( "AjaxFunctions.php", { func: 'antennaDiameter', antennaManuf: antennaManuf, Frequency: Frequency}, function(response)
+		{	
+			var Data = $.parseJSON(response);
+			$('<option value="0">Please select antenna A diameter</option>').appendTo(diameter_a);
+			$('<option value="0">Please select antenna B diameter</option>').appendTo(diameter_b);
+			$.each(Data, function(i, item)
+			{
+				$('<option value="'+item.Diameter+'">'+item.Diameter+'</option>').appendTo(diameter_a);
+				$('<option value="'+item.Diameter+'">'+item.Diameter+'</option>').appendTo(diameter_b);
+			});
+		});	
+	}
+}
+
+function change_A_Diameter(el)
+{
+	var site = $(el).parent().parent().parent().parent().parent().parent().attr('class'); 
+	var Diameter = $('.'+site+'').find('select[name = diameter_A]').val();
+	var antennaManuf = $('.'+site+'').find('select[name=AntennaManuf]').val();
+	var Frequency = $('.'+site+'').find('select[name=Frequency]').val();
+	var DiameterResult = $('.'+site+'').find('span[name=result_dA]').text('');
+	var AntennaA_tmp = $('.'+site+'').find('div[name=AntennaA_tmp]').empty();
+	
+	$.post( "AjaxFunctions.php", { func: 'antenna_DBI', antennaManuf: antennaManuf, Frequency: Frequency, Diameter: Diameter}, function(response)
+	{	
+		var Data = $.parseJSON(response);
+			$(DiameterResult).text(''+Data+'dBi');
+			$(AntennaA_tmp).val(Data);
+	});	
+}
+function change_B_Diameter(el)
+{
+	var site = $(el).parent().parent().parent().parent().parent().parent().attr('class'); 
+	var Diameter = $('.'+site+'').find('select[name = diameter_B]').val();
+	var antennaManuf = $('.'+site+'').find('select[name=AntennaManuf]').val();
+	var Frequency = $('.'+site+'').find('select[name=Frequency]').val();
+	var DiameterResult = $('.'+site+'').find('span[name=result_dB]').text('');
+	var AntennaB_tmp = $('.'+site+'').find('div[name=AntennaB_tmp]').empty();
+	
+	$.post( "AjaxFunctions.php", { func: 'antenna_DBI', antennaManuf: antennaManuf, Frequency: Frequency, Diameter: Diameter}, function(response)
+	{	
+		var Data = $.parseJSON(response);
+		$(DiameterResult).text(''+Data+'dBi');
+		$(AntennaB_tmp).val(Data);
+	});	
+}
+
+function calculate(el)
+{
+	var site = $(el).parent().parent().parent().parent().parent().parent().attr('class'); 
+	var ProdID = ProdID = $('.'+site+'').find('div[name = ProdID]').val();
+	var Frequency = $('.'+site+'').find('select[name=Frequency]').val();
+	var BandwidthTMP = $('.'+site+'').find('select[name=Bandwidth]').val();
+	var BandSplit = BandwidthTMP.split("|");
+	var Bandwidth = BandSplit[0];
+	var Standart = BandSplit[1]; 
+	var FEC =  $('.'+site+'').find('select[name=FEC]').val();
+	var Temperature = $('.'+site+'').find('input[name=Temperature]').val();
+	var Modulation = $('.'+site+'').find('select[name=rModulation]').val();
+	var RainZoneTMP = $('.'+site+'').find('div[name=RainZoneTMP]').val();
+	var LatA = $('.'+site+'').find('input[name=LatA]').val();
+	var LatB = $('.'+site+'').find('input[name=LatB]').val();	
+	var LonA = $('.'+site+'').find('input[name=LonA]').val();
+	var LonB = $('.'+site+'').find('input[name=LonB]').val();
+	var AntennaHeightA = $('.'+site+'').find('input[name=AntennaA]').val();
+	var AntennaHeightB = $('.'+site+'').find('input[name=AntennaB]').val();
+	var Losses = $('.'+site+'').find('input[name=Losses]').val();
+	var AntennaA_tmp = $('.'+site+'').find('div[name=AntennaA_tmp]').val();
+	var AntennaB_tmp = $('.'+site+'').find('div[name=AntennaB_tmp]').val();
+	if(ProdID && Frequency && Bandwidth && Standart && FEC && Temperature && Modulation && RainZoneTMP && LatA && LatB && LonA && LonB && AntennaHeightA && AntennaHeightB && Losses && AntennaA_tmp && AntennaB_tmp )
+	{
+		$.post( "AjaxFunctions.php", { func: 'calculate', ProdID: ProdID, Frequency: Frequency, Bandwidth: Bandwidth, Standart: Standart, FEC: FEC, Temperature: Temperature, Modulation: Modulation, Rainzone: RainzoneTMP, LatA: LatA, LatB: LatB, LonA: LonA, LonB: LonB, AntennaHeightA: AntennaHeightA, AntennaHeightB: AntennaHeightB, Losses: Losses, AntennaA_tmp: AntennaA_tmp, AntennaB_tmp: AntennaB_tmp}, function(response)
+		{	
+			var Data = $.parseJSON(response);
+			$('<option value="0">Please select antenna manufacturer</option>').appendTo(antennaManuf);
+			$.each(Data, function(i, item)
+			{
+				$('<option value="'+item.ID+'">'+item.Name+'</option>').appendTo(antennaManuf);
+			});
+		});	
+	}	
+	else
+	{
+		console.log("Not Executed. ");
+		if(!ProdID) console.log("ProdID is missing");
+		if(!Frequency) console.log("Frequency is missing");
+		if(!Bandwidth) console.log("Bandwidth is missing");
+		if(!Standart) console.log("Standart is missing");
+		if(!FEC) console.log("FEC is missing");
+		if(!Temperature) console.log("Temperature is missing");
+		if(!Modulation) console.log("Modulation is missing");
+		if(!RainZoneTMP) console.log("RainZoneTMP is missing");
+		if(!LatA) console.log("LatA is missing");
+		if(!LatB) console.log("LatB is missing");
+		if(!LonA) console.log("LonA is missing");
+		if(!LonB) console.log("LonB is missing");
+		if(!AntennaHeightA) console.log("AntennaHeightA is missing");
+		if(!AntennaHeightB) console.log("AntennaHeightB is missing");
+		if(!Losses) console.log("Losses is missing");
+		if(!AntennaA_tmp) console.log("AntennaA_tmp is missing");
+		if(!AntennaB_tmp) console.log("AntennaB_tmp is missing");
+	}
+}
+
+
+
+
 /*function recalculate(siteid)
 {
 	$('.' + siteid).each('input') // ..

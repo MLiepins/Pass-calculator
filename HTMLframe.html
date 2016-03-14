@@ -2,6 +2,9 @@
 	<form class="form-DecDeg" method="GET">
 	<table border = "1">
 	<div name = "ProdID" value = "" hidden></div>
+	<div name = "RainZoneTMP" value = "" hidden></div>
+	<div name = "AntennaA_tmp" value = "" hidden></div>
+	<div name = "AntennaB_tmp" value = "" hidden></div>
 	<tr>
 		<td><h4>Version: </h4></td>
 		<td>
@@ -60,6 +63,10 @@
 		</td>
 	</tr>	
 	<tr>
+		<td><h4>Annual temperature</h4></td> 
+		<td><input type="text" name="Temperature" placeholder="Temperature"></td>
+	</tr>
+	<tr>
 		<td><h4>Radio modulation</h4></td>
 		<td>
 			<select onchange = "changeModulation(this)" name = "rModulation">
@@ -111,6 +118,40 @@
 			</select>
 		</td>
 	</tr>	
-	
+	<tr>
+		<td><h4>Antenna heights</h4></td>
+		<td>
+			 Antenna A height over sea level<input type="number" name="AntennaA"> 
+			<br>Antenna B height over sea level<input type="number" name="AntennaB">
+
+		</td>
+	</tr>
+	<tr>
+		<td><h4>Antenna manufacturer</h4></td>
+		<td>
+			<select onchange = "changeAntennaManuf(this)" name = "AntennaManuf">
+					<option value="0">Please first select Product</option>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td><h4>Antenna Diameters</h4></td>
+		<td>Antenna A
+			<select onchange = "change_A_Diameter(this)" name = "diameter_A">
+					<option value="none">Please first choose Antenna manufacturer</option>
+			</select>
+			<span name = "result_dA"></span>
+		</td>
+		<td>Antenna B
+			<select onchange = "change_B_Diameter(this)" name = "diameter_B">
+					<option value="none">Please first choose Antenna manufacturer</option>
+			</select>
+			<span name = "result_dB"></span>
+		</td>
+	</tr>	
+	<tr>
+		<td><h4>Losses<h4></td>
+		<td><input type="text" name="Losses" onchange = "calculate(this)" placeholder="Losses"></td>
+	</tr>	
 	</table> 
 </form>

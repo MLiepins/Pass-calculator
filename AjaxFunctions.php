@@ -147,6 +147,37 @@ function getDistance($LatA, $LatB, $LonA, $LonB)
 	$rounededDistance = round($distance, 3);
 	echo json_encode($rounededDistance);
 }
+function getAntennaManuf($conn, $ProdID, $Frequency)
+{
+	$sql = "SELECT table1.`Manuf_ID`, table1.`Manuf_Name` FROM anthenas table1, anthena_product table2, anthenagains table3 WHERE table2.`Product_ID` = $ProdID AND table3.`Frequence` = $Frequency AND table1.Manuf_ID = table2.Anthena_ID AND table1.Manuf_ID = table3.`Manuf_ID` GROUP BY table1.`Manuf_ID` ASC";	
+	$result = $conn->query($sql);
+	while($row = mysqli_fetch_assoc($result))
+	{
+		$object[] = array(
+		'ID' => $row['Manuf_ID'],
+		'Name' => $row['Manuf_Name']
+		);
+	}
+	echo json_encode($object);
+}
+function getAntennaDiameter($conn, $AntennaManuf,$Frequency)
+{
+	$sql = "SELECT `Diameter` FROM `anthenagains` WHERE `Frequence` = $Frequency AND `Manuf_ID` = $AntennaManuf GROUP BY `Diameter` ASC";	
+	$result = $conn->query($sql);
+	while($row = mysqli_fetch_assoc($result))
+	{
+		$object[] = array(
+		'Diameter' => $row['Diameter']
+		);
+	}
+	echo json_encode($object);
+	
+}
+function getAntennaGain($conn, $AntennaManuf, $Frequency, $Diameter)
+{
+	$Gain = GetAnthenaParams($conn, $AntennaManuf, $Frequency, $Diameter);
+	echo json_encode($Gain);
+}
 
 if(isset($_POST['func']) && !empty($_POST['func']))
 {
@@ -173,7 +204,17 @@ if(isset($_POST['func']) && !empty($_POST['func']))
 		
 		case 'Transmitter':  getTransmitter($conn, $_POST['ProdID'], $_POST['Modulation'], $_POST['Frequency']);		
 		break;	
+		
 		case 'Distance':  getDistance($_POST['LatA'], $_POST['LatB'], $_POST['LonA'], $_POST['LonB']);		
+		break;	
+
+		case 'antennaManuf':  getAntennaManuf($conn, $_POST['ProdID'], $_POST['Frequency']);		
+		break;
+
+		case 'antennaDiameter':  getAntennaDiameter($conn, $_POST['antennaManuf'], $_POST['Frequency']);		
+		break;	
+		
+		case 'antenna_DBI':  getAntennaGain($conn, $_POST['antennaManuf'], $_POST['Frequency'], $_POST['Diameter']);		
 		break;		
 	}	
 }
