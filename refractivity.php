@@ -797,40 +797,74 @@ function SelectFromGtopo($conn, $Lat, $Lon)
 }
 
 function calc_points_for_SA($conn, $latitude, $longitude)
-{
+{ 
 	
-	$rounded_latitude = round($latitude * 2) / 2;
-	$rounded_longitude = round($longitude * 2) / 2;
+	//echo $latitude." ".$longitude."<br>"; 
+	if($latitude > 0)
+	{
+		$rounded_latitude = ceil($latitude * 2) /2; 
+	}
+	else
+	{
+		if(fmod($latitude, 1) == 0 || abs(fmod($latitude, 1)) == 0.5)
+		{
+			$rounded_latitude = ceil(($latitude + 0.1) * 2 )/ 2; 
+			if($rounded_latitude == -0) $rounded_latitude = $rounded_latitude * -1; 
+		}
+		else
+		{
+			$rounded_latitude = ceil($latitude * 2) / 2; 
+			if($rounded_latitude == -0) $rounded_latitude = $rounded_latitude * -1; 
+		}
+	}
+	if($rounded_latitude == -90)
+	{
+		$lower_latitude = ($rounded_latitude * -1) - 0.5;
+	}
+	else  $lower_latitude = $rounded_latitude - 0.5;
 	
-	//echo $rounded_latitude." ".$rounded_longitude." <br>"; 
+	//Ja Latitude negatīva, tad samaina ar vietām rounded un lower latitude.
+	/*if($latitude < 0)
+	{
+		$tmp_lower_lat = $lower_latitude;
+		$lower_latitude = $rounded_latitude; 
+		$rounded_latitude = $tmp_lower_lat; 
+	}*/
 	
-	$lower_latitude = $rounded_latitude - 0.5; 
-	$lower_longitude = $rounded_longitude - 0.5;
+	if($longitude < 0)
+	{
+		$rounded_longitude = floor($longitude * 2) / 2;
+	}
+	else $rounded_longitude = ceil($longitude * 2) / 2;  
 	
-	//if($rounded_latitude < 0) $rounded_latitude = $rounded_latitude * -1; 
-	//if($rounded_longitude < 0) $rounded_longitude = $rounded_longitude * -1; 
-
-	//if($lower_latitude < 0) $lower_latitude = $lower_latitude * -1; 
-	//if($lower_longitude < 0) $lower_longitude = $lower_longitude * -1; 
+	if($rounded_longitude == -180)
+	{
+		$lower_longitude = ($rounded_longitude * -1) - 0.5;
+	}
+	else if($rounded_longitude >= 0 ) $lower_longitude = $rounded_longitude - 0.5; 
+	else if($rounded_longitude < 0 && $rounded_longitude != -180) $lower_longitude = $rounded_longitude + 0.5; 
 	
 	$p3 = SelectFromGtopo($conn, $rounded_latitude, $rounded_longitude);
-	//echo $rounded_latitude." ".$rounded_longitude."<br>"; 
-	echo $p3."<br>"; 
-	if($rounded_latitude == -90) $tmp_Latitude = ($lower_latitude * -1); //Ja Latitude iziet ārpus robežas, turpina izmantojot latitude no otra gala.
-	else $tmp_Latitude = $lower_latitude;
+	//echo $rounded_latitude." ". $rounded_longitude." ". $lower_latitude." ".$lower_longitude." <br> ";
+	$p2 = SelectFromGtopo($conn, $lower_latitude, $rounded_longitude);
+	$p4 = SelectFromGtopo($conn, $lower_latitude, $lower_longitude);
+	$p1 = SelectFromGtopo($conn, $rounded_latitude, $lower_longitude);
 	
-	$p2 = SelectFromGtopo($conn, $tmp_Latitude, $rounded_longitude);
+	//echo $p1." ".$p2." ".$p3." ".$p4."<br>"; 
 	
-	if($rounded_longitude == -180) $tmp_Longitude = ($lower_longitude * -1);
-	else $tmp_Longitude = $lower_longitude;
-
-	$p4 = SelectFromGtopo($conn, $tmp_Latitude, $tmp_Longitude);
-	$p1 = SelectFromGtopo($conn, $rounded_latitude, $tmp_Longitude);
-			
-	$Point= $p4 * (($rounded_latitude - $latitude) * -2) * (($rounded_longitude - $longitude) * -2) + 
+	$Point= $p4 * (($rounded_latitude - $latitude) * -2) * (($rounded_longitude - $longitude) * -2) +  
 			$p1 * (($latitude - $lower_latitude) * -2) * (($rounded_longitude - $longitude) * -2) + 
 			$p2 * (($rounded_latitude - $latitude) * -2) * (($longitude - $lower_longitude) * -2) + 
 			$p3 * (($latitude - $lower_latitude) * -2) * (($longitude - $lower_longitude) * -2);
+	
+	$Point = $p4 * (($rounded_latitude - $latitude) * -2);
+	//echo $rounded_latitude." ".$latitude; 
+	//echo ($rounded_latitude - $latitude) * -2;
+	
+	echo $Point." ";
+	
+	
+	
 	
 	$out['Point'] = $Point;
 	$out['rounded_latitude'] = $rounded_latitude;
@@ -857,13 +891,15 @@ function Sa($conn, $LatA, $LonA, $LatB, $LonB)
 
 	
 	//Atrodot iespējamo kļūdu izmantojot calc_points_for_SA funkcijas pirmajiem četriem 110km x 110km kvadrātiem. 
-	$V1 = calc_points_for_SA($conn, $midLat[0], $midLon[0]);
-	$V2 = calc_points_for_SA($conn, $midLat[0], $midLon[1]);
+	//$V1 = calc_points_for_SA($conn, $midLat[0], $midLon[0]);
+	
+	
+	
+	
+	//$V2 = calc_points_for_SA($conn, $midLat[0], $midLon[1]);
 	$V3 = calc_points_for_SA($conn, $midLat[1], $midLon[0]);
-	$V4 = calc_points_for_SA($conn, $midLat[1], $midLon[1]);	 
+	/*$V4 = calc_points_for_SA($conn, $midLat[1], $midLon[1]);	 
 	
-	
-	//echo $V1['p1']." ".$V2['p2']." ".$V3['p3']." ".$V4['p4'];
 	//echo $V1['Point']." ".$V2['Point']." ".$V3['Point']." ".$V4['Point'];
 	
 	//110 km x 110km kvadrātā izvēlas četrus punktus no GTopo tabulas blakus augstuma un platuma viduspunktam. 
@@ -926,8 +962,10 @@ function Sa($conn, $LatA, $LonA, $LatB, $LonB)
 			$p5['v1'] * ((($midLat[0] - 0.5) - $V3['rounded_latitude']) * -2) * (($V3['lower_longitude'] - ($midLon[0] - 0.5)) * -2) +
 			$p5['v2'] * (($V2['lower_latitude'] - ($midLat[0] - 0.5)) * -2) * ((($midLon[0]- 0.5) - $V2['rounded_longitude']) * -2) +
 			$p5['v3'] * ((($midLat[0] - 0.5) - $V3['rounded_latitude']) * -2) * ((($midLon[0]- 0.5) - $V2['rounded_longitude']) * -2); 
-	
 	//Tiek izvilkts vidējais aritmētiskais no visiem deviņiem punktiem. 
+	
+	//echo $V5." ".$V6."  ".$V7." ".$V8." ".$V9; 
+	
 	$Sum_Average = ($V1['Point'] + $V2['Point'] + $V3['Point'] + $V4['Point'] + $V5 + $V6 + $V7 + $V8 + $V9) / 9; 
 
 	//Tiek aprēķināts Sa, jeb reljefa nelīdzenums (terrain roughness). 
@@ -936,7 +974,9 @@ function Sa($conn, $LatA, $LonA, $LatB, $LonB)
 			pow($V8 - $Sum_Average, 2) + pow($V9 - $Sum_Average, 2))) * 1000;  
 	//echo $Sa; 
 	
-	return $Sa; 
+	return $Sa;
+	*/
+	
 }
 
 
