@@ -1,0 +1,116 @@
+
+	<form class="form-DecDeg" method="GET">
+	<table border = "1">
+	<div name = "ProdID" value = "" hidden></div>
+	<tr>
+		<td><h4>Version: </h4></td>
+		<td>
+			<select onchange="verChange(this)" name = "Version" class = "Version">
+				<option value="0">Please select version</option>
+				<option value="1">1+0</option>
+				<option value="2">1+1 HSB</option>
+				<option value="3">1+1 SD</option>
+				<option value="4">1+1 FD</option>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td><h4>Select Product: </h4></td>
+		<td>
+			<select onchange = "prodChange(this)" name = "Productx1" class = "Products">
+				<option value="0">Please first select version</option>
+			</select>
+		</td>
+	</tr>
+	<tr  class = "odu" hidden>
+		<td><h4>Odu type</h4></td>
+		<td>
+			<select onchange = "oduChange(this)" name = "Odu" class = "OduVal">
+				<option value="0">Choose odu type</option>
+				<option value="1">Phoenix ODU</option>
+				<option value="2">R Odu</option>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td><h4>Frequency</h4></td>
+		<td>
+			<select onchange = "FreqChange(this)" name = "Frequency">
+					<option value="0">Please first select product</option>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td><h4>Channel bandwidth</h4></td>
+		<td>
+			<select name = "Bandwidth">
+					<option value="0">Please first select Frequency</option>
+			</select>
+			<span name = "capacity"> </span>
+		</td>
+	</tr>
+	<tr>
+		<td><h4>Operational mode</h4></td>
+		<td>
+			<select onchange = "changeFEC(this)" name = "FEC">
+			<option value="nav">Please select Operational mode</option>
+			<option value="0">Strong FEC</option>
+			<option value="1">Weak FEC</option>
+			</select>
+		</td>
+	</tr>	
+	<tr>
+		<td><h4>Radio modulation</h4></td>
+		<td>
+			<select onchange = "changeModulation(this)" name = "rModulation">
+					<option value="0">Please first select FEC</option>
+			</select>
+		</td>
+	</tr>	
+	<tr>
+		<tr>
+		<td><h4>Rainzone </h4></td>
+		<td><select name = "Rainzone" onchange = "changeRainzone(this)">
+			<option value="None">Select Rainzone</option>
+			<option value="A">A</option>
+			<option value="B">B</option>
+			<option value="C">C</option>
+			<option value="D">D</option>
+			<option value="E">E</option>
+			<option value="F">F</option>
+			<option value="G">G</option>
+			<option value="H">H</option>
+			<option value="J">J</option>
+			<option value="K">K</option>
+			<option value="L">L</option>
+			<option value="M">M</option>
+			<option value="N">N</option>
+			<option value="P">P</option>
+			<option value="Q">Q</option>
+		</select>
+		<span name = "RainZoneResult"></span>
+		</td>
+		</tr>
+	</tr>
+	<tr>
+		<td><h4>Coordinates</h4></td>
+		<td>
+			 Lat/Lon A: <input type="number" name="LatA" placeholder = "Latitude A" onchange = "changeCoordinates(this)"> 
+						<input type="number" name="LonA" placeholder = "Longitude A" onchange = "changeCoordinates(this)">
+			<br>
+			Lat/Lon B: <input type="number" name="LatB" placeholder = "Latitude B" onchange = "changeCoordinates(this)"> 
+						<input type="number" name="LonB" placeholder = "Longitude B" onchange = "changeCoordinates(this)">
+			<span name = "DistanceResult"></span>
+		</td>
+	</tr>	
+	<tr>
+		<td><h4>Transmitter power</h4></td>
+		<td>
+			<select onchange = "changeTransmitter(this)" name = "Transmitter">
+					<option value="none">Please first select modulation</option>
+			</select>
+		</td>
+	</tr>	
+	
+	</table> 
+</form>
