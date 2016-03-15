@@ -131,12 +131,13 @@ function getRainZone($conn, $RainZone)
 }
 function getTransmitter($conn, $ProdID, $Modulation, $Frequency)
 {
-	$sql = "SELECT `TX_MaxPower` FROM `tx_power` WHERE `Product_ID` = $ProdID AND `Modulation` = '$Modulation' AND `FrequencyBand` = $Frequency GROUP BY `TX_MaxPower` ASC";	
+	$sql = "SELECT `TX_MinPower`,`TX_MaxPower` FROM `tx_power` WHERE `Product_ID` = $ProdID AND `Modulation` = '$Modulation' AND `FrequencyBand` = $Frequency LIMIT 1";	
 	$result = $conn->query($sql);
 	while($row = mysqli_fetch_assoc($result))
 	{
 		$object[] = array(
-		'transmitterPower' => $row['TX_MaxPower']
+		'MinPower' => $row['TX_MinPower'],
+		'MaxPower' => $row['TX_MaxPower']
 		);
 	}
 	echo json_encode($object);
@@ -178,7 +179,24 @@ function getAntennaGain($conn, $AntennaManuf, $Frequency, $Diameter)
 	$Gain = GetAnthenaParams($conn, $AntennaManuf, $Frequency, $Diameter);
 	echo json_encode($Gain);
 }
-
+function  getThreshold_Echo($conn, $ProdID, $Frequency, $Bandwidth, $Standart, $FEC, $Modulation)
+{
+	$Threshold = getThreshold($conn, $Frequency, $Bandwidth, $Standart, $FEC, $Modulation, $ProdID);
+	echo json_encode($Threshold);
+}
+function  getFadeMargin_Echo($Coupler, $Prim_Site_A, $Prim_Site_B, $Stand_Site_A, $Stand_Site_B, $Frequency, $Temperature, $LatA, $LatB, $distance, $version, $AntennaA, $AntennaB, $Threshold, $Transmitter, $Losses)
+{
+	$attenuation = Attenuation($Frequency, $Temperature , $LatA, $LatB, $AntennaA, $AntennaB, $distance);
+	$FadeMargin = getFadeMargin($Coupler, $version, $distance, $Frequency, $Transmitter, $AntennaA, $Losses, $AntennaB, $Threshold, $attenuation, $Prim_Site_A , $Prim_Site_B , $Stand_Site_A , $Stand_Site_B );
+	$RSSI = RSSI($FadeMargin,$version);
+	
+	$object[] = array(
+	'FadeMargin ' => $FadeMargin['FM106'],
+	'SignalLevel' => $FadeMargin['RX'], 
+	'RSSI' => $RSSI['RSSI']
+	);
+	echo json_encode($object);
+}
 if(isset($_POST['func']) && !empty($_POST['func']))
 {
 	$func = $_POST['func'];
@@ -217,28 +235,31 @@ if(isset($_POST['func']) && !empty($_POST['func']))
 		case 'antenna_DBI':  getAntennaGain($conn, $_POST['antennaManuf'], $_POST['Frequency'], $_POST['Diameter']);		
 		break;		
 		
-		/*case 'calculate':
+		case 'Threshold': getThreshold_Echo($conn, $_POST['ProdID'], $_POST['Frequency'], $_POST['Bandwidth'], $_POST['Standart'], $_POST['FEC'], $_POST['Modulation']);
+		break; 
+		
+		case 'FadeMargin': getFadeMargin_Echo($_POST['Coupler'], $_POST['Prim_Site_A'], $_POST['Prim_Site_B'], $_POST['Stand_Site_A'], $_POST['Stand_Site_B'], $_POST['Frequency'], $_POST['Temperature'], $_POST['LatA'], $_POST['LatB'], $_POST['distance'], $_POST['version'], $_POST['AntennaA'], $_POST['AntennaB'], $_POST['Threshold'], $_POST['Transmitter'], $_POST['Losses']);
+		break;
+
+		/*
+		case 'calculate':
 			
 			$Distance = calculateDistance($_POST['LatA'], $_POST['LonA'], $_POST['LatB'], $_POST['LonB']); 
 			$Variables = array(
-				"distance" => $Distance,
-				"Product" =>  $_POST['ProdID'];
-				"LatA" => $_POST['LatA'],
-				"LonA" =>  $_POST['LonA'],
-				"LatB" =>  $_POST['LatB'],
-				"LonB" =>  $_POST['LonB'], 
-				"Temperature" => $_POST['Temperature'],
-				//"Antenna_Coupler" => $Antenna_Coupler,
-				"Antenna_A" => $_POST['AntennaHeightA'],
-				"Antenna_B" => $_POST['AntennaHeightB'],
-				//"Manufacturer" => $_GET['Manufacturer'],
-				"Diameter_A_1" => $_GET['diameter1'],
-				"Diameter_B_1" => $_GET['diameter2'],
-	//"Diameter_A_2" => $_GET['diameter3'],
-	//"Diameter_B_2" => $_GET['diameter4'],
-	"Temp_Rain_Zone" => $_GET['Rainzone'], 
-	"Frequency" => $_GET['Frequency'],
-	"TransmitPow" => $_GET['Transmitter'],
+			"distance" => $Distance,
+			"Product" =>  $_POST['ProdID'],
+			"LatA" => $_POST['LatA'],
+			"LonA" =>  $_POST['LonA'],
+			"LatB" =>  $_POST['LatB'],
+			"LonB" =>  $_POST['LonB'], 
+			"Temperature" => $_POST['Temperature'],
+			"Antenna_A" => $_POST['AntennaHeightA'],
+			"Antenna_B" => $_POST['AntennaHeightB'],
+			"Diameter_A_1" => $_POST['diameter_a'],
+			"Diameter_B_1" => $_POST['diameter_b'],
+			"Temp_Rain_Zone" => $_POST['Rainzone'], 
+			"Frequency" => $_POST['Frequency'],
+			"TransmitPow" => $_POST['Transmitter'],
 	"Main_Freq" => $_GET['MainFreq'],
 	"Div_Freq" => $_GET['DivFreq'],
 	"Frequency_FD" => $_GET['FrequencyFD'],
@@ -247,23 +268,19 @@ if(isset($_POST['func']) && !empty($_POST['func']))
 	"Prim_Site_B" => $_GET['prim_SiteB'],
 	"Stand_Site_A" => $_GET['stand_SiteA'],
 	"Stand_Site_B" => $_GET['stand_SiteB'],
-	"Amount_Of_Antenas" => $_GET['AntennasAmount'],
 	"SD_Sep_A" => $_GET['SDsepA'],
 	"SD_Sep_B" => $_GET['SDsepB'],
-	"Losses" => $_GET['Losses'],
-	"Modulation" => $_GET['rModulation'],
-	"FEC" => $_GET['FEC'],
-	"Band_Width" => $BandwidthTMP[0],
-	"Standart" => $BandwidthTMP[1],
-);
-
-		break; 
-		$.post( "AjaxFunctions.php", { func: 'calculate', ProdID: ProdID, Frequency: Frequency, Bandwidth: Bandwidth, Standart: Standart, FEC: FEC, Temperature: Temperature, Modulation: Modulation, Rainzone: RainzoneTMP, LatA: LatA, LatB: LatB, LonA: LonA, LonB: LonB, AntennaHeightA: AntennaHeightA, AntennaHeightB: AntennaHeightB, Losses: Losses, AntennaA_tmp: AntennaA_tmp, AntennaB_tmp: AntennaB_tmp}, function(response)
-	*/
-	}	
+			"Losses" => $_POST['Losses'],
+			"Modulation" => $_POST['Modulation'],
+			"FEC" => $_POST['FEC'],
+			"Band_Width" => $_POST['Bandwidth'],
+			"Standart" => $_POST['Standart'],
+			
+			"Antenna_Coupler" => $Antenna_Coupler,
+			"Diameter_A_2" => $_GET['diameter3'],
+			"Diameter_B_2" => $_GET['diameter4'],
+		);*/
+	}
 }
-
-
-
 
 ?>

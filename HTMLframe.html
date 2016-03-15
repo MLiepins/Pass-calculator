@@ -2,18 +2,9 @@
 	<form class="form-DecDeg" method="GET">
 	<table border = "1">
 	<div name = "ProdID" value = "" hidden></div>
-	<div name = "RainZoneTMP" value = "" hidden></div>
-	<div name = "AntennaA_tmp" value = "" hidden></div>
-	<div name = "AntennaA2_tmp" value = "" hidden></div>
-	<div name = "AntennaAFD_tmp" value = "" hidden></div>
-	<div name = "AntennaASD_tmp" value = "" hidden></div>
 
-	<div name = "AntennaB_tmp" value = "" hidden></div>
-	<div name = "AntennaB2_tmp" value = "" hidden></div>
-	<div name = "AntennaBFD_tmp" value = "" hidden></div>			
-	<div name = "AntennaBSD_tmp" value = "" hidden></div>
 	<tr>
-		<td><h4>Version: </h4></td>
+		<td>Version: </td>
 		<td>
 			<select onchange="verChange(this)" name = "Version" class = "Version">
 				<option value="0">Please select version</option>
@@ -25,7 +16,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td><h4>Select Product: </h4></td>
+		<td>Select Product: </td>
 		<td>
 			<select onchange = "prodChange(this)" name = "Productx1" class = "Products">
 				<option value="0">Please first select version</option>
@@ -33,7 +24,7 @@
 		</td>
 	</tr>
 	<tr  class = "odu" hidden>
-		<td><h4>Odu type</h4></td>
+		<td>Odu type</td>
 		<td>
 			<select onchange = "oduChange(this)" name = "Odu" class = "OduVal">
 				<option value="0">Choose odu type</option>
@@ -43,7 +34,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td><h4>Frequency</h4></td>
+		<td>Frequency</td>
 		<td>
 			<select onchange = "FreqChange(this)" name = "Frequency">
 					<option value="0">Please first select product</option>
@@ -51,7 +42,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td><h4>Channel bandwidth</h4></td>
+		<td>Channel bandwidth</td>
 		<td>
 			<select name = "Bandwidth">
 					<option value="0">Please first select Frequency</option>
@@ -60,7 +51,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td><h4>Operational mode</h4></td>
+		<td>Operational mode</td>
 		<td>
 			<select onchange = "changeFEC(this)" name = "FEC">
 			<option value="nav">Please select Operational mode</option>
@@ -70,11 +61,11 @@
 		</td>
 	</tr>	
 	<tr>
-		<td><h4>Annual temperature</h4></td> 
+		<td>Annual temperature</td> 
 		<td><input type="text" name="Temperature" placeholder="Temperature"></td>
 	</tr>
 	<tr>
-		<td><h4>Radio modulation</h4></td>
+		<td>Radio modulation</td>
 		<td>
 			<select onchange = "changeModulation(this)" name = "rModulation">
 					<option value="0">Please first select FEC</option>
@@ -83,7 +74,7 @@
 	</tr>	
 	<tr>
 		<tr>
-		<td><h4>Rainzone </h4></td>
+		<td>Rainzone</td>
 		<td><select name = "Rainzone" onchange = "changeRainzone(this)">
 			<option value="None">Select Rainzone</option>
 			<option value="A">A</option>
@@ -107,7 +98,7 @@
 		</tr>
 	</tr>
 	<tr>
-		<td><h4>Coordinates</h4></td>
+		<td>Coordinates</td>
 		<td>
 			 Lat/Lon A: <input type="number" name="LatA" placeholder = "Latitude A" onchange = "changeCoordinates(this)"> 
 						<input type="number" name="LonA" placeholder = "Longitude A" onchange = "changeCoordinates(this)">
@@ -118,15 +109,15 @@
 		</td>
 	</tr>	
 	<tr>
-		<td><h4>Transmitter power</h4></td>
+		<td>Transmitter power</td>
 		<td>
-			<select onchange = "changeTransmitter(this)" name = "Transmitter">
+			<select name = "Transmitter">
 					<option value="none">Please first select modulation</option>
 			</select>
 		</td>
 	</tr>
 	<tr class = "Diversity" hidden>
-		<td><h4>Amount of antenas</h4></td>
+		<td>Amount of antenas</td>
 		<td>
 			<select onchange = "ChangeAmountofAntenas(this)" name = "Antenas_amount">
 					<option value="0">Please select the amount of antenas</option>
@@ -134,9 +125,27 @@
 					<option value="2">Using 4 antenas</option>
 			</select>
 		</td>
-	</tr>	
+	</tr>
+
+	<tr class = "FD_params" hidden>
+		<td>Frequency FD</td>
+		<td>
+			<select name = "Frequency_FD">
+					<option value="0">Please first select product</option>
+			</select>
+		</td>
+	</tr>
+	<tr class = "FD_params" hidden>
+		<td>Transmitter power FD</td>
+		<td>
+			<select name = "Transmitter_FD">
+					<option value="none">Please first select modulation</option>
+			</select>
+		</td>
+	</tr>
+	
 	<tr>
-		<td><h4>Antenna heights</h4></td>
+		<td>Antenna heights</td>
 		<td>
 			 Antenna A height over sea level<input type="number" name="AntennaA"> 
 			<br>Antenna B height over sea level<input type="number" name="AntennaB">
@@ -144,7 +153,7 @@
 		</td>
 	</tr>
 	<tr class = "h_AntennaMode" hidden>
-		<td><h4>Mode</h4></td>
+		<td>Mode</td>
 		<td>
 			<select onchange = "changeAntennaMode(this)" name = "AntennaMode">
 					<option value="0">Please select the mode</option>
@@ -154,7 +163,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td><h4>Antenna manufacturer</h4></td>
+		<td>Antenna manufacturer</td>
 		<td>
 			<select onchange = "changeAntennaManuf(this)" name = "AntennaManuf">
 					<option value="0">Please first select Product</option>
@@ -162,7 +171,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td><h4>Antenna Diameters</h4></td>
+		<td>Antenna Diameters</td>
 		<td>Antenna A
 			<select onchange = "change_A_Diameter(this)" name = "diameter_A">
 					<option value="none">Please first choose Antenna manufacturer</option>
@@ -185,7 +194,7 @@
 			<select onchange = "change_A2_Diameter(this)" name = "diameter_A2">
 					<option value="none">Please first choose Antenna manufacturer</option>
 			</select>
-			<span name = "result_dA_A2"></span>
+			<span name = "result_dA2"></span>
 		</td>
 		<td>Antenna B
 			<select onchange = "change_B_Diameter(this)" name = "diameter_B">
@@ -206,19 +215,19 @@
 			<span name = "result_dB_FD"></span>
 		</td>
 		<td class = "extra_diameter" hidden>Antenna B2
-			<select onchange = "change_B_Diameter(this)" name = "diameter_B2">
+			<select onchange = "change_B2_Diameter(this)" name = "diameter_B2">
 					<option value="none">Please first choose Antenna manufacturer</option>
 			</select>
-			<span name = "result_dB_B2"></span>
+			<span name = "result_dB2"></span>
 		</td>
 	</tr>
 	<tr class = "Antenna_SD"  hidden>
-		<td><h4> Antenna vertical separation</h4></td>
+		<td> Antenna vertical separation</td>
 		<td>SD separation for A: <input type="text" name="SD_sep_A"></td>
 		<td>SD separation for B: <input type="text" name="SD_sep_B"></td>
 	</tr>
 	<tr class = "Coupler_Atten" hidden>
-		<td colspan="3"><h4> Coupler attenuations:</td>
+		<td colspan="3"> Coupler attenuations:</td>
 	</tr>
 	<tr class = "Coupler_Atten" hidden>
 		<td>Primary link:</td>
@@ -231,18 +240,16 @@
 		<td>Site B: <span name = "Stand_Site_B"></span></td>
 	</tr>
 	<tr class = "Diversity" hidden >
-		<td><h4>Main frequency<h4> <input type="text" name="Main_Freq"></td>
-		<td><h4>Diversity frequency <input type="text" name="Div_Freq"><h4></td>
+		<td>Main frequency <input type="text" name="Main_Freq"></td>
+		<td>Diversity frequency <input type="text" name="Div_Freq"></td>
 	</tr>
 	<tr>
-		<td><h4>Losses<h4></td>
+		<td>Losses</td>
 		<td><input type="text" name="Losses" onchange = "calculate(this)" placeholder="Losses"></td>
 	</tr>
 	</table> 
-	<table>
-	<tr>
-		<td><h4>Results</h4></td>	
-	</tr>
+	<h4>Results</h4>
+	<table border = "1">
 	<tr class = "Primary">
 		<td>Received signal level: </td>
 		<td><span name = "signal_level"></span></td>
@@ -328,3 +335,4 @@
 	</tr>
 	</table>
 </form>
+<hr>

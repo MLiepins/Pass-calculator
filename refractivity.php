@@ -43,6 +43,7 @@
 		});
 	</script>
 	</div> 
+	<br>
 	 <button id = "AddLink">Add Link</button> 
 	 <form>
 		<input type="text" class = "RemoveID">
