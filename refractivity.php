@@ -4,6 +4,7 @@
 	<meta charset="utf-8">
 	<meta name="description" content="Register">
 	<link href="../Style/css.css" rel="stylesheet">
+	<link href="css/bootstrap.min.css" rel="stylesheet">
 	<script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
 	<script src="ajax.js"></script>
 	
@@ -50,4 +51,5 @@
 		<button class = "Remove">Remove Link</button> 
 	 </form>
 	</body>
+	<script src="js/bootstrap.min.js"></script>
 </html>

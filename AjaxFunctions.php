@@ -1,35 +1,6 @@
 <?php
 include 'connection.php';
 include 'functions.php';
-	
-/*if(isset($_GET['Version'])) {
-	$version = $_GET['Version'];
-	if($version == 1)
-	{
-		$sql = "SELECT * FROM `products` WHERE `id` in (1, 2, 3, 4, 6, 8)";
-		$result = $conn->query($sql);
-		while($row = mysqli_fetch_assoc($result))
-		{
-			$object[] = array(
-			'id' => $row['id'],
-			'name' => $row['Name'],
-			);
-		}
-	}
-	if($version == 2)
-	{
-		$sql = "SELECT * FROM `products` WHERE `id` in (1, 2, 3, 4, 6, 8)";
-		$result = $conn->query($sql);
-		while($row = mysqli_fetch_assoc($result))
-		{
-			$object[] = array(
-			'id' => $row['id'],
-			'name' => $row['Name'],
-			);
-		}	
-	}
-	echo json_encode($object);
-}*/
 
 if(isset($_POST['Version']))
 {
@@ -60,7 +31,6 @@ if(isset($_POST['Version']))
 	}
 	echo json_encode($object);
 }
-
 
 function echoProduct($prod, $odu)
 {
@@ -197,6 +167,54 @@ function  getFadeMargin_Echo($Coupler, $Prim_Site_A, $Prim_Site_B, $Stand_Site_A
 	);
 	echo json_encode($object);
 }
+function getPrev_Calculations($conn, $ProdID, $Version, $Antenna_A_Diameter, $Antenna_B_Diameter, $Antenna_Height_A, $Antenna_Height_B, $Transmitter, $Extra_diameter_A, $Extra_diameter_B, $Antenna_Menu, $LatA, $LatB, $LonA, $LonB, $Frequency, $Losses, $Stand_Site_A, $Stand_Site_B, $Prim_Site_A, $Prim_Site_B, $Bandwidth, $Standart, $FEC, $Modulation, $Temperature, $Manufacturer, $Frequency_FD, $Transmit_FD)
+{
+	$params_AntennaA = GetAnthenaParams($conn, $Manufacturer, $Frequency, $Antenna_A_Diameter);
+	$params_AntennaB = GetAnthenaParams($conn, $Manufacturer, $Frequency, $Antenna_B_Diameter);
+	$Extra_params_AntennaA = 0;
+	$Extra_params_AntennaB = 0; 
+	if($Version == 4 || $Version == 3 || $Version == 2)
+	{
+		$Extra_params_AntennaA = GetAnthenaParams($conn, $Manufacturer, $Frequency, $Extra_diameter_A);
+		$Extra_params_AntennaB = GetAnthenaParams($conn, $Manufacturer, $Frequency, $Extra_diameter_B);
+	}
+	$Distance = calculateDistance($LatA, $LonA, $LatB, $LonB);
+	$Threshold = getThreshold($conn, $Frequency, $Bandwidth, $Standart, $FEC, $Modulation, $ProdID);
+	$a = Attenuation($Frequency, $Temperature , $LatA, $LatB, $Antenna_Height_A, $Antenna_Height_B, $Distance); 
+	$FadeMargin = getFadeMargin($Antenna_Menu, $Version, $Frequency_FD, $Transmit_FD, $Distance, $Frequency, $Transmitter, $params_AntennaA, $Losses, $params_AntennaB, $Extra_params_AntennaA, $Extra_params_AntennaA, $Threshold, $a, $Prim_Site_A, $Prim_Site_B, $Stand_Site_A , $Stand_Site_B);
+	$RSSI = RSSI($FadeMargin, $Version);
+	if($Version != 4 && $Version != 3) $EIRP = max($params_AntennaA, $params_AntennaB) + $Transmitter;
+	else $EIRP = max($params_AntennaA, $params_AntennaB, $Extra_params_AntennaA, $Extra_params_AntennaB) + $Transmitter;
+	
+	if($Version == 2 && $Antenna_Menu == 1)
+	{
+		$result[] = array(
+		'RXThreshold' => $Threshold, 
+		'FadeMargin_HSB' => round($FadeMargin['FM_HSB'], 2),
+		'FadeMargin_Main' => round($FadeMargin['FM_Main'], 2),		
+		'RSSI' => round($RSSI['RSSI'], 2),
+		'RSSI_HSB' => round($RSSI['RSSI_HSB'], 2),
+		'RX' => round($FadeMargin['RX'], 2), 
+		'RX_HSB' => round($FadeMargin['RX_HSB'], 2),
+		'EIRP' => $EIRP
+		);	
+	}
+	else
+	{
+		$result[] = array(
+		'RXThreshold' => $Threshold, 
+		'FadeMargin' => round($FadeMargin['FM106'], 2),
+		'Rec_Sig_Level' => round($FadeMargin['RX'], 2),
+		'RSSI' => round($RSSI['RSSI'], 2),
+		'EIRP' => $EIRP
+		);	
+	}
+	echo json_encode($result);
+}
+
+
+
+
 if(isset($_POST['func']) && !empty($_POST['func']))
 {
 	$func = $_POST['func'];
@@ -240,47 +258,94 @@ if(isset($_POST['func']) && !empty($_POST['func']))
 		
 		case 'FadeMargin': getFadeMargin_Echo($_POST['Coupler'], $_POST['Prim_Site_A'], $_POST['Prim_Site_B'], $_POST['Stand_Site_A'], $_POST['Stand_Site_B'], $_POST['Frequency'], $_POST['Temperature'], $_POST['LatA'], $_POST['LatB'], $_POST['distance'], $_POST['version'], $_POST['AntennaA'], $_POST['AntennaB'], $_POST['Threshold'], $_POST['Transmitter'], $_POST['Losses']);
 		break;
-
-		/*
+		
+		case 'prev_calc': getPrev_Calculations($conn, $_POST['ProdID'], $_POST['version'], $_POST['diameter_a'], $_POST['diameter_b'], $_POST['AntennaHeightA'], $_POST['AntennaHeightB'], $_POST['Transmitter'], $_POST['Extra_diameter_A'], $_POST['Extra_diameter_B'], $_POST['Antenna_Menu'], $_POST['LatA'], $_POST['LatB'],$_POST['LonA'], $_POST['LonB'], $_POST['Frequency'], $_POST['Losses'], $_POST['Stand_Site_A'], $_POST['Stand_Site_B'], $_POST['Prim_Site_A'],$_POST['Prim_Site_B'], $_POST['Bandwidth'], $_POST['Standart'], $_POST['FEC'], $_POST['Modulation'], $_POST['Temperature'], $_POST['Manufacturer'], $_POST['Frequency_FD'], $_POST['Transmit_FD']);	
+		break; 
+		
+/*
 		case 'calculate':
 			
 			$Distance = calculateDistance($_POST['LatA'], $_POST['LonA'], $_POST['LatB'], $_POST['LonB']); 
 			$Variables = array(
 			"distance" => $Distance,
+			"Version" => $_POST['version'],
 			"Product" =>  $_POST['ProdID'],
+			"Frequency" => $_POST['Frequency'],
+			"Band_Width" => $_POST['Bandwidth'],
+			"Standart" => $_POST['Standart'],
+			"FEC" => $_POST['FEC'],
+			"Temperature" => $_POST['Temperature'],
+			"Modulation" => $_POST['Modulation'],
+			"Temp_Rain_Zone" => $_POST['Rainzone'],
 			"LatA" => $_POST['LatA'],
 			"LonA" =>  $_POST['LonA'],
 			"LatB" =>  $_POST['LatB'],
 			"LonB" =>  $_POST['LonB'], 
-			"Temperature" => $_POST['Temperature'],
 			"Antenna_A" => $_POST['AntennaHeightA'],
 			"Antenna_B" => $_POST['AntennaHeightB'],
-			"Diameter_A_1" => $_POST['diameter_a'],
-			"Diameter_B_1" => $_POST['diameter_b'],
-			"Temp_Rain_Zone" => $_POST['Rainzone'], 
-			"Frequency" => $_POST['Frequency'],
-			"TransmitPow" => $_POST['Transmitter'],
-	"Main_Freq" => $_GET['MainFreq'],
-	"Div_Freq" => $_GET['DivFreq'],
-	"Frequency_FD" => $_GET['FrequencyFD'],
-	"Transmitter_FD" => $_GET['TransmitterFD'],
-	"Prim_Site_A" => $_GET['prim_SiteA'],
-	"Prim_Site_B" => $_GET['prim_SiteB'],
-	"Stand_Site_A" => $_GET['stand_SiteA'],
-	"Stand_Site_B" => $_GET['stand_SiteB'],
-	"SD_Sep_A" => $_GET['SDsepA'],
-	"SD_Sep_B" => $_GET['SDsepB'],
 			"Losses" => $_POST['Losses'],
-			"Modulation" => $_POST['Modulation'],
-			"FEC" => $_POST['FEC'],
-			"Band_Width" => $_POST['Bandwidth'],
-			"Standart" => $_POST['Standart'],
-			
-			"Antenna_Coupler" => $Antenna_Coupler,
-			"Diameter_A_2" => $_GET['diameter3'],
-			"Diameter_B_2" => $_GET['diameter4'],
-		);*/
+			"Manufacturer" => $_POST['antennaManuf'],
+			"TransmitPow" => $_POST['Transmitter'],
+			"Diameter_A_1" => $_POST['diameter_a'],
+			"Diameter_B_1" => $_POST['diameter_b'], 
+			"Main_Freq" => $_POST['Main_Freq'],
+			"Div_Freq" => $_POST['Div_Freq'],
+			"Prim_Site_A" => $_POST['Prim_Site_A'],
+			"Prim_Site_B" => $_POST['Prim_Site_B'],
+			"Stand_Site_A" => $_POST['Stand_Site_A'],
+			"Stand_Site_B" => $_POST['Stand_Site_B'],
+			"SD_Sep_A" => $_POST['SD_Sep_A'],
+			"SD_Sep_B" => $_POST['SD_Sep_B'],			
+			"Frequency_FD" => $_POST['Frequency_FD'],
+			"Transmitter_FD" => $_POST['Transmitter_FD'],
+			"Antenna_Coupler" => $_POST['Antenna_Amount'],		
+			"Diameter_A_SD" => $_POST['diameter_A_SD'],
+			"Diameter_A_FD" => $_POST['diameter_A_FD'],
+			"Diameter_A_2" => $_POST['diameter_A2'],
+			"Diameter_B_SD" => $_POST['diameter_B_SD'],
+			"Diameter_B_FD" => $_POST['diameter_B_FD'],
+			"Diameter_B_2" => $_POST['diameter_B2']
+			);
+			Calculate_MainBlock($conn, $Variables);
+			*/
 	}
 }
-
+			/*
+			ProdID: ProdID
+			Frequency: Frequency
+			Bandwidth: Bandwidth
+			Standart: Standart
+			FEC: FEC
+			Temperature: Temperature
+			Modulation: Modulation
+			Rainzone: RainzoneTMP
+			LatA: LatA
+			LatB: LatB
+			LonA: LonA
+			LonB: LonB
+			AntennaHeightA: AntennaHeightA
+			AntennaHeightB: AntennaHeightB
+			Losses: Losses
+			antennaManuf: antennaManuf
+			Transmitter: Transmitter
+			diameter_a: diameter_a
+			diameter_b: diameter_b
+			Main_Freq: Main_Freq
+			Div_Freq: Div_Freq
+			Stand_Site_A: Stand_Site_A
+			Stand_Site_B: Stand_Site_B
+			Prim_Site_A: Prim_Site_A
+			Prim_Site_B: Prim_Site_B
+			SD_Sep_A: SD_Sep_A
+			SD_Sep_B: SD_Sep_B
+			Frequency_FD: Frequency_FD
+			Transmitter_FD: Transmitter_FD
+			Antenna_Amount: Antenna_Amount
+			diameter_A_SD: diameter_A_SD
+			diameter_A_FD: diameter_A_FD
+			diameter_A2: diameter_A2
+			diameter_B_SD: diameter_B_SD
+			diameter_B_FD: diameter_B_FD
+			diameter_B2: diameter_B2
+			*/
 ?>
