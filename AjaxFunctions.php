@@ -178,6 +178,7 @@ function getPrev_Calculations($conn, $ProdID, $Version, $Antenna_A_Diameter, $An
 		$Extra_params_AntennaA = GetAnthenaParams($conn, $Manufacturer, $Frequency, $Extra_diameter_A);
 		$Extra_params_AntennaB = GetAnthenaParams($conn, $Manufacturer, $Frequency, $Extra_diameter_B);
 	}
+	
 	$Distance = calculateDistance($LatA, $LonA, $LatB, $LonB);
 	$Threshold = getThreshold($conn, $Frequency, $Bandwidth, $Standart, $FEC, $Modulation, $ProdID);
 	$a = Attenuation($Frequency, $Temperature , $LatA, $LatB, $Antenna_Height_A, $Antenna_Height_B, $Distance); 
@@ -198,6 +199,16 @@ function getPrev_Calculations($conn, $ProdID, $Version, $Antenna_A_Diameter, $An
 		'RX_HSB' => round($FadeMargin['RX_HSB'], 2),
 		'EIRP' => $EIRP
 		);	
+	}
+	if($Version == 2 && $Antenna_Menu == 2)
+	{
+		$result[] = array(
+		'RXThreshold' => $Threshold, 
+		'FadeMargin' => round($FadeMargin['FM_HSB'], 2),
+		'Rec_Sig_Level' => round($FadeMargin['RX'], 2),
+		'RSSI' => round($RSSI['RSSI'], 2),
+		'EIRP' => $EIRP
+		);
 	}
 	else
 	{

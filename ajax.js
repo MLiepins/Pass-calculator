@@ -63,9 +63,7 @@ function manageVersionChange(el)
 			$('.'+site+'').find('td[class = Antenna_FD]').hide();
 			$('.'+site+'').find('tr[class = FD_params]').hide();
 		}
-}
-
-	
+}	
 function verChange(el)
 {
 		var site = $(el).parent().parent().parent().parent().parent().parent().attr('class'); //Iegūst galvenā div elementa ID.  
@@ -143,7 +141,7 @@ function getFrequency(el, ProdID)
 		$.post( "AjaxFunctions.php", { func: 'frequence', ProdID: ProdID}, function(response)
 		{	
 			var Data = $.parseJSON(response);
-			$('<option value="0">Please select frequency</option>').appendTo(freqSelect);
+			$('<option value="">Please select frequency</option>').appendTo(freqSelect);
 			$.each(Data, function(i, item)
 			{
 				$('<option value="' + item.value + '">' + item.value + '</option>').appendTo(freqSelect);
@@ -156,8 +154,8 @@ function getFrequency(el, ProdID)
 		$.post( "AjaxFunctions.php", { func: 'frequence', ProdID: ProdID}, function(response)
 		{	
 			var Data = $.parseJSON(response);
-			$('<option value="0">Please select frequency</option>').appendTo(freqSelect);
-			$('<option value="0">Please select frequency FD</option>').appendTo(freqSelect_FD);
+			$('<option value="">Please select frequency</option>').appendTo(freqSelect);
+			$('<option value="">Please select frequency FD</option>').appendTo(freqSelect_FD);
 			$.each(Data, function(i, item)
 			{
 				$('<option value="' + item.value + '">' + item.value + '</option>').appendTo(freqSelect);
@@ -177,7 +175,7 @@ function FreqChange(el)
 	$.post( "AjaxFunctions.php", { func: 'bandwidth', ProdID: ProdID, Frequency: freqSelect}, function(response)
 	{	
 		var Data = $.parseJSON(response);
-		$('<option value="0">Please select Bandwidth</option>').appendTo(bandSelect);
+		$('<option value="">Please select Bandwidth</option>').appendTo(bandSelect);
 		$.each(Data, function(i, item)
 		{
 			$('<option value="'+item.Bandwidth+'|'+item.Standart+'">'+item.Bandwidth+' ('+item.Standart+')</option>').appendTo(bandSelect);
@@ -203,7 +201,7 @@ function changeFEC(el)
 	$.post( "AjaxFunctions.php", { func: 'Modulation', ProdID: ProdID, Frequency: Frequency, Bandwidth: Bandwidth, Standart: Standart, FEC: FEC }, function(response)
 	{	
 		var Data = $.parseJSON(response);
-		$('<option value="0">Please select modulation</option>').appendTo(modSelect);
+		$('<option value="">Please select modulation</option>').appendTo(modSelect);
 		$.each(Data, function(i, item)
 		{
 			$('<option value="'+item.Modulation+'">'+item.Modulation+'</option>').appendTo(modSelect);
@@ -244,7 +242,7 @@ function changeModulation(el)
 		$.post( "AjaxFunctions.php", { func: 'Transmitter', ProdID: ProdID, Modulation: Modulation, Frequency: Frequency}, function(response)
 		{	
 			var Data = $.parseJSON(response);
-			$('<option value="0">Please select transmitter power</option>').appendTo(transmitterSelect);
+			$('<option value="">Please select transmitter power</option>').appendTo(transmitterSelect);
 			$.each(Data, function(i, item)
 			{
 				var MinPower = item.MinPower;
@@ -263,8 +261,8 @@ function changeModulation(el)
 		$.post( "AjaxFunctions.php", { func: 'Transmitter', ProdID: ProdID, Modulation: Modulation, Frequency: Frequency}, function(response)
 		{	
 			var Data = $.parseJSON(response);
-			$('<option value="0">Please select transmitter power</option>').appendTo(transmitterSelect);
-			$('<option value="0">Please select transmitter power</option>').appendTo(transmitter_FD);
+			$('<option value="">Please select transmitter power</option>').appendTo(transmitterSelect);
+			$('<option value="">Please select transmitter power</option>').appendTo(transmitter_FD);
 			$.each(Data, function(i, item)
 			{
 				var MinPower = item.MinPower;
@@ -330,7 +328,7 @@ function getAntennaManuf(el)
 		$.post( "AjaxFunctions.php", { func: 'antennaManuf', ProdID: ProdID, Frequency: Frequency}, function(response)
 		{	
 			var Data = $.parseJSON(response);
-			$('<option value="0">Please select antenna manufacturer</option>').appendTo(antennaManuf);
+			$('<option value="">Please select antenna manufacturer</option>').appendTo(antennaManuf);
 			$.each(Data, function(i, item)
 			{
 				$('<option value="'+item.ID+'">'+item.Name+'</option>').appendTo(antennaManuf);
@@ -356,8 +354,8 @@ function changeAntennaManuf(el)
 			$.post( "AjaxFunctions.php", { func: 'antennaDiameter', antennaManuf: antennaManuf, Frequency: Frequency}, function(response)
 			{	
 				var Data = $.parseJSON(response);
-				$('<option value="0">Please select antenna A diameter</option>').appendTo(diameter_a);
-				$('<option value="0">Please select antenna B diameter</option>').appendTo(diameter_b);
+				$('<option value="">Please select antenna A diameter</option>').appendTo(diameter_a);
+				$('<option value="">Please select antenna B diameter</option>').appendTo(diameter_b);
 				$.each(Data, function(i, item)
 				{
 					$('<option value="'+item.Diameter+'">'+item.Diameter+'</option>').appendTo(diameter_a);
@@ -374,8 +372,8 @@ function changeAntennaManuf(el)
 				$.post( "AjaxFunctions.php", { func: 'antennaDiameter', antennaManuf: antennaManuf, Frequency: Frequency}, function(response)
 				{	
 					var Data = $.parseJSON(response);
-					$('<option value="0">Please select antenna A diameter</option>').appendTo(diameter_a);
-					$('<option value="0">Please select antenna B diameter</option>').appendTo(diameter_b);
+					$('<option value="">Please select antenna A diameter</option>').appendTo(diameter_a);
+					$('<option value="">Please select antenna B diameter</option>').appendTo(diameter_b);
 					$.each(Data, function(i, item)
 					{
 						$('<option value="'+item.Diameter+'">'+item.Diameter+'</option>').appendTo(diameter_a);
@@ -393,14 +391,14 @@ function changeAntennaManuf(el)
 					var Data = $.parseJSON(response);
 					$('<option value="0">Please select antenna A diameter</option>').appendTo(diameter_a);
 					$('<option value="0">Please select antenna B diameter</option>').appendTo(diameter_b);
-					$('<option value="0">Please select antenna A2 diameter</option>').appendTo(diameter_a2);
-					$('<option value="0">Please select antenna B2 diameter</option>').appendTo(diameter_b2);
+					//$('<option value="0">Please select antenna A2 diameter</option>').appendTo(diameter_a2);
+					//$('<option value="0">Please select antenna B2 diameter</option>').appendTo(diameter_b2);
 					$.each(Data, function(i, item)
 					{
 						$('<option value="'+item.Diameter+'">'+item.Diameter+'</option>').appendTo(diameter_a);
 						$('<option value="'+item.Diameter+'">'+item.Diameter+'</option>').appendTo(diameter_b);
-						$('<option value="'+item.Diameter+'">'+item.Diameter+'</option>').appendTo(diameter_a2);
-						$('<option value="'+item.Diameter+'">'+item.Diameter+'</option>').appendTo(diameter_b2);
+						//$('<option value="'+item.Diameter+'">'+item.Diameter+'</option>').appendTo(diameter_a2);
+						//$('<option value="'+item.Diameter+'">'+item.Diameter+'</option>').appendTo(diameter_b2);
 					});
 					prev_calc(el);
 				});
@@ -413,10 +411,10 @@ function changeAntennaManuf(el)
 				$.post( "AjaxFunctions.php", { func: 'antennaDiameter', antennaManuf: antennaManuf, Frequency: Frequency}, function(response)
 				{	
 					var Data = $.parseJSON(response);
-					$('<option value="0">Please select antenna A diameter</option>').appendTo(diameter_a);
-					$('<option value="0">Please select antenna B diameter</option>').appendTo(diameter_b);
-					$('<option value="0">Please select antenna A SD diameter</option>').appendTo(diameter_A_SD);
-					$('<option value="0">Please select antenna B SD diameter</option>').appendTo(diameter_B_SD);
+					$('<option value="">Please select antenna A diameter</option>').appendTo(diameter_a);
+					$('<option value="">Please select antenna B diameter</option>').appendTo(diameter_b);
+					$('<option value="">Please select antenna A SD diameter</option>').appendTo(diameter_A_SD);
+					$('<option value="">Please select antenna B SD diameter</option>').appendTo(diameter_B_SD);
 					$.each(Data, function(i, item)
 					{
 						$('<option value="'+item.Diameter+'">'+item.Diameter+'</option>').appendTo(diameter_a);
@@ -435,8 +433,8 @@ function changeAntennaManuf(el)
 				$.post( "AjaxFunctions.php", { func: 'antennaDiameter', antennaManuf: antennaManuf, Frequency: Frequency}, function(response)
 				{	
 					var Data = $.parseJSON(response);
-					$('<option value="0">Please select antenna A diameter</option>').appendTo(diameter_a);
-					$('<option value="0">Please select antenna B diameter</option>').appendTo(diameter_b);
+					$('<option value="">Please select antenna A diameter</option>').appendTo(diameter_a);
+					$('<option value="">Please select antenna B diameter</option>').appendTo(diameter_b);
 					$.each(Data, function(i, item)
 					{
 						$('<option value="'+item.Diameter+'">'+item.Diameter+'</option>').appendTo(diameter_a);
@@ -452,10 +450,10 @@ function changeAntennaManuf(el)
 				$.post( "AjaxFunctions.php", { func: 'antennaDiameter', antennaManuf: antennaManuf, Frequency: Frequency}, function(response)
 				{	
 					var Data = $.parseJSON(response);
-					$('<option value="0">Please select antenna A diameter</option>').appendTo(diameter_a);
-					$('<option value="0">Please select antenna B diameter</option>').appendTo(diameter_b);
-					$('<option value="0">Please select antenna A FD diameter</option>').appendTo(diameter_A_FD);
-					$('<option value="0">Please select antenna B FD diameter</option>').appendTo(diameter_B_FD);
+					$('<option value="">Please select antenna A diameter</option>').appendTo(diameter_a);
+					$('<option value="">Please select antenna B diameter</option>').appendTo(diameter_b);
+					$('<option value="">Please select antenna A FD diameter</option>').appendTo(diameter_A_FD);
+					$('<option value="">Please select antenna B FD diameter</option>').appendTo(diameter_B_FD);
 					$.each(Data, function(i, item)
 					{
 						$('<option value="'+item.Diameter+'">'+item.Diameter+'</option>').appendTo(diameter_a);
@@ -485,11 +483,14 @@ function change_A_Diameter(el)
 			$(DiameterResult).text(''+Data+'dBi');
 			$(AntennaA_tmp).val(Data);
 			prev_calc(el);
-			if(version == 2)
-			{
-				var diameter_A2 = $('.'+site+'').find('span[name=diameter_A2]').text(''+Diameter+'');
-				var result_diameter_A2 = $('.'+site+'').find('span[name=result_dA2]').text(''+Data+'');		
-			}
+		if(version == 2)
+		{
+			var diameter_a2 = $('.'+site+'').find('span[name = diameter_A2]').empty();
+			var result_a2 = $('.'+site+'').find('span[name = result_dA2]').empty();
+			$(diameter_a2).text(''+Diameter+'');
+			$(diameter_a2).val(Diameter);
+			$(result_a2).text(''+Data+' dBi');
+		}
 	});	
 		
 }
@@ -564,8 +565,11 @@ function change_B_Diameter(el)
 		prev_calc(el);
 		if(version == 2)
 		{
-			var diameter_B2 = $('.'+site+'').find('span[name=diameter_B2]').text(''+Diameter+'');
-			var result_diameter_B2 = $('.'+site+'').find('span[name=result_dB2]').text(''+Data+'');		
+			var diameter_b2 = $('.'+site+'').find('span[name = diameter_B2]').empty();
+			var result_b2 = $('.'+site+'').find('span[name = result_dB2]').empty();
+			$(diameter_b2).text(''+Diameter+'');
+			$(diameter_b2).val(Diameter);
+			$(result_b2).text(''+Data+' dBi');
 		}
 	});	
 }
@@ -712,7 +716,8 @@ function prev_calc(el)
 	var SD_Sep_B = $('.'+site+'').find('input[name = SD_sep_B]').val();	
 	var Frequency_FD = $('.'+site+'').find('select[name = Frequency_FD]').val();
 	var Transmit_FD = $('.'+site+'').find('select[name = Transmitter_FD]').val();
-
+	var suc_Button = $('.'+site+'').find('button[name = Calculate]');
+	
 	if(version == 1)
 	{
 		if(ProdID && version && Frequency && Bandwidth && FEC && Temperature && Modulation && RainZone && LatA && LatB && LonA && LonB && Transmitter && AntennaHeightA && AntennaHeightB && antennaManuf && diameter_a && diameter_b && Losses)
@@ -720,7 +725,7 @@ function prev_calc(el)
 			console.log("Executed Version 1"); 
 			$.post( "AjaxFunctions.php", { func: 'prev_calc', ProdID: ProdID, version: version, diameter_a: diameter_a, diameter_b: diameter_b, AntennaHeightA: AntennaHeightA, AntennaHeightB: AntennaHeightB, Transmitter: Transmitter, Extra_diameter_A: diameter_A_SD, Extra_diameter_B: diameter_B_SD, Antenna_Menu: Antenna_Amount, LatA: LatA, LatB: LatB, LonA: LonA, LonB: LonB, Frequency: Frequency, Losses: Losses, Stand_Site_A: Stand_Site_A, Stand_Site_B: Stand_Site_B, Prim_Site_A: Prim_Site_A, Prim_Site_B: Prim_Site_B, Bandwidth: Bandwidth, Standart: Standart, FEC: FEC, Modulation: Modulation, Temperature: Temperature, Manufacturer: antennaManuf, Frequency_FD: Frequency_FD, Transmit_FD: Transmit_FD}, function(response)
 			{	
-				alert(response);
+				//alert(response);
 				var Data = $.parseJSON(response);
 				console.log(response);
 				$.each(Data, function(i, item)
@@ -733,8 +738,13 @@ function prev_calc(el)
 					$(EIRP).text(''+item.EIRP+' dBm');
 				});
 			});	
+			$(suc_Button).removeClass( "btn btn-warning disabled" ).addClass( "btn btn-success" );
 		}
-	}
+		else
+		{
+			$(suc_Button).removeClass( "btn btn-success" ).addClass( "btn btn-warning disabled" );	
+		}
+	}	
 	if(version == 2)
 	{
 		var mode = $('.'+site+'').find('select[name = AntennaMode]').val();
@@ -764,29 +774,62 @@ function prev_calc(el)
 						$(Fade_Margin_stand).text(''+item.FadeMargin_HSB+' dB');
 					});
 				});	
+				$(suc_Button).removeClass( "btn btn-warning disabled" ).addClass( "btn btn-success" );
+			}
+			else
+			{
+				$(suc_Button).removeClass( "btn btn-success" ).addClass( "btn btn-warning disabled" );
 			}
 		}
 		if(mode == 2)
 		{
 			if(ProdID && version && Odu && Frequency && Bandwidth && FEC && Temperature && Modulation && RainZone && LatA && LatB && LonA && LonB && Transmitter && AntennaHeightA && AntennaHeightB && mode &&antennaManuf && diameter_a && diameter_b && Losses)
 			{
-				console.log("Executed Version 3"); 
-				$.post( "AjaxFunctions.php", { func: 'prev_calc', ProdID: ProdID, version: version, diameter_a: diameter_a, diameter_b: diameter_b, AntennaHeightA: AntennaHeightA, AntennaHeightB: AntennaHeightB, Transmitter: Transmitter, Extra_diameter_A: diameter_a2, Extra_diameter_B: diameter_b2, Antenna_Menu: Antenna_Amount, LatA: LatA, LatB: LatB, LonA: LonA, LonB: LonB, Frequency: Frequency, Losses: Losses, Stand_Site_A: Stand_Site_A, Stand_Site_B: Stand_Site_B, Prim_Site_A: Prim_Site_A, Prim_Site_B: Prim_Site_B, Bandwidth: Bandwidth, Standart: Standart, FEC: FEC, Modulation: Modulation, Temperature: Temperature, Manufacturer: antennaManuf, Frequency_FD: Frequency_FD, Transmit_FD: Transmit_FD}, function(response)
+				diameter_a2 = diameter_a; 
+				diameter_b2 = diameter_b; 
+				console.log("Executed Version 2 with 4 antennas"); 
+				console.log("Diameter A: "+diameter_a2+" "+diameter_b2);
+				$.post( "AjaxFunctions.php", { func: 'prev_calc', ProdID: ProdID, version: version, diameter_a: diameter_a, diameter_b: diameter_b, AntennaHeightA: AntennaHeightA, AntennaHeightB: AntennaHeightB, Transmitter: Transmitter, Extra_diameter_A: diameter_a2, Extra_diameter_B: diameter_b2, Antenna_Menu: mode, LatA: LatA, LatB: LatB, LonA: LonA, LonB: LonB, Frequency: Frequency, Losses: Losses, Stand_Site_A: Stand_Site_A, Stand_Site_B: Stand_Site_B, Prim_Site_A: Prim_Site_A, Prim_Site_B: Prim_Site_B, Bandwidth: Bandwidth, Standart: Standart, FEC: FEC, Modulation: Modulation, Temperature: Temperature, Manufacturer: antennaManuf, Frequency_FD: Frequency_FD, Transmit_FD: Transmit_FD}, function(response)
 				{	
 					var Data = $.parseJSON(response);
 					console.log(response);
-					alert(response);
+					//alert(response);
 					$.each(Data, function(i, item)
 					{						
 						console.log(item.RXThreshold);
-						$(RXThresholdResult).text(''+item.RXThreshold+' dB');
+						$(RXThresholdResult).text(''+item.RXThreshold+' dBm');
 						$(Signal_level).text(''+item.Rec_Sig_Level+' dBm');
 						$(RSSI).text(''+item.RSSI+' V');
-						$(Fade_Margin).text(''+item.FadeMargin+' dBm');						
-						$(EIRP).text(''+item.EIRP+' dB');
+						$(Fade_Margin).text(''+item.FadeMargin+' dBm');
+						$(EIRP).text(''+item.EIRP+' dBm');
 					});
-				});			
-				
+				});	
+				$(suc_Button).removeClass( "btn btn-warning disabled" ).addClass( "btn btn-success" );				
+			}
+			else
+			{
+				$(suc_Button).removeClass( "btn btn-success" ).addClass( "btn btn-warning disabled" );
+				if(!ProdID) console.log("ProdID undefined"); 
+				if(!version) console.log("version undefined");
+				if(!Odu)console.log("Odu undefined");
+				if(!Frequency) console.log("Frequency undefined");
+				if(!Bandwidth) console.log("Bandwidth undefined");
+				if(!FEC) console.log("FEC undefined");
+				if(!Temperature) console.log("Temperature undefined");
+				if(!Modulation) console.log("Modulation undefined");
+				if(!RainZone) console.log("RainZone undefined");
+				if(!LatA) console.log("LatA undefined");
+				if(!LatB) console.log("LatB undefined"); 
+				if(!LonA) console.log("LonA undefined");
+				if(!LonB) console.log("LonB undefined");
+				if(!Transmitter) console.log("Transmitter undefined");
+				if(!AntennaHeightA) console.log("AntennaHeightA undefined");
+				if(!AntennaHeightB) console.log("AntennaHEightB undefined");
+				if(!mode) console.log("Mode undefined");
+				if(!antennaManuf) console.log("Antenna Manuf undefined");
+				if(!diameter_a) console.log("diameter_A undefined");
+				if(!diameter_b) console.log("diameter_B undefined");
+				if(!Losses) $(Losses).removeClass( "none" ).addClass( "has-error" );
 			}
 		}	
 	}
@@ -798,19 +841,22 @@ function prev_calc(el)
 			$.post( "AjaxFunctions.php", { func: 'prev_calc', ProdID: ProdID, version: version, diameter_a: diameter_a, diameter_b: diameter_b, AntennaHeightA: AntennaHeightA, AntennaHeightB: AntennaHeightB, Transmitter: Transmitter, Extra_diameter_A: diameter_A_SD, Extra_diameter_B: diameter_B_SD, Antenna_Menu: Antenna_Amount, LatA: LatA, LatB: LatB, LonA: LonA, LonB: LonB, Frequency: Frequency, Losses: Losses, Stand_Site_A: Stand_Site_A, Stand_Site_B: Stand_Site_B, Prim_Site_A: Prim_Site_A, Prim_Site_B: Prim_Site_B, Bandwidth: Bandwidth, Standart: Standart, FEC: FEC, Modulation: Modulation, Temperature: Temperature, Manufacturer: antennaManuf, Frequency_FD: Frequency_FD, Transmit_FD: Transmit_FD}, function(response)
 			{	
 				var Data = $.parseJSON(response);
-				console.log(response);
-				alert(response);
+				//alert(response);
 				$.each(Data, function(i, item)
 				{						
-					console.log(item.RXThreshold);
 					$(RXThresholdResult).text(''+item.RXThreshold+' dBm');
 					$(Signal_level).text(''+item.Rec_Sig_Level+' dBm');
 					$(RSSI).text(''+item.RSSI+' dBm');
 					$(Fade_Margin).text(''+item.FadeMargin+' dBm');						
 					$(EIRP).text(''+item.EIRP+' dBm');
 				});
-			});			
-		}	
+			});	
+			$(suc_Button).removeClass( "btn btn-warning disabled" ).addClass( "btn btn-success" );	
+		}
+		else
+		{
+			$(suc_Button).removeClass( "btn btn-success" ).addClass( "btn btn-warning disabled" );
+		}
 	}
 	if(version == 4)
 	{
@@ -823,7 +869,6 @@ function prev_calc(el)
 					var Data = $.parseJSON(response);
 					$.each(Data, function(i, item)
 					{
-						console.log(item.RXThreshold);
 						$(RXThresholdResult).text(''+item.RXThreshold+' dBm');
 						$(Signal_level).text(''+item.Rec_Sig_Level+' dBm');
 						$(RSSI).text(''+item.RSSI+' dBm');
@@ -831,6 +876,11 @@ function prev_calc(el)
 						$(EIRP).text(''+item.EIRP+' dBm');
 					});
 				});	
+				$(suc_Button).removeClass( "btn btn-warning disabled" ).addClass( "btn btn-success" );	
+			}
+			else
+			{
+				$(suc_Button).removeClass( "btn btn-success" ).addClass( "btn btn-warning disabled" );
 			}
 		}
 		if(Antenna_Amount == 2)
@@ -850,7 +900,12 @@ function prev_calc(el)
 						$(Fade_Margin).text(''+item.FadeMargin+' dBm');
 						$(EIRP).text(''+item.EIRP+' dBm');
 					});
-				});	
+				});
+				$(suc_Button).removeClass( "btn btn-warning disabled" ).addClass( "btn btn-success" );	
+			}
+			else
+			{
+				$(suc_Button).removeClass( "btn btn-success" ).addClass( "btn btn-warning disabled" );
 			}
 		}
 	}
