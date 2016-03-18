@@ -247,7 +247,7 @@ function changeModulation(el)
 			{
 				var MinPower = item.MinPower;
 				var MaxPower = item.MaxPower;
-				console.log("MinPower: "+MinPower+ " MaxPower: "+MaxPower)
+				//console.log("MinPower: "+MinPower+ " MaxPower: "+MaxPower)
 				for(var i = MinPower; i <= MaxPower; i++)
 				{
 					$('<option value="'+i+'">'+i+'</option>').appendTo(transmitterSelect);
@@ -267,7 +267,7 @@ function changeModulation(el)
 			{
 				var MinPower = item.MinPower;
 				var MaxPower = item.MaxPower;
-				console.log("MinPower: "+MinPower+ " MaxPower: "+MaxPower)
+				//console.log("MinPower: "+MinPower+ " MaxPower: "+MaxPower)
 				for(var i = MinPower; i <= MaxPower; i++)
 				{
 					$('<option value="'+i+'">'+i+'</option>').appendTo(transmitterSelect);
@@ -737,10 +737,10 @@ function prev_calc(el)
 			{	
 				//alert(response);
 				var Data = $.parseJSON(response);
-				console.log(response);
+				//console.log(response);
 				$.each(Data, function(i, item)
 				{
-					console.log(item.RXThreshold);
+					//console.log(item.RXThreshold);
 					$(RXThresholdResult).text(''+item.RXThreshold+' dBm');
 					$(Signal_level).text(''+item.Rec_Sig_Level+' dBm');
 					$(RSSI).text(''+item.RSSI+' V');
@@ -798,7 +798,7 @@ function prev_calc(el)
 				diameter_a2 = diameter_a; 
 				diameter_b2 = diameter_b; 
 				console.log("Executed Version 2 with 4 antennas"); 
-				console.log("Diameter A: "+diameter_a2+" "+diameter_b2);
+				//console.log("Diameter A: "+diameter_a2+" "+diameter_b2);
 				$.post( "AjaxFunctions.php", { func: 'prev_calc', ProdID: ProdID, version: version, diameter_a: diameter_a, diameter_b: diameter_b, AntennaHeightA: AntennaHeightA, AntennaHeightB: AntennaHeightB, Transmitter: Transmitter, Extra_diameter_A: diameter_a2, Extra_diameter_B: diameter_b2, Antenna_Menu: mode, LatA: LatA, LatB: LatB, LonA: LonA, LonB: LonB, Frequency: Frequency, Losses: Losses, Stand_Site_A: Stand_Site_A, Stand_Site_B: Stand_Site_B, Prim_Site_A: Prim_Site_A, Prim_Site_B: Prim_Site_B, Bandwidth: Bandwidth, Standart: Standart, FEC: FEC, Modulation: Modulation, Temperature: Temperature, Manufacturer: antennaManuf, Frequency_FD: Frequency_FD, Transmit_FD: Transmit_FD}, function(response)
 				{	
 					var Data = $.parseJSON(response);
@@ -806,7 +806,7 @@ function prev_calc(el)
 					//alert(response);
 					$.each(Data, function(i, item)
 					{						
-						console.log(item.RXThreshold);
+						//console.log(item.RXThreshold);
 						$(RXThresholdResult).text(''+item.RXThreshold+' dBm');
 						$(Signal_level).text(''+item.Rec_Sig_Level+' dBm');
 						$(RSSI).text(''+item.RSSI+' V');
@@ -903,7 +903,7 @@ function prev_calc(el)
 					var Data = $.parseJSON(response);
 					$.each(Data, function(i, item)
 					{
-						console.log(item.RXThreshold);
+						//console.log(item.RXThreshold);
 						$(RXThresholdResult).text(''+item.RXThreshold+' dBm');
 						$(Signal_level).text(''+item.Rec_Sig_Level+' dBm');
 						$(RSSI).text(''+item.RSSI+' dBm');
@@ -924,12 +924,10 @@ function prev_calc(el)
 function calcPath(el)
 {
 	var site = $(el).parent().parent().attr('class'); 
-	console.log("Bugains ID :" +site);
 	var ProdID = ProdID = $('.'+site+'').find('div[name = ProdID]').val();
 	var version = $('.'+site+'').find('select[name = Version]').val(); 
 	var Frequency = $('.'+site+'').find('select[name=Frequency]').val();
 	var BandwidthTMP = $('.'+site+'').find('select[name=Bandwidth]').val();
-	console.log(BandwidthTMP); 
 	var BandSplit = BandwidthTMP.split("|");
 	var Bandwidth = BandSplit[0];
 	var Standart = BandSplit[1]; 
@@ -991,9 +989,14 @@ function calcPath(el)
 		Prim_Site_B = 0; 
 		Frequency_FD = 0; 
 		Transmit_FD = 0; 
+		SD_Sep_A = 0;
+		SD_Sep_B = 0; 
+		Main_Freq = 0; 
+		Div_Freq = 0; 
+		
 		
 		console.log("Calculating for Version 1"); 
-			$.post( "AjaxFunctions.php", { func: 'calc_res', ProdID: ProdID, version: version, diameter_a: diameter_a, diameter_b: diameter_b, AntennaHeightA: AntennaHeightA, AntennaHeightB: AntennaHeightB, Transmitter: Transmitter, Extra_diameter_A: diameter_A_SD, Extra_diameter_B: diameter_B_SD, Antenna_Menu: Antenna_Amount, LatA: LatA, LatB: LatB, LonA: LonA, LonB: LonB, Frequency: Frequency, Losses: Losses, Stand_Site_A: Stand_Site_A, Stand_Site_B: Stand_Site_B, Prim_Site_A: Prim_Site_A, Prim_Site_B: Prim_Site_B, Bandwidth: Bandwidth, Standart: Standart, FEC: FEC, Modulation: Modulation, Temperature: Temperature, Manufacturer: antennaManuf, Frequency_FD: Frequency_FD, Transmit_FD: Transmit_FD, RainZone: RainZone}, function(response)
+			$.post( "AjaxFunctions.php", { func: 'calc_res', ProdID: ProdID, version: version, diameter_a: diameter_a, diameter_b: diameter_b, AntennaHeightA: AntennaHeightA, AntennaHeightB: AntennaHeightB, Transmitter: Transmitter, Extra_diameter_A: diameter_A_SD, Extra_diameter_B: diameter_B_SD, Antenna_Menu: Antenna_Amount, LatA: LatA, LatB: LatB, LonA: LonA, LonB: LonB, Frequency: Frequency, Losses: Losses, Stand_Site_A: Stand_Site_A, Stand_Site_B: Stand_Site_B, Prim_Site_A: Prim_Site_A, Prim_Site_B: Prim_Site_B, Bandwidth: Bandwidth, Standart: Standart, FEC: FEC, Modulation: Modulation, Temperature: Temperature, Manufacturer: antennaManuf, Frequency_FD: Frequency_FD, Transmit_FD: Transmit_FD, RainZone: RainZone, SD_Sep_A: SD_Sep_A, SD_Sep_B: SD_Sep_B, Main_Freq: Main_Freq, Div_Freq: Div_Freq}, function(response)
 			{	
 				//alert(response);
 				var Data = $.parseJSON(response);
@@ -1018,7 +1021,236 @@ function calcPath(el)
 					$(error_Time_Hori).text(''+item.Error_Hor+'');
 				});
 			});	
-	}	
+	}
+	if(version == 2)
+	{		
+		var mode = $('.'+site+'').find('select[name = AntennaMode]').val();
+		console.log("Version == 2, Mode = "+mode);
+		if(mode == 1)
+		{
+			var M_path_vert_Prim = $('.'+site+'').find('span[name = M_path_vert_Prim]').text('');
+			var M_path_hori_Prim = $('.'+site+'').find('span[name = M_path_hori_Prim]').text('');
+			var M_path_vert_Stand = $('.'+site+'').find('span[name = M_path_vert_Stand]').text('');
+			var M_path_hori_Stand = $('.'+site+'').find('span[name = M_path_hori_Stand]').text('');
+			var rain_vert_prim = $('.'+site+'').find('span[name = rain_vert_prim]').text('');
+			var rain_hori_prim = $('.'+site+'').find('span[name = rain_hori_prim]').text('');
+			var rain_vert_stand = $('.'+site+'').find('span[name = rain_vert_stand]').text('');
+			var rain_hori_stand = $('.'+site+'').find('span[name = rain_hori_stand]').text('');
+			var M_rain_vert_prim = $('.'+site+'').find('span[name = M_rain_vert_prim]').text('');
+			var M_rain_hori_prim = $('.'+site+'').find('span[name = M_rain_hori_prim]').text('');
+			var M_rain_vert_stand = $('.'+site+'').find('span[name = M_rain_vert_stand]').text('');
+			var M_rain_hori_stand = $('.'+site+'').find('span[name = M_rain_hori_stand]').text('');			
+			var error_Time_Vert_prim = $('.'+site+'').find('span[name = error_Time_Vert_prim]').text('');	
+			var error_Time_Hori_prim = $('.'+site+'').find('span[name = error_Time_Hori_prim]').text('');	
+			var error_Time_Vert_stand = $('.'+site+'').find('span[name = error_Time_Vert_stand]').text('');	
+			var error_Time_Hori_stand = $('.'+site+'').find('span[name = error_Time_Hori_stand]').text('');	
+			diameter_a2 = 0; 
+			diameter_b2 = 0;  
+			SD_Sep_A = 0;
+			SD_Sep_B = 0; 
+			Main_Freq = 0; 
+			Div_Freq = 0; 
+		
+			console.log("Calculating for Version 2 mode "+mode); 
+			$.post( "AjaxFunctions.php", { func: 'calc_res', ProdID: ProdID, version: version, diameter_a: diameter_a, diameter_b: diameter_b, AntennaHeightA: AntennaHeightA, AntennaHeightB: AntennaHeightB, Transmitter: Transmitter, Extra_diameter_A: diameter_a2, Extra_diameter_B: diameter_b2, Antenna_Menu: mode, LatA: LatA, LatB: LatB, LonA: LonA, LonB: LonB, Frequency: Frequency, Losses: Losses, Stand_Site_A: Stand_Site_A, Stand_Site_B: Stand_Site_B, Prim_Site_A: Prim_Site_A, Prim_Site_B: Prim_Site_B, Bandwidth: Bandwidth, Standart: Standart, FEC: FEC, Modulation: Modulation, Temperature: Temperature, Manufacturer: antennaManuf, Frequency_FD: Frequency_FD, Transmit_FD: Transmit_FD, RainZone: RainZone, SD_Sep_A: SD_Sep_A, SD_Sep_B: SD_Sep_B, Main_Freq: Main_Freq, Div_Freq: Div_Freq}, function(response)
+			{	
+				console.log(response); 
+				var Data = $.parseJSON(response);
+				$.each(Data, function(i, item)
+				{
+					
+					$(M_path_vert_Prim).text(''+item.MultipathVert_prim+'');
+					$(M_path_hori_Prim).text(''+item.MultipathHor_prim+'');
+					$(M_path_vert_Stand).text(''+item.MultipathVert_stand+'');
+					$(M_path_hori_Stand).text(''+item.MultipathHor_stand+'');
+					$(rain_vert_prim).text(''+item.RainAvailVert_prim+'');
+					$(rain_hori_prim).text(''+item.RainAvailHor_prim+'');
+					
+					$(rain_vert_stand).text(''+item.RainAvailVert_stand+'');
+					$(rain_hori_stand).text(''+item.RainAvailHor_stand+'');
+					
+					$(M_rain_vert_prim).text(''+item.Multipath_Rain_Vert_prim+'');
+					$(M_rain_hori_prim).text(''+item.Multipath_Rain_Hor_prim+'');
+					$(M_rain_vert_stand).text(''+item.Multipath_Rain_Vert_stand+'');
+					$(M_rain_hori_stand).text(''+item.Multipath_Rain_Hor_stand+'');
+					
+					$(error_Time_Vert_prim).text(''+item.Error_Vert_prim+'');
+					$(error_Time_Hori_prim).text(''+item.Error_Hor_prim+'');
+					$(error_Time_Vert_stand).text(''+item.Error_Vert_stand+'');
+					$(error_Time_Hori_stand).text(''+item.Error_Hor_stand+'');
+							
+					if(item.Multipath_Rain_Vert_prim >= 99.995)  $(M_rain_vert_prim).css("background-color", good);
+					if(item.Multipath_Rain_Vert_prim >= 99.9 && item.Multipath_Rain_Vert_prim < 99.995 )  $(M_rain_vert_prim).css("background-color", almost);
+					if(item.Multipath_Rain_Vert_prim < 99.9)  $(M_rain_vert_prim).css("background-color", bad);
+
+					if(item.Multipath_Rain_Hor_prim >= 99.995)  $(M_rain_hori_prim).css("background-color", good);
+					if(item.Multipath_Rain_Hor_prim >= 99.9 && item.Multipath_Rain_Hor_prim < 99.995 )  $(M_rain_hori_prim).css("background-color", almost);
+					if(item.Multipath_Rain_Hor_prim < 99.9)  $(M_rain_hori_prim).css("background-color", bad);
+					
+					if(item.Multipath_Rain_Vert_stand >= 99.995)  $(M_rain_vert_stand).css("background-color", good);
+					if(item.Multipath_Rain_Vert_stand >= 99.9 && item.Multipath_Rain_Vert_stand < 99.995 )  $(M_rain_vert_stand).css("background-color", almost);
+					if(item.Multipath_Rain_Vert_stand < 99.9)  $(M_rain_vert_stand).css("background-color", bad);
+
+					if(item.Multipath_Rain_Hor_stand >= 99.995)  $(M_rain_hori_stand).css("background-color", good);
+					if(item.Multipath_Rain_Hor_stand >= 99.9 && item.Multipath_Rain_Hor_stand < 99.995 )  $(M_rain_hori_stand).css("background-color", almost);
+					if(item.Multipath_Rain_Hor_stand < 99.9)  $(M_rain_hori_stand).css("background-color", bad);
+				});
+			});	
+		}
+		if(mode == 2)
+		{	
+			var M_Path_Vert = $('.'+site+'').find('span[name = M_path_vert]').text('');	
+			var M_Path_Hori = $('.'+site+'').find('span[name = M_path_hori]').text('');
+			var Rain_vert = $('.'+site+'').find('span[name = rain_vert]').text('');	
+			var Rain_hori = $('.'+site+'').find('span[name = rain_hori]').text('');		
+			var M_rain_vert = $('.'+site+'').find('span[name = M_rain_vert]').text('');	
+			var M_rain_hori = $('.'+site+'').find('span[name = M_rain_hori]').text('');				
+			var error_Time_Vert = $('.'+site+'').find('span[name = error_Time_Vert]').text('');	
+			var error_Time_Hori = $('.'+site+'').find('span[name = error_Time_Hori]').text('');
+			diameter_a2 = diameter_a; 
+			diameter_b2 = diameter_b;  
+			Stand_Site_A = 0; 
+			Stand_Site_B = 0; 
+			Prim_Site_A = 0;  
+			Prim_Site_B = 0; 
+			Frequency_FD = 0; 
+			Transmit_FD = 0; 
+			SD_Sep_A = 0;
+			SD_Sep_B = 0;
+			Main_Freq = 0; 
+			Div_Freq = 0; 			
+		
+			console.log("Calculating for Version 2 mode "+mode); 
+			$.post( "AjaxFunctions.php", { func: 'calc_res', ProdID: ProdID, version: version, diameter_a: diameter_a, diameter_b: diameter_b, AntennaHeightA: AntennaHeightA, AntennaHeightB: AntennaHeightB, Transmitter: Transmitter, Extra_diameter_A: diameter_a2, Extra_diameter_B: diameter_b2, Antenna_Menu: mode, LatA: LatA, LatB: LatB, LonA: LonA, LonB: LonB, Frequency: Frequency, Losses: Losses, Stand_Site_A: Stand_Site_A, Stand_Site_B: Stand_Site_B, Prim_Site_A: Prim_Site_A, Prim_Site_B: Prim_Site_B, Bandwidth: Bandwidth, Standart: Standart, FEC: FEC, Modulation: Modulation, Temperature: Temperature, Manufacturer: antennaManuf, Frequency_FD: Frequency_FD, Transmit_FD: Transmit_FD, RainZone: RainZone, SD_Sep_A: SD_Sep_A, SD_Sep_B: SD_Sep_B, Main_Freq: Main_Freq, Div_Freq: Div_Freq}, function(response)
+			{	
+				var Data = $.parseJSON(response);
+				$.each(Data, function(i, item)
+				{
+					
+					$(M_Path_Vert).text(''+item.MultipathVert+'');
+					$(M_Path_Hori).text(''+item.MultipathHor+'');
+					$(Rain_vert).text(''+item.Rain_Vert+'');
+					$(Rain_hori).text(''+item.Rain_Hor+'');
+					$(M_rain_vert).text(''+item.Multipath_Rain_Vert+'');
+					$(M_rain_hori).text(''+item.Multipath_Rain_Hor+'');
+					if(item.Multipath_Rain_Vert >= 99.995)  $(M_rain_vert).css("background-color", good);
+					if(item.Multipath_Rain_Vert >= 99.9 && item.Multipath_Rain_Vert < 99.995 )  $(M_rain_vert).css("background-color", almost);
+					if(item.Multipath_Rain_Vert < 99.9)  $(M_rain_vert).css("background-color", bad);
+
+					if(item.Multipath_Rain_Hor >= 99.995)  $(M_rain_hori).css("background-color", good);
+					if(item.Multipath_Rain_Hor >= 99.9 && item.Multipath_Rain_Hor < 99.995 )  $(M_rain_hori).css("background-color", almost);
+					if(item.Multipath_Rain_Hor < 99.9)  $(M_rain_hori).css("background-color", bad);
+					
+					$(error_Time_Vert).text(''+item.Error_Vert+'');
+					$(error_Time_Hori).text(''+item.Error_Hor+'');
+				});
+			});	
+		}
+	}
+	if(version == 3)
+	{	
+		var M_Path_Vert = $('.'+site+'').find('span[name = M_path_vert]').text('');	
+		var M_Path_Hori = $('.'+site+'').find('span[name = M_path_hori]').text('');
+		var Rain_vert = $('.'+site+'').find('span[name = rain_vert]').text('');	
+		var Rain_hori = $('.'+site+'').find('span[name = rain_hori]').text('');		
+		var M_rain_vert = $('.'+site+'').find('span[name = M_rain_vert]').text('');	
+		var M_rain_hori = $('.'+site+'').find('span[name = M_rain_hori]').text('');				
+		var error_Time_Vert = $('.'+site+'').find('span[name = error_Time_Vert]').text('');	
+		var error_Time_Hori = $('.'+site+'').find('span[name = error_Time_Hori]').text('');		
+
+		var SD_Sep_A = $('.'+site+'').find('input[name = SD_sep_A]').val();
+		var SD_Sep_B = $('.'+site+'').find('input[name = SD_sep_B]').val();
+		
+		Antenna_Amount = 0;
+		Stand_Site_A = 0; 
+		Stand_Site_B = 0; 
+		Prim_Site_A = 0;  
+		Prim_Site_B = 0; 
+		Frequency_FD = 0; 
+		Transmit_FD = 0; 
+		Main_Freq = 0; 
+		Div_Freq = 0; 
+		
+		console.log("Calculating for Version 1"); 
+			$.post( "AjaxFunctions.php", { func: 'calc_res', ProdID: ProdID, version: version, diameter_a: diameter_a, diameter_b: diameter_b, AntennaHeightA: AntennaHeightA, AntennaHeightB: AntennaHeightB, Transmitter: Transmitter, Extra_diameter_A: diameter_A_SD, Extra_diameter_B: diameter_B_SD, Antenna_Menu: Antenna_Amount, LatA: LatA, LatB: LatB, LonA: LonA, LonB: LonB, Frequency: Frequency, Losses: Losses, Stand_Site_A: Stand_Site_A, Stand_Site_B: Stand_Site_B, Prim_Site_A: Prim_Site_A, Prim_Site_B: Prim_Site_B, Bandwidth: Bandwidth, Standart: Standart, FEC: FEC, Modulation: Modulation, Temperature: Temperature, Manufacturer: antennaManuf, Frequency_FD: Frequency_FD, Transmit_FD: Transmit_FD, RainZone: RainZone, SD_Sep_A: SD_Sep_A, SD_Sep_B: SD_Sep_B, Main_Freq: Main_Freq, Div_Freq: Div_Freq}, function(response)
+			{	
+				//alert(response);
+				var Data = $.parseJSON(response);
+				$.each(Data, function(i, item)
+				{
+					
+					$(M_Path_Vert).text(''+item.MultipathVert+'');
+					$(M_Path_Hori).text(''+item.MultipathHor+'');
+					$(Rain_vert).text(''+item.Rain_Vert+'');
+					$(Rain_hori).text(''+item.Rain_Hor+'');
+					$(M_rain_vert).text(''+item.Multipath_Rain_Vert+'');
+					$(M_rain_hori).text(''+item.Multipath_Rain_Hor+'');
+					if(item.Multipath_Rain_Vert >= 99.995)  $(M_rain_vert).css("background-color", good);
+					if(item.Multipath_Rain_Vert >= 99.9 && item.Multipath_Rain_Vert < 99.995 )  $(M_rain_vert).css("background-color", almost);
+					if(item.Multipath_Rain_Vert < 99.9)  $(M_rain_vert).css("background-color", bad);
+
+					if(item.Multipath_Rain_Hor >= 99.995)  $(M_rain_hori).css("background-color", good);
+					if(item.Multipath_Rain_Hor >= 99.9 && item.Multipath_Rain_Hor < 99.995 )  $(M_rain_hori).css("background-color", almost);
+					if(item.Multipath_Rain_Hor < 99.9)  $(M_rain_hori).css("background-color", bad);
+					
+					$(error_Time_Vert).text(''+item.Error_Vert+'');
+					$(error_Time_Hori).text(''+item.Error_Hor+'');
+				});
+			});	
 	
+	}
+	if(version == 4)
+	{	
+		var M_Path_Vert = $('.'+site+'').find('span[name = M_path_vert]').text('');	
+		var M_Path_Hori = $('.'+site+'').find('span[name = M_path_hori]').text('');
+		var Rain_vert = $('.'+site+'').find('span[name = rain_vert]').text('');	
+		var Rain_hori = $('.'+site+'').find('span[name = rain_hori]').text('');		
+		var M_rain_vert = $('.'+site+'').find('span[name = M_rain_vert]').text('');	
+		var M_rain_hori = $('.'+site+'').find('span[name = M_rain_hori]').text('');				
+		var error_Time_Vert = $('.'+site+'').find('span[name = error_Time_Vert]').text('');	
+		var error_Time_Hori = $('.'+site+'').find('span[name = error_Time_Hori]').text('');
+		var diameter_A_FD = $('.'+site+'').find('select[name = diameter_A_FD]').val();
+		var diameter_B_FD = $('.'+site+'').find('select[name = diameter_B_FD]').val();		
+
+		var SD_Sep_A = $('.'+site+'').find('input[name = SD_sep_A]').val();
+		var SD_Sep_B = $('.'+site+'').find('input[name = SD_sep_B]').val();
+		
+		
+		//var Main_Freq = $('.'+site+'').find('input[name = Main_Freq]').val();
+		//var Div_Freq = $('.'+site+'').find('input[name = Div_Freq]').val();
+		
+		Stand_Site_A = 0; 
+		Stand_Site_B = 0; 
+		Prim_Site_A = 0;  
+		Prim_Site_B = 0; 
+
+		console.log("Calculating for Version 1"); 
+			$.post( "AjaxFunctions.php", { func: 'calc_res', ProdID: ProdID, version: version, diameter_a: diameter_a, diameter_b: diameter_b, AntennaHeightA: AntennaHeightA, AntennaHeightB: AntennaHeightB, Transmitter: Transmitter, Extra_diameter_A: diameter_A_FD, Extra_diameter_B: diameter_B_FD, Antenna_Menu: Antenna_Amount, LatA: LatA, LatB: LatB, LonA: LonA, LonB: LonB, Frequency: Frequency, Losses: Losses, Stand_Site_A: Stand_Site_A, Stand_Site_B: Stand_Site_B, Prim_Site_A: Prim_Site_A, Prim_Site_B: Prim_Site_B, Bandwidth: Bandwidth, Standart: Standart, FEC: FEC, Modulation: Modulation, Temperature: Temperature, Manufacturer: antennaManuf, Frequency_FD: Frequency_FD, Transmit_FD: Transmit_FD, RainZone: RainZone, SD_Sep_A: SD_Sep_A, SD_Sep_B: SD_Sep_B, Main_Freq: Main_Freq, Div_Freq: Div_Freq}, function(response)
+			{	
+				//alert(response);
+				var Data = $.parseJSON(response);
+				$.each(Data, function(i, item)
+				{
+					
+					$(M_Path_Vert).text(''+item.MultipathVert+'');
+					$(M_Path_Hori).text(''+item.MultipathHor+'');
+					$(Rain_vert).text(''+item.Rain_Vert+'');
+					$(Rain_hori).text(''+item.Rain_Hor+'');
+					$(M_rain_vert).text(''+item.Multipath_Rain_Vert+'');
+					$(M_rain_hori).text(''+item.Multipath_Rain_Hor+'');
+					if(item.Multipath_Rain_Vert >= 99.995)  $(M_rain_vert).css("background-color", good);
+					if(item.Multipath_Rain_Vert >= 99.9 && item.Multipath_Rain_Vert < 99.995 )  $(M_rain_vert).css("background-color", almost);
+					if(item.Multipath_Rain_Vert < 99.9)  $(M_rain_vert).css("background-color", bad);
+
+					if(item.Multipath_Rain_Hor >= 99.995)  $(M_rain_hori).css("background-color", good);
+					if(item.Multipath_Rain_Hor >= 99.9 && item.Multipath_Rain_Hor < 99.995 )  $(M_rain_hori).css("background-color", almost);
+					if(item.Multipath_Rain_Hor < 99.9)  $(M_rain_hori).css("background-color", bad);
+					
+					$(error_Time_Vert).text(''+item.Error_Vert+'');
+					$(error_Time_Hori).text(''+item.Error_Hor+'');
+				});
+			});	
+	
+	}
 	
 }

@@ -173,7 +173,7 @@ function getPrev_Calculations($conn, $ProdID, $Version, $Antenna_A_Diameter, $An
 	$params_AntennaB = GetAnthenaParams($conn, $Manufacturer, $Frequency, $Antenna_B_Diameter);
 	$Extra_params_AntennaA = 0;
 	$Extra_params_AntennaB = 0; 
-	if($Version == 4 || $Version == 3 || $Version == 2)
+	if($Version == 4 || $Version == 3 || ($Version == 2 && $Antenna_Menu == 2))
 	{
 		$Extra_params_AntennaA = GetAnthenaParams($conn, $Manufacturer, $Frequency, $Extra_diameter_A);
 		$Extra_params_AntennaB = GetAnthenaParams($conn, $Manufacturer, $Frequency, $Extra_diameter_B);
@@ -200,7 +200,7 @@ function getPrev_Calculations($conn, $ProdID, $Version, $Antenna_A_Diameter, $An
 		'EIRP' => $EIRP
 		);	
 	}
-	if($Version == 2 && $Antenna_Menu == 2)
+	else if($Version == 2 && $Antenna_Menu == 2)
 	{
 		$result[] = array(
 		'RXThreshold' => $Threshold, 
@@ -210,7 +210,7 @@ function getPrev_Calculations($conn, $ProdID, $Version, $Antenna_A_Diameter, $An
 		'EIRP' => $EIRP
 		);
 	}
-	else
+	else if($Version != 2)
 	{
 		$result[] = array(
 		'RXThreshold' => $Threshold, 
@@ -305,7 +305,11 @@ if(isset($_POST['func']) && !empty($_POST['func']))
 				'Prim_Site_B' => $_POST['Prim_Site_B'],
 				'Stand_Site_A' => $_POST['Stand_Site_A'],
 				'Stand_Site_B' => $_POST['Stand_Site_B'],
-				'Temp_Rain_Zone' => $_POST['RainZone']
+				'Temp_Rain_Zone' => $_POST['RainZone'],
+				'SD_Sep_A' => $_POST['SD_Sep_A'],
+				'SD_Sep_B' => $_POST['SD_Sep_B'],
+				'Main_Freq' => $_POST['Main_Freq'],
+				'Div_Freq' => $_POST['Div_Freq']		
 				);
 				Calculate_MainBlock($conn, $result); 
 		break;

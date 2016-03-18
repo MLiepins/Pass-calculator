@@ -690,7 +690,7 @@ function RSSI($FadeMargin,$Version)
 	}
 	return $out; 
 }
-function GetAnthenaParams($conn,$Manufacturer, $Frequency, $Diameter)
+function GetAnthenaParams($conn, $Manufacturer, $Frequency, $Diameter)
 {
 	$sql = "SELECT `Gain` FROM `anthenagains` WHERE `Frequence` = $Frequency and `Diameter` LIKE $Diameter and `Manuf_ID` = $Manufacturer limit 1";
 	$result = $conn->query($sql);
@@ -1139,7 +1139,6 @@ function Calculate_MainBlock($conn, $var)
 	$gain_Antenna_B_Extra = GetAnthenaParams($conn, $var['Manufacturer'], $var['Frequency'], $var['Extra_diameter_B']);
 	if($var['Version'] != 4) $EIRP = max($gain_Antenna_A, $gain_Antenna_B) + $var['TransmitPow']; 
 	else $EIRP = max($gain_Antenna_A, $gain_Antenna_B, $gain_Antenna_A_Extra, $gain_Antenna_B_Extra) + $var['TransmitPow'];
-
 	
 	$RXThreshold = getThreshold($conn, $var['Frequency'], $var['Band_Width'], $var['Standart'], $var['FEC'], $var['Modulation'], $Product);
 	$FadeMargin = getFadeMargin($var['Antenna_Menu'], $var['Version'], $var['Frequency_FD'], $var['Transmit_FD'], $distance, $var['Frequency'], $var['TransmitPow'], $gain_Antenna_A, $var['Losses'], $gain_Antenna_B, $gain_Antenna_A_Extra, $gain_Antenna_B_Extra, $RXThreshold, $a, $var['Prim_Site_A'] , $var['Prim_Site_B'] , $var['Stand_Site_A'] , $var['Stand_Site_B']);
@@ -1153,7 +1152,8 @@ function Calculate_MainBlock($conn, $var)
 	$RSSI = RSSI($FadeMargin, $var['Version']);
 	$MaxTransmitterPower = MaxTransmitterPower($conn, $Product, $var['Frequency'], $var['Modulation']);
 	$GetMaxCap = GetMaxCap($conn, $Product, $var['Modulation'], $var['Band_Width'], $var['Standart'], $var['FEC']);
-	if($var['Version'] == 2) $FM = $FadeMargin['FM_Main'];
+	if($var['Version'] == 2 && $var['Antenna_Menu'] == 2) $FM = $FadeMargin['FM_HSB'];
+	else if($var['Version'] == 2 && $var['Antenna_Menu'] == 1) $FM = $FadeMargin['FM_Main'];
 	else $FM = $FadeMargin['FM106'];
 	if($FM > 0)
 	{
@@ -1183,7 +1183,146 @@ function Calculate_MainBlock($conn, $var)
 				'Error_Hor' => $Output_ErroredTimeH
 				); 
 			}
-		}	
+		}
+		if($var['Version'] == 2)
+		{
+			if($var['Antenna_Menu'] == 2)
+			{	
+				if($Product == 3 || $Product == 4 || $Product == 5 || $Product == 6 || $Product == 7 || $Product == 8 || $Product == 9)
+				{
+					$TotalMultipath = TotalMultipath($SelectiveOutage, $Selective);
+					$MultipathRain = MultipathRain($RainRate, $TotalMultipath);
+					$RainAvailVert = $PlotRain['PlotRain100']['Plot2V']; 
+					$RainAvailHor = $PlotRain['PlotRain100']['Plot2H']; 
+					$MRainAvailVert = $MultipathRain['m3p2v'];
+					$MRainAvailHor = $MultipathRain['m3p2h'];
+					$ErroredTime = ErroredTime($MRainAvailVert, $MRainAvailHor);
+					$Output_ErroredTimeV = $ErroredTime['V_Hours'].":".$ErroredTime['V_Mins'];
+					$Output_ErroredTimeH = $ErroredTime['H_Hours'].":".$ErroredTime['H_Mins'];
+					if($TotalMultipath['TotalPath106'] > 0 ) $MPAvailabilityVert =$TotalMultipath['TotalPath106'];
+					else $MPAvailabilityVert = "NA";
+					$result[] = array(
+						'MultipathVert' =>	$TotalMultipath['Availability106'],
+						'MultipathHor' =>	$TotalMultipath['Availability106'],
+						'Rain_Vert' => $RainAvailVert,
+						'Rain_Hor' => $RainAvailHor,
+						'Multipath_Rain_Vert' => $MRainAvailVert,
+						'Multipath_Rain_Hor' => $MRainAvailHor, 
+						'Error_Vert' => $Output_ErroredTimeV,
+						'Error_Hor' => $Output_ErroredTimeH
+					); 
+				}
+			}
+		}
+		if($var['Version'] == 2)
+		{
+			if($var['Antenna_Menu'] == 1)
+			{	
+				if($Product == 3 || $Product == 4 || $Product == 5 || $Product == 6 || $Product == 7 || $Product == 8 || $Product == 9)
+				{
+					$TotalMultipath = TotalMultipath($SelectiveOutage, $Selective);
+					$MultipathRain = MultipathRain($RainRate, $TotalMultipath);
+					
+					$RainAvailVert_prim = $PlotRain['PlotRain100']['Plot2V']; 
+					$RainAvailHor_prim = $PlotRain['PlotRain100']['Plot2H']; 
+					
+					$RainAvailVert_stand = $PlotRain['PlotRain100']['Plot1V']; 
+					$RainAvailHor_stand = $PlotRain['PlotRain100']['Plot1H']; 
+					
+					$MRainAvail_Hor_prim = $MultipathRain['m3p2h'];
+					$MRainAvail_Vert_prim = $MultipathRain['m3p2v'];
+					$MRainAvail_Hor_stand = $MultipathRain['m3p1h'];
+					$MRainAvailHor_Ver_stand = $MultipathRain['m3p1v'];
+				
+					$ErroredTime = ErroredTime($MRainAvail_Vert_prim, $MRainAvail_Hor_prim);
+					$ErroredTime_Stand = ErroredTime($MRainAvailHor_Ver_stand, $MRainAvail_Hor_stand);
+					
+					$Output_ErroredTimeV_prim = $ErroredTime['V_Hours'].":".$ErroredTime['V_Mins'];
+					$Output_ErroredTimeH_prim = $ErroredTime['H_Hours'].":".$ErroredTime['H_Mins'];
+
+					$Output_ErroredTimeV_stand = $ErroredTime_Stand['V_Hours'].":".$ErroredTime_Stand['V_Mins'];
+					$Output_ErroredTimeH_stand = $ErroredTime_Stand['H_Hours'].":".$ErroredTime_Stand['H_Mins'];					
+					if($TotalMultipath['TotalPath106'] > 0 ) $MPAvailabilityVert =$TotalMultipath['TotalPath106'];
+					else $MPAvailabilityVert = "NA";
+					
+					$result[] = array(
+						'MultipathVert_stand' =>	$TotalMultipath['Availability106'],
+						'MultipathHor_stand' =>	$TotalMultipath['Availability106'],
+						'MultipathVert_prim' =>	$TotalMultipath['Availability103'],
+						'MultipathHor_prim' =>	$TotalMultipath['Availability103'],						
+						'Rain_Vert_stand' => $RainAvailVert_stand,
+						'Rain_Hor_stand' => $RainAvailHor_stand,
+						'Rain_Vert_prim' => $RainAvailVert_prim,
+						'Rain_Hor_prim' => $RainAvailHor_prim,
+						'Multipath_Rain_Vert_stand' => $MRainAvailHor_Ver_stand,
+						'Multipath_Rain_Hor_stand' => $MRainAvail_Hor_stand,
+						'Multipath_Rain_Vert_prim' => $MRainAvail_Vert_prim,
+						'Multipath_Rain_Hor_prim' => $MRainAvail_Hor_prim, 
+						'Error_Vert_prim' => $Output_ErroredTimeV_prim,
+						'Error_Hor_prim' => $Output_ErroredTimeH_prim,
+						'Error_Vert_stand' => $Output_ErroredTimeV_stand,
+						'Error_Hor_stand' => $Output_ErroredTimeH_stand
+					); 
+				}
+			}
+		}
+		if($var['Version'] == 3)
+		{
+			if($Product == 3 || $Product == 4 || $Product == 5 || $Product == 6 || $Product == 7 || $Product == 8 || $Product == 9)
+			{
+				$SD = SD($var['Frequency_FD'], $var['Antenna_Menu'], $var['Version'], $var['Main_Freq'], $var['Div_Freq'], $Selective, $FadeMargin, $var['SD_Sep_A'], $var['SD_Sep_B'], $gain_Antenna_A, $gain_Antenna_A_Extra, $gain_Antenna_B, $gain_Antenna_B_Extra, $var['Frequency'], $distance, $SelectiveOutage);
+				$TotalMultipath = TotalMultipath($SelectiveOutage, $Selective); 
+				$MultipathRain = MultipathRain11($SD, $RainRate);
+				$RainAvailVert = $PlotRain['PlotRain100']['Plot2V'];
+				$MRainAvailVert =  $MultipathRain['mp2v'];
+				$RainAvailHor = $PlotRain['PlotRain100']['Plot2H'];
+				$MRainAvailHor =  $MultipathRain['mp2h'];
+				$ErroredTime = ErroredTime($MRainAvailVert, $MRainAvailHor);
+				$Output_ErroredTimeV = $ErroredTime['V_Hours'].":".$ErroredTime['V_Mins'];
+				$Output_ErroredTimeH = $ErroredTime['H_Hours'].":".$ErroredTime['H_Mins'];
+				if($SD['Pt3'] > 0 ) $MPAvailabilityVert = $SD['Pt3'];
+				else $MPAvailabilityVert = "NA";
+				$result[] = array(
+				'MultipathVert' =>	$TotalMultipath['TotalPath106'],
+				'MultipathHor' =>	$TotalMultipath['TotalPath106'],
+				'Rain_Vert' => $RainAvailVert,
+				'Rain_Hor' => $RainAvailHor,
+				'Multipath_Rain_Vert' => $MRainAvailVert,
+				'Multipath_Rain_Hor' => $MRainAvailHor, 
+				'Error_Vert' => $Output_ErroredTimeV,
+				'Error_Hor' => $Output_ErroredTimeH
+				); 
+			}
+		}
+		if($var['Version'] == 4)
+		{
+				if($Product == 3 || $Product == 4 || $Product == 5 || $Product == 6 || $Product == 7 || $Product == 8 || $Product == 9)
+				{
+					$SD = SD($var['Frequency_FD'], $var['Antenna_Menu'], $var['Version'], $var['Main_Freq'], $var['Div_Freq'], $Selective, $FadeMargin, $var['SD_Sep_A'], $var['SD_Sep_B'], $gain_Antenna_A, $gain_Antenna_A_Extra, $gain_Antenna_B, $gain_Antenna_B_Extra, $var['Frequency'], $distance, $SelectiveOutage);
+					$TotalMultipath = TotalMultipath($SelectiveOutage, $Selective); 
+					$MultipathRain = MultipathRain11($SD, $RainRate);
+					$RainAvailVert = $PlotRain['PlotRain100']['Plot2V'];
+					$MRainAvailVert =  $MultipathRain['mp2v'];
+					$RainAvailHor = $PlotRain['PlotRain100']['Plot2H'];
+					$MRainAvailHor =  $MultipathRain['mp2h'];
+					$ErroredTime = ErroredTime($MRainAvailVert, $MRainAvailHor);
+					$Output_ErroredTimeV = $ErroredTime['V_Hours'].":".$ErroredTime['V_Mins'];
+					$Output_ErroredTimeH = $ErroredTime['H_Hours'].":".$ErroredTime['H_Mins'];
+					if($SD['Pt3'] > 0 ) $MPAvailabilityVert = $SD['Pt3'];
+					else $MPAvailabilityVert = "NA";
+				
+					$result[] = array(
+					'MultipathVert' =>	$TotalMultipath['TotalPath106'],
+					'MultipathHor' =>	$TotalMultipath['TotalPath106'],
+					'Rain_Vert' => $RainAvailVert,
+					'Rain_Hor' => $RainAvailHor,
+					'Multipath_Rain_Vert' => $MRainAvailVert,
+					'Multipath_Rain_Hor' => $MRainAvailHor, 
+					'Error_Vert' => $Output_ErroredTimeV,
+					'Error_Hor' => $Output_ErroredTimeH
+					); 
+				}
+		}
 	}
 	echo json_encode($result);
 }
