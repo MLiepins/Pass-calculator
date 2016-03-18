@@ -1118,30 +1118,34 @@ function MultipathRain11($SD, $RainRate)
 	return $MultiPathRain; 
 }
 
-function Calculate_MainBlock($conn, &$var)
+function Calculate_MainBlock($conn, $var)
 {
 	$distance = $var['distance'];
 	$Product = $var['Product']; 
 	$PointRefractGrad = getPointRefractGrad($var['LatA'], $var['LonA'], $var['LatB'], $var['LonB']); 
-	
-	if($var['Antenna_Menu'] == 2) 
+	if($var['Version'] == 2 )
 	{
-		$var['Diameter_A_2'] = $var['Diameter_A_1'];
-		$var['Diameter_B_2'] = $var['Diameter_B_1'];
+		if($var['Antenna_Menu'] == 2) 
+		{
+			$var['Extra_diameter_A'] = $var['Diameter_A'];
+			$var['Extra_diameter_A'] = $var['Diameter_B'];
+		}
 	}
-	$a = Attenuation($var['Frequency'], $var['Temperature'] , $var['LatA'], $var['LatB'], $var['Antenna_A'],$var['Antenna_B'], $distance); 
+	$a = Attenuation($var['Frequency'], $var['Temperature'] , $var['LatA'], $var['LatB'], $var['Antenna_Height_A'],$var['Antenna_Height_B'], $distance); 
 	$sa = Sa($conn, $var['LatA'], $var['LonA'], $var['LatB'], $var['LonB']);
-	$Antenna_A = GetAnthenaParams($conn, $var['Manufacturer'], $var['Frequency'], $var['Diameter_A_1']);
-	$Antenna_B = GetAnthenaParams($conn, $var['Manufacturer'], $var['Frequency'], $var['Diameter_B_1']);
-	$Antenna_ASD = GetAnthenaParams($conn, $var['Manufacturer'], $var['Frequency'], $var['Diameter_A_2']);
-	$Antenna_BSD = GetAnthenaParams($conn, $var['Manufacturer'], $var['Frequency'], $var['Diameter_B_2']);
-	if($var['Version'] != 4) $EIRP = max($Antenna_A, $Antenna_B) + $var['TransmitPow']; 
-	else $EIRP = max($Antenna_A, $Antenna_B, $Antenna_ASD, $Antenna_BSD) + $var['TransmitPow'];
+	$gain_Antenna_A = GetAnthenaParams($conn, $var['Manufacturer'], $var['Frequency'], $var['Diameter_A']);
+	$gain_Antenna_B = GetAnthenaParams($conn, $var['Manufacturer'], $var['Frequency'], $var['Diameter_B']);
+	$gain_Antenna_A_Extra = GetAnthenaParams($conn, $var['Manufacturer'], $var['Frequency'], $var['Extra_diameter_A']);
+	$gain_Antenna_B_Extra = GetAnthenaParams($conn, $var['Manufacturer'], $var['Frequency'], $var['Extra_diameter_B']);
+	if($var['Version'] != 4) $EIRP = max($gain_Antenna_A, $gain_Antenna_B) + $var['TransmitPow']; 
+	else $EIRP = max($gain_Antenna_A, $gain_Antenna_B, $gain_Antenna_A_Extra, $gain_Antenna_B_Extra) + $var['TransmitPow'];
 
-	$RXThreshold = getThreshold($conn, $var['Frequency'], $var['Band_Width'], $var['Standart'], $var['FEC'], $var['Modulation'], $Product);
-	$FadeMargin = getFadeMargin($var['Antenna_Menu'], $var['Version'], $var['Frequency_FD'], $var['Transmit_FD'], $distance, $var['Frequency'], $var['TransmitPow'], $Antenna_A, $var['Losses'], $Antenna_B, $RXThreshold, $a, $var['Prim_Site_A'] , $var['Prim_Site_B'] , $var['Stand_Site_A'] , $var['Stand_Site_B']);
 	
-	$Geoclimatic = Geoclimatic($PointRefractGrad, $sa, $var['Antenna_A'], $var['Antenna_B'], $distance);
+	$RXThreshold = getThreshold($conn, $var['Frequency'], $var['Band_Width'], $var['Standart'], $var['FEC'], $var['Modulation'], $Product);
+	$FadeMargin = getFadeMargin($var['Antenna_Menu'], $var['Version'], $var['Frequency_FD'], $var['Transmit_FD'], $distance, $var['Frequency'], $var['TransmitPow'], $gain_Antenna_A, $var['Losses'], $gain_Antenna_B, $gain_Antenna_A_Extra, $gain_Antenna_B_Extra, $RXThreshold, $a, $var['Prim_Site_A'] , $var['Prim_Site_B'] , $var['Stand_Site_A'] , $var['Stand_Site_B']);
+
+	
+	$Geoclimatic = Geoclimatic($PointRefractGrad, $sa, $var['Antenna_Height_A'], $var['Antenna_Height_B'], $distance);
 	$SelectiveOutage = SelectiveOutage($var['Version'], $var['LatA'], $var['LatB'], $Geoclimatic, $distance, $var['Frequency'], $FadeMargin );
 	$Selective = Selective($SelectiveOutage, $distance, $conn, $var['Band_Width'], $var['Modulation'], $Product );
 	$RainRate = RainRate($conn, $var['Version'], $var['Frequency'], $var['Temp_Rain_Zone'], $distance, $FadeMargin, $SelectiveOutage ); 
@@ -1168,16 +1172,20 @@ function Calculate_MainBlock($conn, &$var)
 				$Output_ErroredTimeH = $ErroredTime['H_Hours'].":".$ErroredTime['H_Mins'];
 				if($TotalMultipath['TotalPath106'] > 0) $MPAvailabilityVert = $TotalMultipath['TotalPath106'];
 				else $MPAvailabilityVert = "NA";
+				$result[] = array(
+				'MultipathVert' =>	$TotalMultipath['TotalPath106'],
+				'MultipathHor' =>	$TotalMultipath['TotalPath106'],
+				'Rain_Vert' => $RainAvailVert,
+				'Rain_Hor' => $RainAvailHor,
+				'Multipath_Rain_Vert' => $MRainAvailVert,
+				'Multipath_Rain_Hor' => $MRainAvailHor, 
+				'Error_Vert' => $Output_ErroredTimeV,
+				'Error_Hor' => $Output_ErroredTimeH
+				); 
 			}
-			else echo "Not available";
 		}	
 	}
-	$result[] = array(
-	'RXThreshold' => $RXThreshold, 
-	'FadeMargin' => round($FadeMargin['FM106'], 2),
-	'Rec_Sig_Level' => round($FadeMargin['RX'], 2)
-	);
 	echo json_encode($result);
 }
-
+	
  ?>

@@ -110,7 +110,7 @@
 	<tr>
 		<td>Transmitter power</td>
 		<td>
-			<select name = "Transmitter">
+			<select name = "Transmitter" onchange = "changeTrans(this)">
 					<option value="">Please first select modulation</option>
 			</select>
 		</td>
@@ -196,8 +196,6 @@
 			</select>
 			<span name = "result_dB_SD"></span>
 		</td>
-		
-		
 		<td class = "Antenna_FD" hidden>Antenna A FD<br>
 			<select onchange = "change_A_Diameter_FD(this)" name = "diameter_A_FD">
 				<option value="">Please first choose Antenna manufacturer</option>
@@ -283,54 +281,66 @@
 		<td><span name = "EIRP"></span></td>
 	</tr>
 	<tr class = "Primary">
+		<td>Calculated results</td>
+		<td>Vertical</td>
+		<td>Horizontal</td>
+	</tr>
+	<tr class = "Standby" hidden>
+		<td>Calculated results</td>
+		<td>Vertical(Primary)</td>
+		<td>Horizontal(Primary)</td>
+		<td>Vertical(Standby)</td>
+		<td>Horizontal(Standby)</td>
+	</tr>
+	<tr class = "Primary">
 		<td>Multipath Availability (%): </td>
-		<td>Vertical <span name = "M_path_vert"></span></td>
-		<td>Horizontal <span name = "M_path_hori"></span></td>
+		<td><span name = "M_path_vert"></span></td>
+		<td><span name = "M_path_hori"></span></td>
 	</tr>
 	<tr class = "Standby" hidden>
 		<td>Multipath Availability (%): </td>
-		<td>Vertical(Primary):  <span name = "M_path_vert_Prim"></span></td>
-		<td>Horizontal(Primary):  <span name = "M_path_hori_Prim"></span></td>
-		<td>Vertical(Standby):  <span name = "M_path_vert_Stand"></span></td>
-		<td>Horizontal(Standby):  <span name = "M_path_hori_Stand"></span></td>
+		<td><span name = "M_path_vert_Prim"></span></td>
+		<td><span name = "M_path_hori_Prim"></span></td>
+		<td><span name = "M_path_vert_Stand"></span></td>
+		<td><span name = "M_path_hori_Stand"></span></td>
 	</tr>
 	<tr class = "Primary">
 		<td>Rain Availability (%): </td>
-		<td>Vertical <span name = "rain_vert"></span></td>
-		<td>Horizontal <span name = "rain_hori"></span></td>
+		<td><span name = "rain_vert"></span></td>
+		<td><span name = "rain_hori"></span></td>
 	</tr>
 	<tr class = "Standby" hidden>
 		<td>Rain Availability (%): </td>
-		<td>Vertical(Primary):  <span name = "rain_vert_prim"></span></td>
-		<td>Horizontal(Primary): <span name = "rain_hori_prim"></span></td>
-		<td>Vertical(Standby): <span name = "rain_vert_stand"></span></td>
-		<td>Horizontal(Standby): <span name = "rain_hori_stand"></span></td>
+		<td><span name = "rain_vert_prim"></span></td>
+		<td><span name = "rain_hori_prim"></span></td>
+		<td><span name = "rain_vert_stand"></span></td>
+		<td><span name = "rain_hori_stand"></span></td>
 	</tr>
 	<tr class = "Primary">
 		<td>Multipath + Rain Availability (%): </td>
-		<td>Vertical <span name = "M_rain_vert"></span></td>
-		<td>Horizontal <span name = "M_rain_hori"></span></td>
+		<td><span name = "M_rain_vert"></span></td>
+		<td><span name = "M_rain_hori"></span></td>
 	</tr>
 	<tr class = "Standby" hidden>
 		<td>Multipath + Rain Availability (%): </td>
-		<td>Vertical(Primary): <span name = "M_rain_vert_prim"></span></td>
-		<td>Horizontal(Primary): <span name = "M_rain_hori_prim"></span></td>
-		<td>Vertical(Standby): <span name = "M_rain_vert_stand"></span></td>
-		<td>Horizontal(Standby): <span name = "M_rain_hori_stand"></span></td>
+		<td><span name = "M_rain_vert_prim"></span></td>
+		<td><span name = "M_rain_hori_prim"></span></td>
+		<td><span name = "M_rain_vert_stand"></span></td>
+		<td><span name = "M_rain_hori_stand"></span></td>
 	</tr>
 	<tr class = "Primary">
 		<td>Errored time per year (HH:MM:SS)</td>
-		<td>Vertical <span name = "error_Time_Vert"></span></td>
-		<td>Horizontal <span name = "error_Time_Hori"></span></td>
+		<td><span name = "error_Time_Vert"></span></td>
+		<td><span name = "error_Time_Hori"></span></td>
 	</tr>
 	<tr class = "Standby" hidden>
 		<td>Errored time per year (HH:MM:SS)</td>
-		<td>Vertical(Primary): <span name = "error_Time_Vert_prim"></span></td>
-		<td>Horizontal(Primary): <span name = "error_Time_Hori_prim"></span></td>
-		<td>Vertical(Standby): <span name = "error_Time_Vert_stand"></span></td>
-		<td>Horizontal(Standby): <span name = "error_Time_Hori_stand"></span></td>
+		<td><span name = "error_Time_Vert_prim"></span></td>
+		<td><span name = "error_Time_Hori_prim"></span></td>
+		<td><span name = "error_Time_Vert_stand"></span></td>
+		<td><span name = "error_Time_Hori_stand"></span></td>
 	</tr>
 	</table>
-	<button type="button" name = "Calculate" class="btn btn-warning disabled">Calculate</button>
+	<button type="button" onclick = "calcPath(this)" name = "Calculate"  data-loading-text="Loading..." class="btn btn-warning disabled">Calculate</button>
 </form>
 <hr>

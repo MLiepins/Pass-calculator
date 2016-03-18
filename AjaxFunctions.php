@@ -273,90 +273,41 @@ if(isset($_POST['func']) && !empty($_POST['func']))
 		case 'prev_calc': getPrev_Calculations($conn, $_POST['ProdID'], $_POST['version'], $_POST['diameter_a'], $_POST['diameter_b'], $_POST['AntennaHeightA'], $_POST['AntennaHeightB'], $_POST['Transmitter'], $_POST['Extra_diameter_A'], $_POST['Extra_diameter_B'], $_POST['Antenna_Menu'], $_POST['LatA'], $_POST['LatB'],$_POST['LonA'], $_POST['LonB'], $_POST['Frequency'], $_POST['Losses'], $_POST['Stand_Site_A'], $_POST['Stand_Site_B'], $_POST['Prim_Site_A'],$_POST['Prim_Site_B'], $_POST['Bandwidth'], $_POST['Standart'], $_POST['FEC'], $_POST['Modulation'], $_POST['Temperature'], $_POST['Manufacturer'], $_POST['Frequency_FD'], $_POST['Transmit_FD']);	
 		break; 
 		
-/*
-		case 'calculate':
-			
-			$Distance = calculateDistance($_POST['LatA'], $_POST['LonA'], $_POST['LatB'], $_POST['LonB']); 
-			$Variables = array(
-			"distance" => $Distance,
-			"Version" => $_POST['version'],
-			"Product" =>  $_POST['ProdID'],
-			"Frequency" => $_POST['Frequency'],
-			"Band_Width" => $_POST['Bandwidth'],
-			"Standart" => $_POST['Standart'],
-			"FEC" => $_POST['FEC'],
-			"Temperature" => $_POST['Temperature'],
-			"Modulation" => $_POST['Modulation'],
-			"Temp_Rain_Zone" => $_POST['Rainzone'],
-			"LatA" => $_POST['LatA'],
-			"LonA" =>  $_POST['LonA'],
-			"LatB" =>  $_POST['LatB'],
-			"LonB" =>  $_POST['LonB'], 
-			"Antenna_A" => $_POST['AntennaHeightA'],
-			"Antenna_B" => $_POST['AntennaHeightB'],
-			"Losses" => $_POST['Losses'],
-			"Manufacturer" => $_POST['antennaManuf'],
-			"TransmitPow" => $_POST['Transmitter'],
-			"Diameter_A_1" => $_POST['diameter_a'],
-			"Diameter_B_1" => $_POST['diameter_b'], 
-			"Main_Freq" => $_POST['Main_Freq'],
-			"Div_Freq" => $_POST['Div_Freq'],
-			"Prim_Site_A" => $_POST['Prim_Site_A'],
-			"Prim_Site_B" => $_POST['Prim_Site_B'],
-			"Stand_Site_A" => $_POST['Stand_Site_A'],
-			"Stand_Site_B" => $_POST['Stand_Site_B'],
-			"SD_Sep_A" => $_POST['SD_Sep_A'],
-			"SD_Sep_B" => $_POST['SD_Sep_B'],			
-			"Frequency_FD" => $_POST['Frequency_FD'],
-			"Transmitter_FD" => $_POST['Transmitter_FD'],
-			"Antenna_Coupler" => $_POST['Antenna_Amount'],		
-			"Diameter_A_SD" => $_POST['diameter_A_SD'],
-			"Diameter_A_FD" => $_POST['diameter_A_FD'],
-			"Diameter_A_2" => $_POST['diameter_A2'],
-			"Diameter_B_SD" => $_POST['diameter_B_SD'],
-			"Diameter_B_FD" => $_POST['diameter_B_FD'],
-			"Diameter_B_2" => $_POST['diameter_B2']
-			);
-			Calculate_MainBlock($conn, $Variables);
-			*/
+		case 'calc_res':
+				$Distance = calculateDistance($_POST['LatA'], $_POST['LonA'], $_POST['LatB'], $_POST['LonB']);
+				$result = array(
+				'distance' => $Distance,
+				'Product' => $_POST['ProdID'],
+				'LatA' => $_POST['LatA'],
+				'LonA' => $_POST['LonA'],
+				'LatB' => $_POST['LatB'],
+				'LonB' => $_POST['LonB'],
+				'Antenna_Menu' => $_POST['Antenna_Menu'],
+				'Version' => $_POST['version'],
+				'Extra_diameter_A' => $_POST['Extra_diameter_A'],
+				'Extra_diameter_B' => $_POST['Extra_diameter_B'],
+				'Diameter_A' => $_POST['diameter_a'],
+				'Diameter_B' => $_POST['diameter_b'],
+				'Frequency' => $_POST['Frequency'],
+				'Temperature' => $_POST['Temperature'],
+				'Antenna_Height_A' => $_POST['AntennaHeightA'],
+				'Antenna_Height_B' => $_POST['AntennaHeightB'],
+				'Manufacturer' => $_POST['Manufacturer'],
+				'TransmitPow' => $_POST['Transmitter'],
+				'Band_Width' => $_POST['Bandwidth'], 
+				'Standart' => $_POST['Standart'], 
+				'FEC' => $_POST['FEC'], 
+				'Modulation' => $_POST['Modulation'],
+				'Frequency_FD' => $_POST['Frequency_FD'],
+				'Transmit_FD' => $_POST['Transmit_FD'],
+				'Losses' => $_POST['Losses'],
+				'Prim_Site_A' => $_POST['Prim_Site_A'],
+				'Prim_Site_B' => $_POST['Prim_Site_B'],
+				'Stand_Site_A' => $_POST['Stand_Site_A'],
+				'Stand_Site_B' => $_POST['Stand_Site_B'],
+				'Temp_Rain_Zone' => $_POST['RainZone']
+				);
+				Calculate_MainBlock($conn, $result); 
+		break;
 	}
 }
-			/*
-			ProdID: ProdID
-			Frequency: Frequency
-			Bandwidth: Bandwidth
-			Standart: Standart
-			FEC: FEC
-			Temperature: Temperature
-			Modulation: Modulation
-			Rainzone: RainzoneTMP
-			LatA: LatA
-			LatB: LatB
-			LonA: LonA
-			LonB: LonB
-			AntennaHeightA: AntennaHeightA
-			AntennaHeightB: AntennaHeightB
-			Losses: Losses
-			antennaManuf: antennaManuf
-			Transmitter: Transmitter
-			diameter_a: diameter_a
-			diameter_b: diameter_b
-			Main_Freq: Main_Freq
-			Div_Freq: Div_Freq
-			Stand_Site_A: Stand_Site_A
-			Stand_Site_B: Stand_Site_B
-			Prim_Site_A: Prim_Site_A
-			Prim_Site_B: Prim_Site_B
-			SD_Sep_A: SD_Sep_A
-			SD_Sep_B: SD_Sep_B
-			Frequency_FD: Frequency_FD
-			Transmitter_FD: Transmitter_FD
-			Antenna_Amount: Antenna_Amount
-			diameter_A_SD: diameter_A_SD
-			diameter_A_FD: diameter_A_FD
-			diameter_A2: diameter_A2
-			diameter_B_SD: diameter_B_SD
-			diameter_B_FD: diameter_B_FD
-			diameter_B2: diameter_B2
-			*/
-?>
