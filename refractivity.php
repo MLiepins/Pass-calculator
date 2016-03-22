@@ -45,7 +45,7 @@
 	</script>
 	</div> 
 	<br>
-	 <button id = "AddLink">Add Link</button> 
+	<button id = "AddLink">Add Link</button> 
 	 <form>
 		<input type="text" class = "RemoveID">
 		<button class = "Remove">Remove Link</button> 

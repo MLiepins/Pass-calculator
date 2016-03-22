@@ -1324,6 +1324,20 @@ function Calculate_MainBlock($conn, $var)
 				}
 		}
 	}
+	else
+	{
+		$result[] = array
+		(
+			'MultipathVert' =>	"N/A",
+			'MultipathHor' =>	"N/A",
+			'Rain_Vert' => "N/A",
+			'Rain_Hor' => "N/A",
+			'Multipath_Rain_Vert' => "N/A",
+			'Multipath_Rain_Hor' => "N/A", 
+			'Error_Vert' => "N/A",
+			'Error_Hor' => "N/A"
+		); 
+	}
 	echo json_encode($result);
 }
 	

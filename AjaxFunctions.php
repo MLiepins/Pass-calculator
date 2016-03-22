@@ -6,7 +6,7 @@ if(isset($_POST['Version']))
 {
 	$version = $_POST['Version'];
 	if($version == 1)
-	{		$object[0] = array('id' => 0, 'name' => "Choose product");
+	{		
 			$object[1] = array('id' => 1, 'name' => "Integra");
 			$object[2] = array('id' => 2, 'name' => "Integra W");
 			$object[3] = array('id' => 3, 'name' => "CFIP Lumina FODU");
@@ -16,7 +16,6 @@ if(isset($_POST['Version']))
 	}
 	if($version == 2)
 	{
-			$object[0] = array('id' => 0, 'name' => "Choose product");
 			$object[1] = array('id' => 3, 'name' => "CFIP Lumina FODU");
 			$object[2] = array('id' => 4, 'name' => "CFIP Phoenix IDU");
 			$object[3] = array('id' => 5, 'name' => "CFIP Phoenix M IDU");
@@ -24,7 +23,6 @@ if(isset($_POST['Version']))
 	}
 	if($version == 3 || $version == 4)
 	{
-			$object[0] = array('id' => 0, 'name' => "Choose product");
 			$object[1] = array('id' => 4, 'name' => "CFIP Phoenix IDU");
 			$object[2] = array('id' => 5, 'name' => "CFIP Phoenix M IDU");
 			$object[3] = array('id' => 6, 'name' => "CFIP Phoenix C IDU");
