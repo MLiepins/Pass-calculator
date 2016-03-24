@@ -2,6 +2,7 @@
 	<form class="form-DecDeg" method="GET">
 	<table class="table table-bordered"  style="width: auto">
 	<div name = "ProdID" value = "" hidden></div>
+	<div name = "storageFreq" value = "" hidden></div>
 	<tr>
 		<td>Version: </td>
 		<td>
@@ -28,7 +29,7 @@
 		<td>Odu type</td>
 		<td>
 			<select onchange = "oduChange(this)" name = "Odu" class = "OduVal">
-				<option value="0" disabled selected value>Choose odu type</option>
+				<option value="" disabled selected value>Choose odu type</option>
 				<option value="1">Phoenix ODU</option>
 				<option value="2">R Odu</option>
 			</select>

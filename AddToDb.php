@@ -391,12 +391,97 @@ if(isset($_GET['TXpower'])){
 						$Modulation =  mysqli_real_escape_string($conn, $array[$x][0]);
 						$FrequencyBand = mysqli_real_escape_string($conn, substr( $array[0][$y], 0, -3 ));
 						$TX_Power = $array[$x][$y]; 
-						$sql = "INSERT INTO `tx_power`(`Product_ID`, `Modulation`, `FrequencyBand`, `HTX_MinPower`, `HTX_MaxPower`) VALUES ( 9,'$Modulation', $FrequencyBand, 0 ,$TX_Power)";
+						$sql = "INSERT INTO `tx_power`(`Product_ID`, `Modulation`, `FrequencyBand`, `TX_MinPower`, `TX_MaxPower`) VALUES ( 2,'$Modulation', $FrequencyBand, 0 ,$TX_Power)";
 						$result = $conn->query($sql);
 						echo $conn->error;
 					}
 				}
 			}
+	}
+}
+if(isset($_GET['TXpowerLumina'])){
+	if(isset($_GET['File1004']) == false) $log_message4 = "Please choose file.";
+	else
+	{
+	$filename = $_GET['File1004']; 
+	$csvData = file_get_contents($filename);
+	//print_r ($csvData);
+	$lines = explode(PHP_EOL, $csvData);
+	$array = array();
+	foreach ($lines as $line) {
+	$array[] = str_getcsv($line);
+	}
+			$ySize = sizeof($array)-2;
+			$xSize = max( array_map('count', $array) )- 1;
+			//echo $array[$ySize][$xSize];
+			for ($x = 1; $x <= $ySize; $x++) //$x = 2 norāda no kuras rindas sākt
+			{
+				for ($y = 2; $y <= $xSize; $y++)//$y = 1 norāda no kuras kolonnas sākt. 
+				{ 
+					if(!empty($array[$x][$y]))
+					{
+						if (strpos($array[$x][$y], '...') == true) 
+						{
+							$Powers = explode("...",$array[$x][$y]);
+							//echo " Modulation: ".$array[$x][0]." Frequence: ".$array[0][$y]." TXmin: ".$Powers[0]." TXmax: ".$Powers[1]."<br>"; 	
+							$Modulation =  mysqli_real_escape_string($conn, $array[$x][0]);
+							$FrequencyBand = mysqli_real_escape_string($conn, substr( $array[0][$y], 0, -3 ));
+							$TXmin = mysqli_real_escape_string($conn, $Powers[0]);
+							$TXmax = mysqli_real_escape_string($conn, $Powers[1]);
+							$sql = "INSERT INTO `tx_power`(`Product_ID`, `Modulation`, `FrequencyBand`, `TX_MinPower`, `TX_MaxPower`) VALUES ( 3,'$Modulation', $FrequencyBand, $TXmin, $TXmax)";
+							$result = $conn->query($sql);
+							echo $conn->error;
+						}
+						else
+						{
+							//echo " Modulation: ".$array[$x][0]." Frequence: ".$array[0][$y]." Power: ".$array[$x][$y]."<br>"; 																		
+							$Modulation =  mysqli_real_escape_string($conn, $array[$x][0]);
+							$FrequencyBand = mysqli_real_escape_string($conn, substr( $array[0][$y], 0, -3 ));
+							$TX_Power = $array[$x][$y]; 
+							$sql = "INSERT INTO `tx_power`(`Product_ID`, `Modulation`, `FrequencyBand`, `TX_MinPower`, `TX_MaxPower`) VALUES ( 3,'$Modulation', $FrequencyBand, 0 ,$TX_Power)";
+							$result = $conn->query($sql);
+							echo $conn->error;
+						}
+					}
+				}
+			}
+	}
+}
+if(isset($_GET['OduTX'])){
+	if(isset($_GET['File1005']) == false) $log_message4 = "Please choose file.";
+	else
+	{
+		$filename = $_GET['File1005']; 
+		$csvData = file_get_contents($filename);
+		//print_r ($csvData);
+		$product = 9; 
+		$lines = explode(PHP_EOL, $csvData);
+		$array = array();
+		foreach ($lines as $line) 
+		{
+			$array[] = str_getcsv($line);
+		}
+				$ySize = sizeof($array)-2;
+				$xSize = max( array_map('count', $array) )- 1;
+				//echo $array[$ySize][$xSize];
+				for ($x = 2; $x <= 7; $x++) //$x = 2 norāda no kuras rindas sākt
+				{
+					for ($y = 2; $y <= $xSize; $y++)//$y = 1 norāda no kuras kolonnas sākt. 
+					{ 
+						if(!empty($array[$x][$y]))
+						{
+								$MinPower = 0; 
+								echo " Modulation: ".$array[$x][0]." Frequence: ".$array[1][$y]." High Power MIN: ".$MinPower  ." High Power MAX: ".$array[$x][$y]. "<br>"; 		
+								$Modulation =  mysqli_real_escape_string($conn, $array[$x][0]);
+								$FrequencyBand = mysqli_real_escape_string($conn, substr( $array[1][$y], 0, -3 ));
+								$HTX_MinPower = mysqli_real_escape_string($conn, $MinPower);
+								$HTX_MaxPower = mysqli_real_escape_string($conn, $array[$x][$y]);
+								$sql = "INSERT INTO `tx_power`(`Product_ID`, `Modulation`, `FrequencyBand`, `TX_MinPower`, `TX_MaxPower`) VALUES ( $product,'$Modulation', $FrequencyBand, $HTX_MinPower, $HTX_MaxPower)";
+								$result = $conn->query($sql);
+								echo $conn->error;
+						}
+					}
+				}
 	}
 }
 if(isset($_GET['TXpower2'])){
@@ -424,24 +509,30 @@ if(isset($_GET['TXpower2'])){
 						if (strpos($array[$x][$y], '...') == true) 
 						{
 							$Powers = explode("...",$array[$x][$y]);
-							//echo " Modulation: ".$array[$x][0]." Frequence: ".$array[1][$y]." TXmin: ".$Powers[0]." TXmax: ".$Powers[1]." High Powers: ".$array[$x+9][$y]."<br>"; 	
+							$HighMinPower = $array[$x+9][$y] - ($Powers[1] - $Powers[0]);
+							echo " Modulation: ".$array[$x][0]." Frequence: ".$array[1][$y]." TXmin: ".$Powers[0]." TXmax: ".$Powers[1]." High Min Powers: ".$HighMinPower." High Max Power: ".$array[$x+9][$y]."<br>"; 	
 							$Modulation =  mysqli_real_escape_string($conn, $array[$x][0]);
 							$FrequencyBand = mysqli_real_escape_string($conn, substr( $array[1][$y], 0, -3 ));
 							$TXmin = mysqli_real_escape_string($conn, $Powers[0]);
 							$TXmax = mysqli_real_escape_string($conn, $Powers[1]);
+							$HTX_MinPower = mysqli_real_escape_string($conn, $HighMinPower);
 							$HTX_MaxPower = mysqli_real_escape_string($conn, $array[$x+9][$y]);
-							$sql = "INSERT INTO `tx_power`(`Product_ID`, `Modulation`, `FrequencyBand`, `TX_MinPower`, `TX_MaxPower`, `HTX_MaxPower`) VALUES ( $product,'$Modulation', $FrequencyBand, $TXmin, $TXmax, $HTX_MaxPower)";
+							$sql = "INSERT INTO `tx_power`(`Product_ID`, `Modulation`, `FrequencyBand`, `TX_MinPower`, `TX_MaxPower`, `HTX_MinPower`, `HTX_MaxPower`) VALUES ( $product,'$Modulation', $FrequencyBand, $TXmin, $TXmax, $HTX_MinPower, $HTX_MaxPower)";
 							$result = $conn->query($sql);
 							echo $conn->error;
 						}
 						else 																
 						{
-							//echo " Modulation: ".$array[$x][0]." Frequence: ".$array[1][$y]." Power: ".$array[$x][$y]." High Powers: ".$array[$x+9][$y]. "<br>"; 		
+							$MinPower = 0; 
+							$HighPowerMin = $array[$x+9][$y] - abs($array[$x][$y] - $MinPower);
+							echo " Modulation: ".$array[$x][0]." Frequence: ".$array[1][$y]." MinPower: ". $MinPower. " Power: ".$array[$x][$y]." High Power Min: ". $HighPowerMin  ." High Power MAX: ".$array[$x+9][$y]. "<br>"; 		
 							$Modulation =  mysqli_real_escape_string($conn, $array[$x][0]);
 							$FrequencyBand = mysqli_real_escape_string($conn, substr( $array[1][$y], 0, -3 ));
 							$TXmax = mysqli_real_escape_string($conn, $array[$x][$y]);
+							$TXmin = mysqli_real_escape_string($conn, $MinPower);
+							$HTX_MinPower = mysqli_real_escape_string($conn, $HighPowerMin);
 							$HTX_MaxPower = mysqli_real_escape_string($conn, $array[$x+9][$y]);
-							$sql = "INSERT INTO `tx_power`(`Product_ID`, `Modulation`, `FrequencyBand`, `TX_MaxPower`, `HTX_MaxPower`) VALUES ( $product,'$Modulation', $FrequencyBand, $TXmax, $HTX_MaxPower)";
+							$sql = "INSERT INTO `tx_power`(`Product_ID`, `Modulation`, `FrequencyBand`, `TX_MinPower`, `TX_MaxPower`, `HTX_MinPower`, `HTX_MaxPower`) VALUES ( $product,'$Modulation', $FrequencyBand, $TXmin, $TXmax, $HTX_MinPower, $HTX_MaxPower)";
 							$result = $conn->query($sql);
 							echo $conn->error;
 						}
@@ -451,7 +542,7 @@ if(isset($_GET['TXpower2'])){
 						if (strpos($array[$x][$y], '...') == true) 
 						{
 							$Powers = explode("...",$array[$x][$y]);
-							//echo " Modulation: ".$array[$x][0]." Frequence: ".$array[1][$y]." TXmin: ".$Powers[0]." TXmax: ".$Powers[1]."<br>"; 	
+							echo " Modulation: ".$array[$x][0]." Frequence: ".$array[1][$y]." TXmin: ".$Powers[0]." TXmax: ".$Powers[1]."<br>"; 	
 							$Modulation =  mysqli_real_escape_string($conn, $array[$x][0]);
 							$FrequencyBand = mysqli_real_escape_string($conn, substr( $array[1][$y], 0, -3 ));
 							$TXmin = mysqli_real_escape_string($conn, $Powers[0]);
@@ -462,22 +553,24 @@ if(isset($_GET['TXpower2'])){
 						}
 						else																
 						{
-							//echo " Modulation: ".$array[$x][0]." Frequence: ".$array[1][$y]." Power: ".$array[$x][$y]."<br>"; 		
+							echo " Modulation: ".$array[$x][0]." Frequence: ".$array[1][$y]." Power: ".$array[$x][$y]."<br>"; 		
 							$Modulation =  mysqli_real_escape_string($conn, $array[$x][0]);
 							$FrequencyBand = mysqli_real_escape_string($conn, substr( $array[1][$y], 0, -3 ));
 							$TXmax = mysqli_real_escape_string($conn, $array[$x][$y]);
 							$sql = "INSERT INTO `tx_power`(`Product_ID`, `Modulation`, `FrequencyBand`, `TX_MaxPower`) VALUES ( $product,'$Modulation', $FrequencyBand, $TXmax)";
 							$result = $conn->query($sql);
-							echo $conn->error;
+							//echo $conn->error;
 						}
 					}
 					else if(empty($array[$x][$y]) && !empty($array[$x+9][$y]))
 					{
-						//echo " Modulation: ".$array[$x][0]." Frequence: ".$array[1][$y]." Power: ".$array[$x+9][$y]."<br>"; 																		
+						$MinPower = 14; 
+						echo " Modulation: ".$array[$x][0]." Frequence: ".$array[1][$y]." HP_min_Power: ".$MinPower. " HP_Max_Power: ".$array[$x+9][$y]."<br>"; 																		
 						$Modulation =  mysqli_real_escape_string($conn, $array[$x][0]);
 						$FrequencyBand = mysqli_real_escape_string($conn, substr( $array[1][$y], 0, -3 ));
 						$HTX_MaxPower = mysqli_real_escape_string($conn, $array[$x+9][$y]);
-						$sql = "INSERT INTO `tx_power`(`Product_ID`, `Modulation`, `FrequencyBand`, `HTX_MaxPower`) VALUES ( $product,'$Modulation', $FrequencyBand, $HTX_MaxPower)";
+						$HTX_MinPower = mysqli_real_escape_string($conn, $MinPower);
+						$sql = "INSERT INTO `tx_power`(`Product_ID`, `Modulation`, `FrequencyBand`,`HTX_MinPower`, `HTX_MaxPower`) VALUES ( $product,'$Modulation', $FrequencyBand, $HTX_MinPower, $HTX_MaxPower)";
 						$result = $conn->query($sql);
 						echo $conn->error;
 					}
@@ -584,6 +677,18 @@ if(isset($_GET['RxThresholdLumina'])){
 	<form class="form-Threshold" method="GET">
 	<input type="text" name="File1003" placeholder="RX thresholds">
 	<input type="submit" name = "TXpower2" value="Upload">
+	<br>Log: <?php echo htmlspecialchars($log_message4)?>
+	</form>
+	<h2>Lumina TX Power</h2>
+	<form class="form-Threshold" method="GET">
+	<input type="text" name="File1004" placeholder="RX thresholds">
+	<input type="submit" name = "TXpowerLumina" value="Upload">
+	<br>Log: <?php echo htmlspecialchars($log_message4)?>
+	</form>
+	<h2>R ODU TX Power</h2>
+	<form class="form-Threshold" method="GET">
+	<input type="text" name="File1005" placeholder="RX thresholds">
+	<input type="submit" name = "OduTX" value="Upload">
 	<br>Log: <?php echo htmlspecialchars($log_message4)?>
 	</form>
 	<h2>Anthenna Gains</h2>

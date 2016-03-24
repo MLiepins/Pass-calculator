@@ -99,13 +99,15 @@ function getRainZone($conn, $RainZone)
 }
 function getTransmitter($conn, $ProdID, $Modulation, $Frequency)
 {
-	$sql = "SELECT `TX_MinPower`,`TX_MaxPower` FROM `tx_power` WHERE `Product_ID` = $ProdID AND `Modulation` = '$Modulation' AND `FrequencyBand` = $Frequency LIMIT 1";	
+	$sql = "SELECT `TX_MinPower`,`TX_MaxPower`, `HTX_MinPower`, `HTX_MaxPower` FROM `tx_power` WHERE `Product_ID` = $ProdID AND `Modulation` = '$Modulation' AND `FrequencyBand` = $Frequency LIMIT 1";	
 	$result = $conn->query($sql);
 	while($row = mysqli_fetch_assoc($result))
 	{
 		$object[] = array(
 		'MinPower' => $row['TX_MinPower'],
-		'MaxPower' => $row['TX_MaxPower']
+		'MaxPower' => $row['TX_MaxPower'],
+		'MinHighPower' => $row['HTX_MinPower'],
+		'MaxHighPower' => $row['HTX_MaxPower']
 		);
 	}
 	echo json_encode($object);
@@ -163,6 +165,18 @@ function  getFadeMargin_Echo($Coupler, $Prim_Site_A, $Prim_Site_B, $Stand_Site_A
 	'SignalLevel' => $FadeMargin['RX'], 
 	'RSSI' => $RSSI['RSSI']
 	);
+	echo json_encode($object);
+}
+function getFEC($conn, $ProdID, $Frequency, $Bandwidth, $Standart)
+{
+	$sql = "SELECT `FEC` FROM `rx_treshold` WHERE `ProductID` = $ProdID AND `FrequencyBand` = $Frequency AND `BandWidth` = $Bandwidth and `Standart` = '$Standart' GROUP BY `FEC`";
+	$result = $conn->query($sql);
+	while($row = mysqli_fetch_assoc($result))
+	{
+		$object[] = array(
+		'FEC' => $row['FEC']
+		);
+	}
 	echo json_encode($object);
 }
 function getPrev_Calculations($conn, $ProdID, $Version, $Antenna_A_Diameter, $Antenna_B_Diameter, $Antenna_Height_A, $Antenna_Height_B, $Transmitter, $Extra_diameter_A, $Extra_diameter_B, $Antenna_Menu, $LatA, $LatB, $LonA, $LonB, $Frequency, $Losses, $Stand_Site_A, $Stand_Site_B, $Prim_Site_A, $Prim_Site_B, $Bandwidth, $Standart, $FEC, $Modulation, $Temperature, $Manufacturer, $Frequency_FD, $Transmit_FD)
@@ -261,6 +275,9 @@ if(isset($_POST['func']) && !empty($_POST['func']))
 		
 		case 'antenna_DBI':  getAntennaGain($conn, $_POST['antennaManuf'], $_POST['Frequency'], $_POST['Diameter']);		
 		break;		
+		
+		case 'getFEC':  getFEC($conn, $_POST['Prod'], $_POST['Frequency'], $_POST['Bandwidth'], $_POST['Standart']);	
+		break; 
 		
 		case 'Threshold': getThreshold_Echo($conn, $_POST['ProdID'], $_POST['Frequency'], $_POST['Bandwidth'], $_POST['Standart'], $_POST['FEC'], $_POST['Modulation']);
 		break; 
