@@ -16,72 +16,72 @@ function isset(variable)
 
 function manageVersionChange(el)
 {
-		var site = $(el).parent().parent().parent().parent().parent().parent().attr('class'); //Iegūst galvenā div elementa ID.  
+		var site = $(el).parent().parent().parent().parent().parent().parent().attr('id'); //Iegūst galvenā div elementa ID.  
 		//console.log(site);
 		//console.log($('.Version').val());
-		var version = $('.'+site+'').find('select[name = Version]').val();
+		var version = $('#'+site+'').find('select[name = Version]').val();
 		if(version == 1)
 		{
-			$('.'+site+'').find('.odu').hide();	
-			$('.'+site+'').find('tr[class = h_AntennaMode]').hide();
-			$('.'+site+'').find('td[class = extra_diameter]').hide();
-			$('.'+site+'').find('tr[class = Coupler_Atten]').hide();
-			$('.'+site+'').find('tr[class = Standby]').hide();
-			$('.'+site+'').find('tr[class = Antenna_SD]').hide();
-			$('.'+site+'').find('td[class = Antenna_SD]').hide();
-			$('.'+site+'').find('tr[class = Diversity]').hide();
-			$('.'+site+'').find('tr[class = Diversity]').hide();
-			$('.'+site+'').find('td[class = Antenna_FD]').hide();
-			$('.'+site+'').find('tr[class = FD_params]').hide();
+			$('#'+site+'').find('.odu').hide();	
+			$('#'+site+'').find('tr[class = h_AntennaMode]').hide();
+			$('#'+site+'').find('td[class = extra_diameter]').hide();
+			$('#'+site+'').find('tr[class = Coupler_Atten]').hide();
+			$('#'+site+'').find('tr[class = Standby]').hide();
+			$('#'+site+'').find('tr[class = Antenna_SD]').hide();
+			$('#'+site+'').find('td[class = Antenna_SD]').hide();
+			$('#'+site+'').find('tr[class = Diversity]').hide();
+			$('#'+site+'').find('tr[class = Diversity]').hide();
+			$('#'+site+'').find('td[class = Antenna_FD]').hide();
+			$('#'+site+'').find('tr[class = FD_params]').hide();
 		}
 		if(version == 2)
 		{
-			$('.'+site+'').find('.odu').show();
-			$('.'+site+'').find('tr[class = h_AntennaMode]').show();
-			$('.'+site+'').find('td[class = extra_diameter]').hide();
-			$('.'+site+'').find('tr[class = Coupler_Atten]').hide();
-			$('.'+site+'').find('tr[class = Standby]').hide();
-			$('.'+site+'').find('tr[class = Antenna_SD]').hide();
-			$('.'+site+'').find('td[class = Antenna_SD]').hide();
-			$('.'+site+'').find('tr[class = Diversity]').hide();
-			$('.'+site+'').find('tr[class = Diversity]').hide();
-			$('.'+site+'').find('td[class = Antenna_FD]').hide();
-			$('.'+site+'').find('tr[class = FD_params]').hide();
+			$('#'+site+'').find('.odu').show();
+			$('#'+site+'').find('tr[class = h_AntennaMode]').show();
+			$('#'+site+'').find('td[class = extra_diameter]').hide();
+			$('#'+site+'').find('tr[class = Coupler_Atten]').hide();
+			$('#'+site+'').find('tr[class = Standby]').hide();
+			$('#'+site+'').find('tr[class = Antenna_SD]').hide();
+			$('#'+site+'').find('td[class = Antenna_SD]').hide();
+			$('#'+site+'').find('tr[class = Diversity]').hide();
+			$('#'+site+'').find('tr[class = Diversity]').hide();
+			$('#'+site+'').find('td[class = Antenna_FD]').hide();
+			$('#'+site+'').find('tr[class = FD_params]').hide();
 		}
 		if(version == 3)
 		{
-			$('.'+site+'').find('.odu').show();
-			$('.'+site+'').find('tr[class = h_AntennaMode]').hide();
-			$('.'+site+'').find('td[class = extra_diameter]').hide();
-			$('.'+site+'').find('tr[class = Coupler_Atten]').hide();
-			$('.'+site+'').find('tr[class = Standby]').hide();
-			$('.'+site+'').find('tr[class = Antenna_SD]').show();
-			$('.'+site+'').find('td[class = Antenna_SD]').show();
-			$('.'+site+'').find('tr[class = Diversity]').hide();
-			$('.'+site+'').find('td[class = Antenna_FD]').hide();
-			$('.'+site+'').find('tr[class = FD_params]').hide();			
+			$('#'+site+'').find('.odu').show();
+			$('#'+site+'').find('tr[class = h_AntennaMode]').hide();
+			$('#'+site+'').find('td[class = extra_diameter]').hide();
+			$('#'+site+'').find('tr[class = Coupler_Atten]').hide();
+			$('#'+site+'').find('tr[class = Standby]').hide();
+			$('#'+site+'').find('tr[class = Antenna_SD]').show();
+			$('#'+site+'').find('td[class = Antenna_SD]').show();
+			$('#'+site+'').find('tr[class = Diversity]').hide();
+			$('#'+site+'').find('td[class = Antenna_FD]').hide();
+			$('#'+site+'').find('tr[class = FD_params]').hide();			
 		}
 		if(version == 4)
 		{
-			$('.'+site+'').find('.odu').show();
-			$('.'+site+'').find('tr[class = h_AntennaMode]').hide();
-			$('.'+site+'').find('td[class = extra_diameter]').hide();
-			$('.'+site+'').find('tr[class = Coupler_Atten]').hide();
-			$('.'+site+'').find('tr[class = Standby]').hide();
-			$('.'+site+'').find('tr[class = Antenna_SD]').hide();
-			$('.'+site+'').find('td[class = Antenna_SD]').hide();
-			$('.'+site+'').find('tr[class = Diversity]').show();
-			$('.'+site+'').find('td[class = Antenna_FD]').hide();
-			$('.'+site+'').find('tr[class = FD_params]').hide();
+			$('#'+site+'').find('.odu').show();
+			$('#'+site+'').find('tr[class = h_AntennaMode]').hide();
+			$('#'+site+'').find('td[class = extra_diameter]').hide();
+			$('#'+site+'').find('tr[class = Coupler_Atten]').hide();
+			$('#'+site+'').find('tr[class = Standby]').hide();
+			$('#'+site+'').find('tr[class = Antenna_SD]').hide();
+			$('#'+site+'').find('td[class = Antenna_SD]').hide();
+			$('#'+site+'').find('tr[class = Diversity]').show();
+			$('#'+site+'').find('td[class = Antenna_FD]').hide();
+			$('#'+site+'').find('tr[class = FD_params]').hide();
 		}
 }	
 function verChange(el)
 {
-		var site = $(el).parent().parent().parent().parent().parent().parent().attr('class'); //Iegūst galvenā div elementa ID.  
-		var tmp_prod_select = prodSelect = $('.'+site+'').find('select[name=Productx1]').val();
-		var prodSelect = $('.'+site+'').find('select[name=Productx1]').empty();
-		var version = $('.'+site+'').find('select[name = Version]').val();		
-		var Frequency = $('.'+site+'').find('select[name=Frequency]').val();
+		var site = $(el).parent().parent().parent().parent().parent().parent().attr('id'); //Iegūst galvenā div elementa ID.  
+		var tmp_prod_select = prodSelect = $('#'+site+'').find('select[name=Productx1]').val();
+		var prodSelect = $('#'+site+'').find('select[name=Productx1]').empty();
+		var version = $('#'+site+'').find('select[name = Version]').val();		
+		var Frequency = $('#'+site+'').find('select[name=Frequency]').val();
 		//console.log($(el).val());
 		//console.log(version); 
 		$.post( "AjaxFunctions.php", { Version: version}, function(response)
@@ -100,7 +100,7 @@ function verChange(el)
 		});
 		if(isset(version))
 		{
-			var warn_version =  $('.'+site+'').find('span[name = Ver_War]');	
+			var warn_version =  $('#'+site+'').find('span[name = Ver_War]');	
 			$(warn_version).removeClass( "glyphicon glyphicon-remove" ).addClass( "glyphicon glyphicon-ok" );
 			$(warn_version).css("color", good);
 		}
@@ -108,12 +108,12 @@ function verChange(el)
 
 function prodChange(el)
 {
-	var site = $(el).parent().parent().parent().parent().parent().parent().attr('class'); //Iegūst galvenā div elementa ID. 
-	var product = $('.'+site+'').find('select[name = Productx1]').val();
-	var version = $('.'+site+'').find('select[name = Version]').val();
-	var ProdID = $('.'+site+'').find('div[name = ProdID]').empty();
-	var odu = $('.'+site+'').find('select[name = Odu]').val(2);
-	var tmp_freq = $('.'+site+'').find('select[name=Frequency]').val();
+	var site = $(el).parent().parent().parent().parent().parent().parent().attr('id'); //Iegūst galvenā div elementa ID. 
+	var product = $('#'+site+'').find('select[name = Productx1]').val();
+	var version = $('#'+site+'').find('select[name = Version]').val();
+	var ProdID = $('#'+site+'').find('div[name = ProdID]').empty();
+	var odu = $('#'+site+'').find('select[name = Odu]').val(2);
+	var tmp_freq = $('#'+site+'').find('select[name=Frequency]').val();
 	
 	if(version == 1)
 	{
@@ -132,14 +132,14 @@ function prodChange(el)
 	}
 	else
 	{
-		$('.'+site+'').find('select[name = Odu]').val('');
-		var warn_odu =  $('.'+site+'').find('span[name = Odu_War]');	
+		$('#'+site+'').find('select[name = Odu]').val('');
+		var warn_odu =  $('#'+site+'').find('span[name = Odu_War]');	
 		$(warn_odu).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 		$(warn_odu).css("color", bad);
 	}
 	if(isset(product))
 	{			
-		var warn_product =  $('.'+site+'').find('span[name = Prod_War]');	
+		var warn_product =  $('#'+site+'').find('span[name = Prod_War]');	
 		$(warn_product).removeClass( "glyphicon glyphicon-remove" ).addClass( "glyphicon glyphicon-ok" );
 		$(warn_product).css("color", good);
 	}	
@@ -147,11 +147,11 @@ function prodChange(el)
 
 function oduChange(el)
 {
-	var site = $(el).parent().parent().parent().parent().parent().parent().attr('class'); //Iegūst galvenā div elementa ID. 
-	var product = $('.'+site+'').find('select[name = Productx1]').val();
-	var version = $('.'+site+'').find('select[name = Version]').val();
-	var odu = $('.'+site+'').find('select[name = Odu]').val();
-	var ProdID = $('.'+site+'').find('div[name = ProdID]').empty();
+	var site = $(el).parent().parent().parent().parent().parent().parent().attr('id'); //Iegūst galvenā div elementa ID. 
+	var product = $('#'+site+'').find('select[name = Productx1]').val();
+	var version = $('#'+site+'').find('select[name = Version]').val();
+	var odu = $('#'+site+'').find('select[name = Odu]').val();
+	var ProdID = $('#'+site+'').find('div[name = ProdID]').empty();
 	if(version != 1)
 	{
 		$.ajax
@@ -167,7 +167,7 @@ function oduChange(el)
 		});	
 		if(isset(odu))
 		{
-			var warn_odu =  $('.'+site+'').find('span[name = Odu_War]');	
+			var warn_odu =  $('#'+site+'').find('span[name = Odu_War]');	
 			$(warn_odu).removeClass( "glyphicon glyphicon-remove" ).addClass( "glyphicon glyphicon-ok" );
 			$(warn_odu).css("color", good);
 		}
@@ -175,10 +175,10 @@ function oduChange(el)
 }
 function getFrequency(el, ProdID)
 {
-	var site = $(el).parent().parent().parent().parent().parent().parent().attr('class'); 
-	var tmp_freq = $('.'+site+'').find('select[name=Frequency]').val();
-	var freqSelect = $('.'+site+'').find('select[name=Frequency]').empty();
-	var version = $('.'+site+'').find('select[name = Version]').val();
+	var site = $(el).parent().parent().parent().parent().parent().parent().attr('id'); 
+	var tmp_freq = $('#'+site+'').find('select[name=Frequency]').val();
+	var freqSelect = $('#'+site+'').find('select[name=Frequency]').empty();
+	var version = $('#'+site+'').find('select[name = Version]').val();
 	var SelectDisabled = ""; 
 	if(version != 4)
 	{
@@ -198,13 +198,13 @@ function getFrequency(el, ProdID)
 			prev_calc(el);
 			if(!isset($(freqSelect).val()))
 			{ 
-				var warn_odu =  $('.'+site+'').find('span[name = Freq_War]');	
+				var warn_odu =  $('#'+site+'').find('span[name = Freq_War]');	
 				$(warn_odu).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 				$(warn_odu).css("color", bad);	
 			}
 			else
 			{
-				var warn_odu =  $('.'+site+'').find('span[name = Freq_War]');	
+				var warn_odu =  $('#'+site+'').find('span[name = Freq_War]');	
 				$(warn_odu).removeClass( "glyphicon glyphicon-remove" ).addClass( "glyphicon glyphicon-ok" );
 				$(warn_odu).css("color", good);
 			}
@@ -212,8 +212,8 @@ function getFrequency(el, ProdID)
 	}
 	else 
 	{
-		var tmp_freqSelect_FD = $('.'+site+'').find('select[name=Frequency_FD]').val();
-		var freqSelect_FD = $('.'+site+'').find('select[name=Frequency_FD]').empty();
+		var tmp_freqSelect_FD = $('#'+site+'').find('select[name=Frequency_FD]').val();
+		var freqSelect_FD = $('#'+site+'').find('select[name=Frequency_FD]').empty();
 		$.post( "AjaxFunctions.php", { func: 'frequence', ProdID: ProdID}, function(response)
 		{	
 			var Data = $.parseJSON(response);
@@ -234,11 +234,11 @@ function getFrequency(el, ProdID)
 
 function FreqChange(el)
 {
-	var site = $(el).parent().parent().parent().parent().parent().parent().attr('class'); 
-	var ProdID =  $('.'+site+'').find('div[name = ProdID]').val();
-	var tmp_bandSelect = $('.'+site+'').find('select[name=Bandwidth]').val();
-	var bandSelect = $('.'+site+'').find('select[name=Bandwidth]').empty();
-	var freqSelect = $('.'+site+'').find('select[name=Frequency]').val();
+	var site = $(el).parent().parent().parent().parent().parent().parent().attr('id'); 
+	var ProdID =  $('#'+site+'').find('div[name = ProdID]').val();
+	var tmp_bandSelect = $('#'+site+'').find('select[name=Bandwidth]').val();
+	var bandSelect = $('#'+site+'').find('select[name=Bandwidth]').empty();
+	var freqSelect = $('#'+site+'').find('select[name=Frequency]').val();
 	$.post( "AjaxFunctions.php", { func: 'bandwidth', ProdID: ProdID, Frequency: freqSelect}, function(response)
 	{	
 		var Data = $.parseJSON(response);
@@ -253,7 +253,7 @@ function FreqChange(el)
 	});	
 	if(isset(freqSelect))
 	{
-		var warn_freq =  $('.'+site+'').find('span[name = Freq_War]');	
+		var warn_freq =  $('#'+site+'').find('span[name = Freq_War]');	
 		$(warn_freq).removeClass( "glyphicon glyphicon-remove" ).addClass( "glyphicon glyphicon-ok" );
 		$(warn_freq).css("color", good);
 	}
@@ -261,12 +261,12 @@ function FreqChange(el)
 
 function changeFEC(el)
 {
-	var site = $(el).parent().parent().parent().parent().parent().parent().attr('class'); 
-	var ProdID = ProdID =  $('.'+site+'').find('div[name = ProdID]').val();
-	var modSelect = $('.'+site+'').find('select[name=rModulation]').empty();
-	var FEC =  $('.'+site+'').find('select[name=FEC]').val();
-	var Frequency = $('.'+site+'').find('select[name=Frequency]').val();
-	var BandwidthTMP = $('.'+site+'').find('select[name=Bandwidth]').val();
+	var site = $(el).parent().parent().parent().parent().parent().parent().attr('id'); 
+	var ProdID = ProdID =  $('#'+site+'').find('div[name = ProdID]').val();
+	var modSelect = $('#'+site+'').find('select[name=rModulation]').empty();
+	var FEC =  $('#'+site+'').find('select[name=FEC]').val();
+	var Frequency = $('#'+site+'').find('select[name=Frequency]').val();
+	var BandwidthTMP = $('#'+site+'').find('select[name=Bandwidth]').val();
 	var BandSplit = BandwidthTMP.split("|");
 	var Bandwidth = BandSplit[0];
 	var Standart = BandSplit[1]; 
@@ -285,27 +285,27 @@ function changeFEC(el)
 	});	
 	if(isset(FEC))
 	{
-		var warn_FEC =  $('.'+site+'').find('span[name = FEC_War]');	
+		var warn_FEC =  $('#'+site+'').find('span[name = FEC_War]');	
 		$(warn_FEC).removeClass( "glyphicon glyphicon-remove" ).addClass( "glyphicon glyphicon-ok" );
 		$(warn_FEC).css("color", good);
 	}	
 }
 function changeModulation(el)
 {
-	var site = $(el).parent().parent().parent().parent().parent().parent().attr('class'); 
-	var version = $('.'+site+'').find('select[name = Version]').val();
-	var ProdID = ProdID = $('.'+site+'').find('div[name = ProdID]').val();
-	var Modulation = $('.'+site+'').find('select[name=rModulation]').val();
-	var FEC =  $('.'+site+'').find('select[name=FEC]').val();
-	var Frequency = $('.'+site+'').find('select[name=Frequency]').val();
-	var BandwidthTMP = $('.'+site+'').find('select[name=Bandwidth]').val();
+	var site = $(el).parent().parent().parent().parent().parent().parent().attr('id'); 
+	var version = $('#'+site+'').find('select[name = Version]').val();
+	var ProdID = ProdID = $('#'+site+'').find('div[name = ProdID]').val();
+	var Modulation = $('#'+site+'').find('select[name=rModulation]').val();
+	var FEC =  $('#'+site+'').find('select[name=FEC]').val();
+	var Frequency = $('#'+site+'').find('select[name=Frequency]').val();
+	var BandwidthTMP = $('#'+site+'').find('select[name=Bandwidth]').val();
 	var BandSplit = BandwidthTMP.split("|");
 	var Bandwidth = BandSplit[0];
 	var Standart = BandSplit[1]; 
 	
-	var capacity = $('.'+site+'').find('span[name=capacity]').text('');
-	var tmp_Transmitter = $('.'+site+'').find('select[name=Transmitter]').val();
-	var transmitterSelect = $('.'+site+'').find('select[name=Transmitter]').empty();
+	var capacity = $('#'+site+'').find('span[name=capacity]').text('');
+	var tmp_Transmitter = $('#'+site+'').find('select[name=Transmitter]').val();
+	var transmitterSelect = $('#'+site+'').find('select[name=Transmitter]').empty();
 		
 	//alert(site+" "+ProdID+" "+Modulation+" "+Bandwidth+" "+Standart+" "+FEC);
 	
@@ -360,8 +360,8 @@ function changeModulation(el)
 	}
 	else
 	{
-		var tmp_Transmitter_FD = $('.'+site+'').find('select[name = Transmitter_FD]').val();
-		var transmitter_FD = $('.'+site+'').find('select[name = Transmitter_FD]').empty(); 
+		var tmp_Transmitter_FD = $('#'+site+'').find('select[name = Transmitter_FD]').val();
+		var transmitter_FD = $('#'+site+'').find('select[name = Transmitter_FD]').empty(); 
 		$.post( "AjaxFunctions.php", { func: 'Transmitter', ProdID: ProdID, Modulation: Modulation, Frequency: Frequency}, function(response)
 		{	
 			var Data = $.parseJSON(response);
@@ -409,7 +409,7 @@ function changeModulation(el)
 	}
 	if(isset(Modulation))
 	{
-		var warn_modu =  $('.'+site+'').find('span[name = Modu_War]');	
+		var warn_modu =  $('#'+site+'').find('span[name = Modu_War]');	
 		$(warn_modu).removeClass( "glyphicon glyphicon-remove" ).addClass( "glyphicon glyphicon-ok" );
 		$(warn_modu).css("color", good);
 	}
@@ -417,10 +417,10 @@ function changeModulation(el)
 }
 function changeRainzone(el)
 {
-	var site = $(el).parent().parent().parent().parent().parent().parent().attr('class'); 
+	var site = $(el).parent().parent().parent().parent().parent().parent().attr('id'); 
 	var RainZone = $(el).val(); 
-	var RainZoneValue = $('.'+site+'').find('span[name=RainZoneResult]').text('');
-	var RainZoneTMP = $('.'+site+'').find('div[name=RainZoneTMP]').empty();
+	var RainZoneValue = $('#'+site+'').find('span[name=RainZoneResult]').text('');
+	var RainZoneTMP = $('#'+site+'').find('div[name=RainZoneTMP]').empty();
 	$.post( "AjaxFunctions.php", { func: 'RainZone', Zone: RainZone}, function(response)
 	{	
 		var Data = $.parseJSON(response);
@@ -433,20 +433,21 @@ function changeRainzone(el)
 	});	
 if(isset(RainZone))
 {
-	var warn_rain =  $('.'+site+'').find('span[name = rain_War]');	
+	var warn_rain =  $('#'+site+'').find('span[name = rain_War]');	
 	$(warn_rain).removeClass( "glyphicon glyphicon-remove" ).addClass( "glyphicon glyphicon-ok" );
 	$(warn_rain).css("color", good);
 }
 }
+/*
 function changeCoordinates(el)
 {
-	var site = $(el).parent().parent().parent().parent().parent().parent().attr('class'); 
-	var LatA = $('.'+site+'').find('input[name=LatA]').val();
-	var LatB = $('.'+site+'').find('input[name=LatB]').val();	
-	var LonA = $('.'+site+'').find('input[name=LonA]').val();
-	var LonB = $('.'+site+'').find('input[name=LonB]').val();
-	var distanceResult = $('.'+site+'').find('span[name=DistanceResult]').text('');
-	var distance_tmp = $('.'+site+'').find('div[name=Distance_tmp]').text('');
+	var site = $(el).parent().parent().parent().parent().parent().parent().attr('id'); 
+	var LatA = $('#'+site+'').find('input[name=LatA]').val();
+	var LatB = $('#'+site+'').find('input[name=LatB]').val();	
+	var LonA = $('#'+site+'').find('input[name=LonA]').val();
+	var LonB = $('#'+site+'').find('input[name=LonB]').val();
+	var distanceResult = $('#'+site+'').find('span[name=DistanceResult]').text('');
+	var distance_tmp = $('#'+site+'').find('div[name=Distance_tmp]').text('');
 
 	if(LatA && LatB && LonA && LonB)
 	{
@@ -459,13 +460,14 @@ function changeCoordinates(el)
 		});		
 	}
 }
+*/
 function getAntennaManuf(el, Frequency)
 {
-	var site = $(el).parent().parent().parent().parent().parent().parent().attr('class'); 
-	var ProdID =  $('.'+site+'').find('div[name = ProdID]').val();
-	//var Frequency = $('.'+site+'').find('select[name=Frequency]').val();
-	var tmp_antennaManuf = $('.'+site+'').find('select[name=AntennaManuf]').val();
-	var antennaManuf = $('.'+site+'').find('select[name=AntennaManuf]').empty();
+	var site = $(el).parent().parent().parent().parent().parent().parent().attr('id'); 
+	var ProdID =  $('#'+site+'').find('div[name = ProdID]').val();
+	//var Frequency = $('#'+site+'').find('select[name=Frequency]').val();
+	var tmp_antennaManuf = $('#'+site+'').find('select[name=AntennaManuf]').val();
+	var antennaManuf = $('#'+site+'').find('select[name=AntennaManuf]').empty();
 	if(ProdID != 0)
 	{
 		$.post( "AjaxFunctions.php", { func: 'antennaManuf', ProdID: ProdID, Frequency: Frequency}, function(response)
@@ -483,16 +485,16 @@ function getAntennaManuf(el, Frequency)
 }
 function changeAntennaManuf(el)
 {
-	var site = $(el).parent().parent().parent().parent().parent().parent().attr('class');
-	var version = $('.'+site+'').find('select[name = Version]').val();
-	var antennaManuf = $('.'+site+'').find('select[name=AntennaManuf]').val();
+	var site = $(el).parent().parent().parent().parent().parent().parent().attr('id');
+	var version = $('#'+site+'').find('select[name = Version]').val();
+	var antennaManuf = $('#'+site+'').find('select[name=AntennaManuf]').val();
 
-	var tmp_diameter_a = $('.'+site+'').find('select[name = diameter_A]').val();
-	var tmp_diameter_b = $('.'+site+'').find('select[name = diameter_B]').val();
+	var tmp_diameter_a = $('#'+site+'').find('select[name = diameter_A]').val();
+	var tmp_diameter_b = $('#'+site+'').find('select[name = diameter_B]').val();
 	
-	var diameter_a = $('.'+site+'').find('select[name = diameter_A]').empty();
-	var diameter_b = $('.'+site+'').find('select[name = diameter_B]').empty();
-	var Frequency = $('.'+site+'').find('select[name=Frequency]').val();
+	var diameter_a = $('#'+site+'').find('select[name = diameter_A]').empty();
+	var diameter_b = $('#'+site+'').find('select[name = diameter_B]').empty();
+	var Frequency = $('#'+site+'').find('select[name=Frequency]').val();
 	if(antennaManuf != 0)
 	{
 		if(version == 1)
@@ -516,7 +518,7 @@ function changeAntennaManuf(el)
 		}
 		if(version == 2)
 		{
-			var mode = $('.'+site+'').find('select[name = AntennaMode]').val();
+			var mode = $('#'+site+'').find('select[name = AntennaMode]').val();
 			if(mode == 1)
 			{
 				$.post( "AjaxFunctions.php", { func: 'antennaDiameter', antennaManuf: antennaManuf, Frequency: Frequency}, function(response)
@@ -537,8 +539,8 @@ function changeAntennaManuf(el)
 			}
 			if(mode == 2)
 			{
-				var diameter_a2 = $('.'+site+'').find('span[name = diameter_A2]').empty();
-				var diameter_b2 = $('.'+site+'').find('span[name = diameter_B2]').empty();
+				var diameter_a2 = $('#'+site+'').find('span[name = diameter_A2]').empty();
+				var diameter_b2 = $('#'+site+'').find('span[name = diameter_B2]').empty();
 				$.post( "AjaxFunctions.php", { func: 'antennaDiameter', antennaManuf: antennaManuf, Frequency: Frequency}, function(response)
 				{	
 					var Data = $.parseJSON(response);
@@ -562,10 +564,10 @@ function changeAntennaManuf(el)
 		}
 		if(version == 3)
 		{
-				var tmp_diameter_A_SD = $('.'+site+'').find('select[name = diameter_A_SD]').val();
-				var tmp_diameter_B_SD = $('.'+site+'').find('select[name = diameter_B_SD]').val();
-				var diameter_A_SD = $('.'+site+'').find('select[name = diameter_A_SD]').empty();
-				var diameter_B_SD = $('.'+site+'').find('select[name = diameter_B_SD]').empty();
+				var tmp_diameter_A_SD = $('#'+site+'').find('select[name = diameter_A_SD]').val();
+				var tmp_diameter_B_SD = $('#'+site+'').find('select[name = diameter_B_SD]').val();
+				var diameter_A_SD = $('#'+site+'').find('select[name = diameter_A_SD]').empty();
+				var diameter_B_SD = $('#'+site+'').find('select[name = diameter_B_SD]').empty();
 				$.post( "AjaxFunctions.php", { func: 'antennaDiameter', antennaManuf: antennaManuf, Frequency: Frequency}, function(response)
 				{	
 					var Data = $.parseJSON(response);
@@ -590,7 +592,7 @@ function changeAntennaManuf(el)
 		}
 		if(version == 4)
 		{
-			var amount = $('.'+site+'').find('select[name = Antenas_amount]').val();
+			var amount = $('#'+site+'').find('select[name = Antenas_amount]').val();
 			if(amount == 1)
 			{
 				$.post( "AjaxFunctions.php", { func: 'antennaDiameter', antennaManuf: antennaManuf, Frequency: Frequency}, function(response)
@@ -610,10 +612,10 @@ function changeAntennaManuf(el)
 			}
 			if(amount == 2)
 			{
-				var tmp_diameter_A_FD = $('.'+site+'').find('select[name = diameter_A_FD]').val();
-				var tmp_diameter_B_FD = $('.'+site+'').find('select[name = diameter_B_FD]').val();
-				var diameter_A_FD = $('.'+site+'').find('select[name = diameter_A_FD]').empty();
-				var diameter_B_FD = $('.'+site+'').find('select[name = diameter_B_FD]').empty();
+				var tmp_diameter_A_FD = $('#'+site+'').find('select[name = diameter_A_FD]').val();
+				var tmp_diameter_B_FD = $('#'+site+'').find('select[name = diameter_B_FD]').val();
+				var diameter_A_FD = $('#'+site+'').find('select[name = diameter_A_FD]').empty();
+				var diameter_B_FD = $('#'+site+'').find('select[name = diameter_B_FD]').empty();
 				$.post( "AjaxFunctions.php", { func: 'antennaDiameter', antennaManuf: antennaManuf, Frequency: Frequency}, function(response)
 				{	
 					var Data = $.parseJSON(response);
@@ -640,43 +642,43 @@ function changeAntennaManuf(el)
 	}
 	if(isset(antennaManuf))
 	{
-		var warn_manuf =  $('.'+site+'').find('span[name = Manuf_War]');	
+		var warn_manuf =  $('#'+site+'').find('span[name = Manuf_War]');	
 		$(warn_manuf).removeClass( "glyphicon glyphicon-remove" ).addClass( "glyphicon glyphicon-ok" );
 		$(warn_manuf).css("color", good);
 	}
 	else
 	{
-		var warn_manuf =  $('.'+site+'').find('span[name = Manuf_War]');	
+		var warn_manuf =  $('#'+site+'').find('span[name = Manuf_War]');	
 		$(warn_manuf).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 		$(warn_manuf).css("color", bad);
 	}
 }
 function getTemperature(el)
 {
-	var site = $(el).parent().parent().parent().parent().parent().parent().attr('class'); //Iegūst galvenā div elementa ID.  
-	var Temperature = $('.'+site+'').find('input[name=Temperature]').val();	
+	var site = $(el).parent().parent().parent().parent().parent().parent().attr('id'); //Iegūst galvenā div elementa ID.  
+	var Temperature = $('#'+site+'').find('input[name=Temperature]').val();	
 	if(isset(Temperature))
 	{
-		var warn_temp =  $('.'+site+'').find('span[name = temp_War]');	
+		var warn_temp =  $('#'+site+'').find('span[name = temp_War]');	
 		$(warn_temp).removeClass( "glyphicon glyphicon-remove" ).addClass( "glyphicon glyphicon-ok" );
 		$(warn_temp).css("color", good);
 	}
 	else
 	{
-		var warn_temp =  $('.'+site+'').find('span[name = temp_War]');	
+		var warn_temp =  $('#'+site+'').find('span[name = temp_War]');	
 		$(warn_temp).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 		$(warn_temp).css("color", bad);
 	}
 }
 function change_A_Diameter(el)
 {
-	var site = $(el).parent().parent().parent().parent().parent().parent().attr('class'); 
-	var Diameter = $('.'+site+'').find('select[name = diameter_A]').val();
-	var antennaManuf = $('.'+site+'').find('select[name=AntennaManuf]').val();
-	var Frequency = $('.'+site+'').find('select[name=Frequency]').val();
-	var DiameterResult = $('.'+site+'').find('span[name=result_dA]').text('');
-	var AntennaA_tmp = $('.'+site+'').find('div[name=AntennaA_tmp]').empty();
-	var version = $('.'+site+'').find('select[name = Version]').val();
+	var site = $(el).parent().parent().parent().parent().parent().parent().attr('id'); 
+	var Diameter = $('#'+site+'').find('select[name = diameter_A]').val();
+	var antennaManuf = $('#'+site+'').find('select[name=AntennaManuf]').val();
+	var Frequency = $('#'+site+'').find('select[name=Frequency]').val();
+	var DiameterResult = $('#'+site+'').find('span[name=result_dA]').text('');
+	var AntennaA_tmp = $('#'+site+'').find('div[name=AntennaA_tmp]').empty();
+	var version = $('#'+site+'').find('select[name = Version]').val();
 	$.post( "AjaxFunctions.php", { func: 'antenna_DBI', antennaManuf: antennaManuf, Frequency: Frequency, Diameter: Diameter}, function(response)
 	{	
 		var Data = $.parseJSON(response);
@@ -685,8 +687,8 @@ function change_A_Diameter(el)
 			prev_calc(el);
 		if(version == 2)
 		{
-			var diameter_a2 = $('.'+site+'').find('span[name = diameter_A2]').empty();
-			var result_a2 = $('.'+site+'').find('span[name = result_dA2]').empty();
+			var diameter_a2 = $('#'+site+'').find('span[name = diameter_A2]').empty();
+			var result_a2 = $('#'+site+'').find('span[name = result_dA2]').empty();
 			$(diameter_a2).text(''+Diameter+'');
 			$(diameter_a2).val(Diameter);
 			$(result_a2).text(''+Data+' dBi');
@@ -694,7 +696,7 @@ function change_A_Diameter(el)
 	});	
 	if(isset(Diameter))
 	{
-		var warn_diameter =  $('.'+site+'').find('span[name = A_Diameter_War]');	
+		var warn_diameter =  $('#'+site+'').find('span[name = A_Diameter_War]');	
 		$(warn_diameter).removeClass( "glyphicon glyphicon-remove" ).addClass( "glyphicon glyphicon-ok" );
 		$(warn_diameter).css("color", good);
 	}
@@ -702,12 +704,12 @@ function change_A_Diameter(el)
 
 function change_A_Diameter_SD(el)
 {
-	var site = $(el).parent().parent().parent().parent().parent().parent().attr('class'); 
-	var Diameter = $('.'+site+'').find('select[name = diameter_A_SD]').val();
-	var antennaManuf = $('.'+site+'').find('select[name=AntennaManuf]').val();
-	var Frequency = $('.'+site+'').find('select[name=Frequency]').val();
-	var DiameterResult = $('.'+site+'').find('span[name=result_dA_SD]').text('');
-	var AntennaA_tmp = $('.'+site+'').find('div[name=AntennaASD_tmp]').empty();
+	var site = $(el).parent().parent().parent().parent().parent().parent().attr('id'); 
+	var Diameter = $('#'+site+'').find('select[name = diameter_A_SD]').val();
+	var antennaManuf = $('#'+site+'').find('select[name=AntennaManuf]').val();
+	var Frequency = $('#'+site+'').find('select[name=Frequency]').val();
+	var DiameterResult = $('#'+site+'').find('span[name=result_dA_SD]').text('');
+	var AntennaA_tmp = $('#'+site+'').find('div[name=AntennaASD_tmp]').empty();
 	
 	$.post( "AjaxFunctions.php", { func: 'antenna_DBI', antennaManuf: antennaManuf, Frequency: Frequency, Diameter: Diameter}, function(response)
 	{	
@@ -718,19 +720,19 @@ function change_A_Diameter_SD(el)
 	});	
 	if(isset(Diameter))
 	{
-		var warn_diameter =  $('.'+site+'').find('span[name = A_SD_Diameter_War]');	
+		var warn_diameter =  $('#'+site+'').find('span[name = A_SD_Diameter_War]');	
 		$(warn_diameter).removeClass( "glyphicon glyphicon-remove" ).addClass( "glyphicon glyphicon-ok" );
 		$(warn_diameter).css("color", good);
 	}
 }
 function change_A_Diameter_FD(el)
 {
-	var site = $(el).parent().parent().parent().parent().parent().parent().attr('class'); 
-	var Diameter = $('.'+site+'').find('select[name = diameter_A_FD]').val();
-	var antennaManuf = $('.'+site+'').find('select[name=AntennaManuf]').val();
-	var Frequency = $('.'+site+'').find('select[name=Frequency]').val();
-	var DiameterResult = $('.'+site+'').find('span[name=result_dA_FD]').text('');
-	var AntennaA_tmp = $('.'+site+'').find('div[name=AntennaAFD_tmp]').empty();
+	var site = $(el).parent().parent().parent().parent().parent().parent().attr('id'); 
+	var Diameter = $('#'+site+'').find('select[name = diameter_A_FD]').val();
+	var antennaManuf = $('#'+site+'').find('select[name=AntennaManuf]').val();
+	var Frequency = $('#'+site+'').find('select[name=Frequency]').val();
+	var DiameterResult = $('#'+site+'').find('span[name=result_dA_FD]').text('');
+	var AntennaA_tmp = $('#'+site+'').find('div[name=AntennaAFD_tmp]').empty();
 	
 	$.post( "AjaxFunctions.php", { func: 'antenna_DBI', antennaManuf: antennaManuf, Frequency: Frequency, Diameter: Diameter}, function(response)
 	{	
@@ -741,20 +743,20 @@ function change_A_Diameter_FD(el)
 	});
 	if(isset(Diameter))
 	{
-		var warn_diameter =  $('.'+site+'').find('span[name = A_FD_Diameter_War]');	
+		var warn_diameter =  $('#'+site+'').find('span[name = A_FD_Diameter_War]');	
 		$(warn_diameter).removeClass( "glyphicon glyphicon-remove" ).addClass( "glyphicon glyphicon-ok" );
 		$(warn_diameter).css("color", good);
 	}
 }
 function change_A2_Diameter(el)
 {
-	var site = $(el).parent().parent().parent().parent().parent().parent().attr('class'); 
-	var Diameter = $('.'+site+'').find('span[name = diameter_A2]').val();
-	var antennaManuf = $('.'+site+'').find('select[name=AntennaManuf]').val();
-	var Frequency = $('.'+site+'').find('select[name=Frequency]').val();
-	var DiameterResult = $('.'+site+'').find('span[name=result_dA2]').text('');
+	var site = $(el).parent().parent().parent().parent().parent().parent().attr('id'); 
+	var Diameter = $('#'+site+'').find('span[name = diameter_A2]').val();
+	var antennaManuf = $('#'+site+'').find('select[name=AntennaManuf]').val();
+	var Frequency = $('#'+site+'').find('select[name=Frequency]').val();
+	var DiameterResult = $('#'+site+'').find('span[name=result_dA2]').text('');
 	
-	var AntennaA_tmp = $('.'+site+'').find('div[name=AntennaA2_tmp]').empty();
+	var AntennaA_tmp = $('#'+site+'').find('div[name=AntennaA2_tmp]').empty();
 	
 	$.post( "AjaxFunctions.php", { func: 'antenna_DBI', antennaManuf: antennaManuf, Frequency: Frequency, Diameter: Diameter}, function(response)
 	{	
@@ -767,13 +769,13 @@ function change_A2_Diameter(el)
 
 function change_B_Diameter(el)
 {
-	var site = $(el).parent().parent().parent().parent().parent().parent().attr('class'); 
-	var Diameter = $('.'+site+'').find('select[name = diameter_B]').val();
-	var antennaManuf = $('.'+site+'').find('select[name=AntennaManuf]').val();
-	var Frequency = $('.'+site+'').find('select[name=Frequency]').val();
-	var DiameterResult = $('.'+site+'').find('span[name=result_dB]').text('');
-	var AntennaB_tmp = $('.'+site+'').find('div[name=AntennaB_tmp]').empty();
-	var version = $('.'+site+'').find('select[name = Version]').val();
+	var site = $(el).parent().parent().parent().parent().parent().parent().attr('id'); 
+	var Diameter = $('#'+site+'').find('select[name = diameter_B]').val();
+	var antennaManuf = $('#'+site+'').find('select[name=AntennaManuf]').val();
+	var Frequency = $('#'+site+'').find('select[name=Frequency]').val();
+	var DiameterResult = $('#'+site+'').find('span[name=result_dB]').text('');
+	var AntennaB_tmp = $('#'+site+'').find('div[name=AntennaB_tmp]').empty();
+	var version = $('#'+site+'').find('select[name = Version]').val();
 	$.post( "AjaxFunctions.php", { func: 'antenna_DBI', antennaManuf: antennaManuf, Frequency: Frequency, Diameter: Diameter}, function(response)
 	{	
 		var Data = $.parseJSON(response);
@@ -782,8 +784,8 @@ function change_B_Diameter(el)
 		prev_calc(el);
 		if(version == 2)
 		{
-			var diameter_b2 = $('.'+site+'').find('span[name = diameter_B2]').empty();
-			var result_b2 = $('.'+site+'').find('span[name = result_dB2]').empty();
+			var diameter_b2 = $('#'+site+'').find('span[name = diameter_B2]').empty();
+			var result_b2 = $('#'+site+'').find('span[name = result_dB2]').empty();
 			$(diameter_b2).text(''+Diameter+'');
 			$(diameter_b2).val(Diameter);
 			$(result_b2).text(''+Data+' dBi');
@@ -791,19 +793,19 @@ function change_B_Diameter(el)
 	});	
 	if(isset(Diameter))
 	{
-		var warn_diameter_B =  $('.'+site+'').find('span[name = B_Diameter_War]');	
+		var warn_diameter_B =  $('#'+site+'').find('span[name = B_Diameter_War]');	
 		$(warn_diameter_B).removeClass( "glyphicon glyphicon-remove" ).addClass( "glyphicon glyphicon-ok" );
 		$(warn_diameter_B).css("color", good);
 	}
 }
 function change_B2_Diameter(el)
 {
-	var site = $(el).parent().parent().parent().parent().parent().parent().attr('class'); 
-	var Diameter = $('.'+site+'').find('select[name = diameter_B2]').val();
-	var antennaManuf = $('.'+site+'').find('select[name=AntennaManuf]').val();
-	var Frequency = $('.'+site+'').find('select[name=Frequency]').val();
-	var DiameterResult = $('.'+site+'').find('span[name=result_dB2]').text('');
-	var AntennaB_tmp = $('.'+site+'').find('div[name=AntennaB2_tmp]').empty();
+	var site = $(el).parent().parent().parent().parent().parent().parent().attr('id'); 
+	var Diameter = $('#'+site+'').find('select[name = diameter_B2]').val();
+	var antennaManuf = $('#'+site+'').find('select[name=AntennaManuf]').val();
+	var Frequency = $('#'+site+'').find('select[name=Frequency]').val();
+	var DiameterResult = $('#'+site+'').find('span[name=result_dB2]').text('');
+	var AntennaB_tmp = $('#'+site+'').find('div[name=AntennaB2_tmp]').empty();
 	
 	$.post( "AjaxFunctions.php", { func: 'antenna_DBI', antennaManuf: antennaManuf, Frequency: Frequency, Diameter: Diameter}, function(response)
 	{	
@@ -815,12 +817,12 @@ function change_B2_Diameter(el)
 }
 function change_B_Diameter_SD(el)
 {
-	var site = $(el).parent().parent().parent().parent().parent().parent().attr('class'); 
-	var Diameter = $('.'+site+'').find('select[name = diameter_B_SD]').val();
-	var antennaManuf = $('.'+site+'').find('select[name=AntennaManuf]').val();
-	var Frequency = $('.'+site+'').find('select[name=Frequency]').val();
-	var DiameterResult = $('.'+site+'').find('span[name=result_dB_SD]').text('');
-	var AntennaB_tmp = $('.'+site+'').find('div[name=AntennaBSD_tmp]').empty();
+	var site = $(el).parent().parent().parent().parent().parent().parent().attr('id'); 
+	var Diameter = $('#'+site+'').find('select[name = diameter_B_SD]').val();
+	var antennaManuf = $('#'+site+'').find('select[name=AntennaManuf]').val();
+	var Frequency = $('#'+site+'').find('select[name=Frequency]').val();
+	var DiameterResult = $('#'+site+'').find('span[name=result_dB_SD]').text('');
+	var AntennaB_tmp = $('#'+site+'').find('div[name=AntennaBSD_tmp]').empty();
 	
 	$.post( "AjaxFunctions.php", { func: 'antenna_DBI', antennaManuf: antennaManuf, Frequency: Frequency, Diameter: Diameter}, function(response)
 	{	
@@ -831,19 +833,19 @@ function change_B_Diameter_SD(el)
 	});	
 	if(isset(Diameter))
 	{
-		var warn_diameter_B =  $('.'+site+'').find('span[name = B_SD_Diameter_War]');	
+		var warn_diameter_B =  $('#'+site+'').find('span[name = B_SD_Diameter_War]');	
 		$(warn_diameter_B).removeClass( "glyphicon glyphicon-remove" ).addClass( "glyphicon glyphicon-ok" );
 		$(warn_diameter_B).css("color", good);
 	}
 }
 function change_B_Diameter_FD(el)
 {
-	var site = $(el).parent().parent().parent().parent().parent().parent().attr('class'); 
-	var Diameter = $('.'+site+'').find('select[name = diameter_B_FD]').val();
-	var antennaManuf = $('.'+site+'').find('select[name=AntennaManuf]').val();
-	var Frequency = $('.'+site+'').find('select[name=Frequency]').val();
-	var DiameterResult = $('.'+site+'').find('span[name=result_dB_FD]').text('');
-	var AntennaB_tmp = $('.'+site+'').find('div[name=AntennaBFD_tmp]').empty();
+	var site = $(el).parent().parent().parent().parent().parent().parent().attr('id'); 
+	var Diameter = $('#'+site+'').find('select[name = diameter_B_FD]').val();
+	var antennaManuf = $('#'+site+'').find('select[name=AntennaManuf]').val();
+	var Frequency = $('#'+site+'').find('select[name=Frequency]').val();
+	var DiameterResult = $('#'+site+'').find('span[name=result_dB_FD]').text('');
+	var AntennaB_tmp = $('#'+site+'').find('div[name=AntennaBFD_tmp]').empty();
 	
 	$.post( "AjaxFunctions.php", { func: 'antenna_DBI', antennaManuf: antennaManuf, Frequency: Frequency, Diameter: Diameter}, function(response)
 	{	
@@ -854,24 +856,24 @@ function change_B_Diameter_FD(el)
 	});	
 	if(isset(Diameter))
 	{
-		var warn_diameter =  $('.'+site+'').find('span[name = B_FD_Diameter_War]');	
+		var warn_diameter =  $('#'+site+'').find('span[name = B_FD_Diameter_War]');	
 		$(warn_diameter).removeClass( "glyphicon glyphicon-remove" ).addClass( "glyphicon glyphicon-ok" );
 		$(warn_diameter).css("color", good);
 	}
 }
 function changeTrans(el)
 {
-	var site = $(el).parent().parent().parent().parent().parent().parent().attr('class'); 
-	var Transmitter = $('.'+site+'').find('select[name=Transmitter]').val();
+	var site = $(el).parent().parent().parent().parent().parent().parent().attr('id'); 
+	var Transmitter = $('#'+site+'').find('select[name=Transmitter]').val();
 	if(isset(Transmitter))
 	{
-		var warn_trans =  $('.'+site+'').find('span[name = Trans_War]');	
+		var warn_trans =  $('#'+site+'').find('span[name = Trans_War]');	
 		$(warn_trans).removeClass( "glyphicon glyphicon-remove" ).addClass( "glyphicon glyphicon-ok" );
 		$(warn_trans).css("color", good);
 	}
 	else
 	{
-		var warn_trans =  $('.'+site+'').find('span[name = Trans_War]');	
+		var warn_trans =  $('#'+site+'').find('span[name = Trans_War]');	
 		$(warn_trans).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 		$(warn_trans).css("color", bad);
 	}
@@ -880,22 +882,22 @@ function changeTrans(el)
 
 function changeFreqFD(el)
 {
-	var site = $(el).parent().parent().parent().parent().parent().parent().attr('class'); 
-	var Frequency_FD = $('.'+site+'').find('select[name = Frequency_FD]').val();
+	var site = $(el).parent().parent().parent().parent().parent().parent().attr('id'); 
+	var Frequency_FD = $('#'+site+'').find('select[name = Frequency_FD]').val();
 	if(isset(Frequency_FD))
 	{
-		var warn_Freq_FD =  $('.'+site+'').find('span[name = Freq_FD_War]');	
+		var warn_Freq_FD =  $('#'+site+'').find('span[name = Freq_FD_War]');	
 		$(warn_Freq_FD).removeClass( "glyphicon glyphicon-remove" ).addClass( "glyphicon glyphicon-ok" );
 		$(warn_Freq_FD).css("color", good);
 	}	
 }
 function changeTransFD(el)
 {
-	var site = $(el).parent().parent().parent().parent().parent().parent().attr('class'); 
-	var Transmit_FD = $('.'+site+'').find('select[name = Transmitter_FD]').val();
+	var site = $(el).parent().parent().parent().parent().parent().parent().attr('id'); 
+	var Transmit_FD = $('#'+site+'').find('select[name = Transmitter_FD]').val();
 	if(isset(Transmit_FD))
 	{
-		var warn_Trans_FD =  $('.'+site+'').find('span[name = Trans_FD_War]');	
+		var warn_Trans_FD =  $('#'+site+'').find('span[name = Trans_FD_War]');	
 		$(warn_Trans_FD).removeClass( "glyphicon glyphicon-remove" ).addClass( "glyphicon glyphicon-ok" );
 		$(warn_Trans_FD).css("color", good);
 	}	
@@ -903,68 +905,68 @@ function changeTransFD(el)
 
 function changeAntennaMode(el)
 {
-	var site = $(el).parent().parent().parent().parent().parent().parent().attr('class'); 
-	var Mode_Value = $('.'+site+'').find('select[name = AntennaMode]').val();
+	var site = $(el).parent().parent().parent().parent().parent().parent().attr('id'); 
+	var Mode_Value = $('#'+site+'').find('select[name = AntennaMode]').val();
 	if(Mode_Value == 2)
 	{
-		$('.'+site+'').find('td[class = extra_diameter]').show();
-		$('.'+site+'').find('tr[class = Coupler_Atten]').hide();
-		$('.'+site+'').find('tr[class = Primary]').show();
-		$('.'+site+'').find('tr[class = Standby]').hide();
+		$('#'+site+'').find('td[class = extra_diameter]').show();
+		$('#'+site+'').find('tr[class = Coupler_Atten]').hide();
+		$('#'+site+'').find('tr[class = Primary]').show();
+		$('#'+site+'').find('tr[class = Standby]').hide();
 	}
 	if(Mode_Value == 1)
 	{
-		$('.'+site+'').find('tr[class = Coupler_Atten]').show();
-		$('.'+site+'').find('td[class = extra_diameter]').hide();
-		$('.'+site+'').find('tr[class = Primary]').hide();
-		$('.'+site+'').find('tr[class = Standby]').show();
+		$('#'+site+'').find('tr[class = Coupler_Atten]').show();
+		$('#'+site+'').find('td[class = extra_diameter]').hide();
+		$('#'+site+'').find('tr[class = Primary]').hide();
+		$('#'+site+'').find('tr[class = Standby]').show();
 	}
 	if(isset(Mode_Value))
 	{
-		var warn_Antenna_Mode =  $('.'+site+'').find('span[name = Antenna_Mode_War]');	
+		var warn_Antenna_Mode =  $('#'+site+'').find('span[name = Antenna_Mode_War]');	
 		$(warn_Antenna_Mode).removeClass( "glyphicon glyphicon-remove" ).addClass( "glyphicon glyphicon-ok" );
 		$(warn_Antenna_Mode).css("color", good);
 	}
 }
 function ChangeAmountofAntenas(el)
 {
-	var site = $(el).parent().parent().parent().parent().parent().parent().attr('class'); 
-	var Select_Value = $('.'+site+'').find('select[name = Antenas_amount]').val();
+	var site = $(el).parent().parent().parent().parent().parent().parent().attr('id'); 
+	var Select_Value = $('#'+site+'').find('select[name = Antenas_amount]').val();
 	if(Select_Value == 1)
 	{
-		$('.'+site+'').find('td[class = Antenna_FD]').hide();
-		$('.'+site+'').find('tr[class = FD_params]').hide();
+		$('#'+site+'').find('td[class = Antenna_FD]').hide();
+		$('#'+site+'').find('tr[class = FD_params]').hide();
 	}
 	if(Select_Value == 2)
 	{
-		$('.'+site+'').find('td[class = Antenna_FD]').show();
-		$('.'+site+'').find('tr[class = FD_params]').show();
+		$('#'+site+'').find('td[class = Antenna_FD]').show();
+		$('#'+site+'').find('tr[class = FD_params]').show();
 	}
 	if(isset(Select_Value))
 	{
-		var warn_ant_am =  $('.'+site+'').find('span[name = Ant_amount_War]');	
+		var warn_ant_am =  $('#'+site+'').find('span[name = Ant_amount_War]');	
 		$(warn_ant_am).removeClass( "glyphicon glyphicon-remove" ).addClass( "glyphicon glyphicon-ok" );
 		$(warn_ant_am).css("color", good);
 	}
 }
 function sd_Sep_for_a(el)
 {
-	var site = $(el).parent().parent().parent().parent().parent().parent().attr('class'); 
-	var SD_Sep_A = $('.'+site+'').find('input[name = SD_sep_A]').val();
+	var site = $(el).parent().parent().parent().parent().parent().parent().attr('id'); 
+	var SD_Sep_A = $('#'+site+'').find('input[name = SD_sep_A]').val();
 	if(isset(SD_Sep_A))
 	{
-		var warn_sd_sep_a=  $('.'+site+'').find('span[name = sd_sep_for_a]');	
+		var warn_sd_sep_a=  $('#'+site+'').find('span[name = sd_sep_for_a]');	
 		$(warn_sd_sep_a).removeClass( "glyphicon glyphicon-remove" ).addClass( "glyphicon glyphicon-ok" );
 		$(warn_sd_sep_a).css("color", good);
 	}
 }
 function sd_Sep_for_b(el)
 {
-	var site = $(el).parent().parent().parent().parent().parent().parent().attr('class'); 
-	var SD_Sep_B = $('.'+site+'').find('input[name = SD_sep_B]').val();
+	var site = $(el).parent().parent().parent().parent().parent().parent().attr('id'); 
+	var SD_Sep_B = $('#'+site+'').find('input[name = SD_sep_B]').val();
 	if(isset(SD_Sep_B))
 	{
-		var warn_sd_sep_b=  $('.'+site+'').find('span[name = sd_sep_for_b]');	
+		var warn_sd_sep_b=  $('#'+site+'').find('span[name = sd_sep_for_b]');	
 		$(warn_sd_sep_b).removeClass( "glyphicon glyphicon-remove" ).addClass( "glyphicon glyphicon-ok" );
 		$(warn_sd_sep_b).css("color", good);
 	}
@@ -972,81 +974,81 @@ function sd_Sep_for_b(el)
 
 function prim_site_for_A(el)
 {
-	var site = $(el).parent().parent().parent().parent().parent().parent().attr('class'); 
-	var Prim_Site_A = $('.'+site+'').find('input[name = Prim_Site_A]').val();
+	var site = $(el).parent().parent().parent().parent().parent().parent().attr('id'); 
+	var Prim_Site_A = $('#'+site+'').find('input[name = Prim_Site_A]').val();
 	if(isset(Prim_Site_A))
 	{
-		var Prim_Site_For_A=  $('.'+site+'').find('span[name = prim_site_for_A]');	
+		var Prim_Site_For_A=  $('#'+site+'').find('span[name = prim_site_for_A]');	
 		$(Prim_Site_For_A).removeClass( "glyphicon glyphicon-remove" ).addClass( "glyphicon glyphicon-ok" );
 		$(Prim_Site_For_A).css("color", good);
 	}
 }
 function prim_site_for_B(el)
 {
-	var site = $(el).parent().parent().parent().parent().parent().parent().attr('class'); 
-	var Prim_Site_B = $('.'+site+'').find('input[name = prim_site_for_B]').val();
+	var site = $(el).parent().parent().parent().parent().parent().parent().attr('id'); 
+	var Prim_Site_B = $('#'+site+'').find('input[name = prim_site_for_B]').val();
 	if(isset(Prim_Site_B))
 	{
-		var Prim_Site_For_B =  $('.'+site+'').find('span[name = prim_site_for_B]');	
+		var Prim_Site_For_B =  $('#'+site+'').find('span[name = prim_site_for_B]');	
 		$(Prim_Site_For_B).removeClass( "glyphicon glyphicon-remove" ).addClass( "glyphicon glyphicon-ok" );
 		$(Prim_Site_For_B).css("color", good);
 	}
 }
 function Stand_Site_link_A(el)
 {
-	var site = $(el).parent().parent().parent().parent().parent().parent().attr('class'); 
-	var Stand_Site_A = $('.'+site+'').find('input[name = Stand_Site_A]').val();
+	var site = $(el).parent().parent().parent().parent().parent().parent().attr('id'); 
+	var Stand_Site_A = $('#'+site+'').find('input[name = Stand_Site_A]').val();
 	if(isset(Stand_Site_A))
 	{
-		var Stand_Site_For_A =  $('.'+site+'').find('span[name = stand_site_for_a]');	
+		var Stand_Site_For_A =  $('#'+site+'').find('span[name = stand_site_for_a]');	
 		$(Stand_Site_For_A).removeClass( "glyphicon glyphicon-remove" ).addClass( "glyphicon glyphicon-ok" );
 		$(Stand_Site_For_A).css("color", good);
 	}
 }
 function Stand_Site_link_B(el)
 {
-	var site = $(el).parent().parent().parent().parent().parent().parent().attr('class'); 
-	var Stand_Site_B = $('.'+site+'').find('input[name = Stand_Site_B]').val();
+	var site = $(el).parent().parent().parent().parent().parent().parent().attr('id'); 
+	var Stand_Site_B = $('#'+site+'').find('input[name = Stand_Site_B]').val();
 	if(isset(Stand_Site_B))
 	{
-		var Stand_Site_For_B =  $('.'+site+'').find('span[name = stand_site_for_b]');	
+		var Stand_Site_For_B =  $('#'+site+'').find('span[name = stand_site_for_b]');	
 		$(Stand_Site_For_B).removeClass( "glyphicon glyphicon-remove" ).addClass( "glyphicon glyphicon-ok" );
 		$(Stand_Site_For_B).css("color", good);
 	}
 }
 function change_Main_Freq(el)
 {
-	var site = $(el).parent().parent().parent().parent().parent().parent().attr('class'); 
-	var Main_Freq = $('.'+site+'').find('input[name = Main_Freq]').val();
+	var site = $(el).parent().parent().parent().parent().parent().parent().attr('id'); 
+	var Main_Freq = $('#'+site+'').find('input[name = Main_Freq]').val();
 	if(isset(Main_Freq))
 	{
-		var Main_Freq_Warn =  $('.'+site+'').find('span[name = Main_Freq_warn]');	
+		var Main_Freq_Warn =  $('#'+site+'').find('span[name = Main_Freq_warn]');	
 		$(Main_Freq_Warn).removeClass( "glyphicon glyphicon-remove" ).addClass( "glyphicon glyphicon-ok" );
 		$(Main_Freq_Warn).css("color", good);
 	}
 }
 function change_Div_Freq(el)
 {
-	var site = $(el).parent().parent().parent().parent().parent().parent().attr('class'); 
-	var Div_Freq = $('.'+site+'').find('input[name = Div_Freq]').val();
+	var site = $(el).parent().parent().parent().parent().parent().parent().attr('id'); 
+	var Div_Freq = $('#'+site+'').find('input[name = Div_Freq]').val();
 	if(isset(Div_Freq))
 	{
-		var Div_Freq_Warn =  $('.'+site+'').find('span[name = Div_Freq_warn]');	
+		var Div_Freq_Warn =  $('#'+site+'').find('span[name = Div_Freq_warn]');	
 		$(Div_Freq_Warn).removeClass( "glyphicon glyphicon-remove" ).addClass( "glyphicon glyphicon-ok" );
 		$(Div_Freq_Warn).css("color", good);
 	}
 }
 function bandwidthChange(el)
 {
-	var site = $(el).parent().parent().parent().parent().parent().parent().attr('class'); 
-	var BandwidthTMP = $('.'+site+'').find('select[name=Bandwidth]').val();
+	var site = $(el).parent().parent().parent().parent().parent().parent().attr('id'); 
+	var BandwidthTMP = $('#'+site+'').find('select[name=Bandwidth]').val();
 	var BandSplit = BandwidthTMP.split("|");
 	var Bandwidth = BandSplit[0];
 	var Standart = BandSplit[1];	
-	var tmp_FEC =  $('.'+site+'').find('select[name=FEC]').val();
-	var FEC =  $('.'+site+'').find('select[name=FEC]').empty();
-	var ProdID = $('.'+site+'').find('div[name = ProdID]').val();
-	var Frequency = $('.'+site+'').find('select[name=Frequency]').val();
+	var tmp_FEC =  $('#'+site+'').find('select[name=FEC]').val();
+	var FEC =  $('#'+site+'').find('select[name=FEC]').empty();
+	var ProdID = $('#'+site+'').find('div[name = ProdID]').val();
+	var Frequency = $('#'+site+'').find('select[name=Frequency]').val();
 
 	console.log("ProdID: "+ProdID+" Frequency: " +Frequency+ " Bandwidth: " +Bandwidth+" Standart: "+Standart);
 	$.post( "AjaxFunctions.php", { func: 'getFEC', Prod: ProdID, Frequency: Frequency, Bandwidth: Bandwidth, Standart: Standart}, function(response)
@@ -1068,7 +1070,7 @@ function bandwidthChange(el)
 	});	
 	if(isset(BandwidthTMP))
 	{
-		var warn_band =  $('.'+site+'').find('span[name = Band_War]');	
+		var warn_band =  $('#'+site+'').find('span[name = Band_War]');	
 		$(warn_band).removeClass( "glyphicon glyphicon-remove" ).addClass( "glyphicon glyphicon-ok" );
 		$(warn_band).css("color", good);
 	}
@@ -1076,77 +1078,83 @@ function bandwidthChange(el)
 function prev_calc(el)
 {
 	console.log("This function gets called.");
-	var site = $(el).parent().parent().parent().parent().parent().parent().attr('class'); 
-	var ProdID = $('.'+site+'').find('div[name = ProdID]').val();
-	var version = $('.'+site+'').find('select[name = Version]').val();
-	var Odu = $('.'+site+'').find('select[name = Odu]').val();
-	var Frequency = $('.'+site+'').find('select[name=Frequency]').val();
+	var site = $(el).parent().parent().parent().parent().parent().parent().attr('id'); 
+	var ProdID = $('#'+site+'').find('div[name = ProdID]').val();
+	var version = $('#'+site+'').find('select[name = Version]').val();
+	var Odu = $('#'+site+'').find('select[name = Odu]').val();
+	var Frequency = $('#'+site+'').find('select[name=Frequency]').val();
 	
-	var BandwidthTMP = $('.'+site+'').find('select[name=Bandwidth]').val();
+	var BandwidthTMP = $('#'+site+'').find('select[name=Bandwidth]').val();
 	var BandSplit = BandwidthTMP.split("|");
 	var Bandwidth = BandSplit[0];
 	var Standart = BandSplit[1]; 
-	var product = $('.'+site+'').find('select[name = Productx1]').val();
+	var product = $('#'+site+'').find('select[name = Productx1]').val();
 	
-	var FEC =  $('.'+site+'').find('select[name=FEC]').val();
-	var Temperature = $('.'+site+'').find('input[name=Temperature]').val();	
-	var Modulation = $('.'+site+'').find('select[name=rModulation]').val();	
-	var RainZone = $('.'+site+'').find('select[name=Rainzone]').val();
-	var LatA = $('.'+site+'').find('input[name=LatA]').val();
-	var LatB = $('.'+site+'').find('input[name=LatB]').val();	
-	var LonA = $('.'+site+'').find('input[name=LonA]').val();
-	var LonB = $('.'+site+'').find('input[name=LonB]').val();	
-	var Transmitter = $('.'+site+'').find('select[name=Transmitter]').val();
-	var Antenna_Amount = $('.'+site+'').find('select[name = Antenas_amount]').val();
-	var AntennaHeightA = $('.'+site+'').find('input[name=AntennaA]').val();
-	var AntennaHeightB = $('.'+site+'').find('input[name=AntennaB]').val();
-	var antennaManuf = $('.'+site+'').find('select[name=AntennaManuf]').val();	
-	var diameter_a = $('.'+site+'').find('select[name = diameter_A]').val();
-	var diameter_b = $('.'+site+'').find('select[name = diameter_B]').val();
+	var FEC =  $('#'+site+'').find('select[name=FEC]').val();
+	var Temperature = $('#'+site+'').find('input[name=Temperature]').val();	
+	var Modulation = $('#'+site+'').find('select[name=rModulation]').val();	
+	var RainZone = $('#'+site+'').find('select[name=Rainzone]').val();
+	/*var LatA = $('#'+site+'').find('input[name=LatA]').val();
+	var LatB = $('#'+site+'').find('input[name=LatB]').val();	
+	var LonA = $('#'+site+'').find('input[name=LonA]').val();
+	var LonB = $('#'+site+'').find('input[name=LonB]').val();	
+	*/
+	var LatA = $('#point'+site+'').find('input[myid=Lat]').val();
+	var LonA = $('#point'+site+'').find('input[myid=Lon]').val();
+	var LatB = $('#point'+(parseInt(site) + 1)+'').find('input[myid=Lat]').val();
+	var LonB = $('#point'+(parseInt(site) + 1)+'').find('input[myid=Lon]').val();
 	
-	var diameter_a2 = $('.'+site+'').find('span[name = diameter_A2]').val();
-	var diameter_b2 = $('.'+site+'').find('span[name = diameter_B2]').val();
+	var Transmitter = $('#'+site+'').find('select[name=Transmitter]').val();
+	var Antenna_Amount = $('#'+site+'').find('select[name = Antenas_amount]').val();
+	var AntennaHeightA = $('#'+site+'').find('input[name=AntennaA]').val();
+	var AntennaHeightB = $('#'+site+'').find('input[name=AntennaB]').val();
+	var antennaManuf = $('#'+site+'').find('select[name=AntennaManuf]').val();	
+	var diameter_a = $('#'+site+'').find('select[name = diameter_A]').val();
+	var diameter_b = $('#'+site+'').find('select[name = diameter_B]').val();
 	
-	var Main_Freq = $('.'+site+'').find('input[name = Main_Freq]').val();
-	var Div_Freq = $('.'+site+'').find('input[name = Div_Freq]').val();
-	var Losses = $('.'+site+'').find('input[name=Losses]').val();
+	var diameter_a2 = $('#'+site+'').find('span[name = diameter_A2]').val();
+	var diameter_b2 = $('#'+site+'').find('span[name = diameter_B2]').val();
+	
+	var Main_Freq = $('#'+site+'').find('input[name = Main_Freq]').val();
+	var Div_Freq = $('#'+site+'').find('input[name = Div_Freq]').val();
+	var Losses = $('#'+site+'').find('input[name=Losses]').val();
 	
 	if(isset(Losses))
 	{
-		var Losses_Warn =  $('.'+site+'').find('span[name = Losses_Warn]');	
+		var Losses_Warn =  $('#'+site+'').find('span[name = Losses_Warn]');	
 		$(Losses_Warn).removeClass( "glyphicon glyphicon-remove" ).addClass( "glyphicon glyphicon-ok" );
 		$(Losses_Warn).css("color", good);
 	}
 
-	var diameter_A_SD = $('.'+site+'').find('select[name = diameter_A_SD]').val();
-	var diameter_B_SD = $('.'+site+'').find('select[name = diameter_B_SD]').val();
-	var Stand_Site_A = $('.'+site+'').find('input[name = Stand_Site_A]').val();
-	var Stand_Site_B = $('.'+site+'').find('input[name = Stand_Site_B]').val();
-	var Prim_Site_A = $('.'+site+'').find('input[name = Prim_Site_A]').val();
-	var Prim_Site_B = $('.'+site+'').find('input[name = Prim_Site_B]').val();
-	var RXThresholdResult = $('.'+site+'').find('span[name = Rx_Threshold]').text('');
+	var diameter_A_SD = $('#'+site+'').find('select[name = diameter_A_SD]').val();
+	var diameter_B_SD = $('#'+site+'').find('select[name = diameter_B_SD]').val();
+	var Stand_Site_A = $('#'+site+'').find('input[name = Stand_Site_A]').val();
+	var Stand_Site_B = $('#'+site+'').find('input[name = Stand_Site_B]').val();
+	var Prim_Site_A = $('#'+site+'').find('input[name = Prim_Site_A]').val();
+	var Prim_Site_B = $('#'+site+'').find('input[name = Prim_Site_B]').val();
+	var RXThresholdResult = $('#'+site+'').find('span[name = Rx_Threshold]').text('');
 
-	var Signal_level = $('.'+site+'').find('span[name = signal_level]').text('');	
-	var RSSI = $('.'+site+'').find('span[name = RSSI]').text('');	
-	var Fade_Margin = $('.'+site+'').find('span[name = Fade_Margin]').text('');
-	var EIRP = $('.'+site+'').find('span[name = EIRP]').text('');
+	var Signal_level = $('#'+site+'').find('span[name = signal_level]').text('');	
+	var RSSI = $('#'+site+'').find('span[name = RSSI]').text('');	
+	var Fade_Margin = $('#'+site+'').find('span[name = Fade_Margin]').text('');
+	var EIRP = $('#'+site+'').find('span[name = EIRP]').text('');
 	
-	var	Antenna_A_FD = $('.'+site+'').find('select[name = diameter_A_FD]').val();
-	var	Antenna_B_FD = $('.'+site+'').find('select[name = diameter_B_FD]').val();
-	var SD_Sep_A = $('.'+site+'').find('input[name = SD_sep_A]').val();
-	var SD_Sep_B = $('.'+site+'').find('input[name = SD_sep_B]').val();	
-	var Frequency_FD = $('.'+site+'').find('select[name = Frequency_FD]').val();
-	var Transmit_FD = $('.'+site+'').find('select[name = Transmitter_FD]').val();
-	var suc_Button = $('.'+site+'').find('button[name = Calculate]');
+	var	Antenna_A_FD = $('#'+site+'').find('select[name = diameter_A_FD]').val();
+	var	Antenna_B_FD = $('#'+site+'').find('select[name = diameter_B_FD]').val();
+	var SD_Sep_A = $('#'+site+'').find('input[name = SD_sep_A]').val();
+	var SD_Sep_B = $('#'+site+'').find('input[name = SD_sep_B]').val();	
+	var Frequency_FD = $('#'+site+'').find('select[name = Frequency_FD]').val();
+	var Transmit_FD = $('#'+site+'').find('select[name = Transmitter_FD]').val();
+	var suc_Button = $('#'+site+'').find('button[name = Calculate]');
 	
-	var M_Path_Vert = $('.'+site+'').find('span[name = M_path_vert]').text('');	
-	var M_Path_Hori = $('.'+site+'').find('span[name = M_path_hori]').text('');
-	var Rain_vert = $('.'+site+'').find('span[name = rain_vert]').text('');	
-	var Rain_hori = $('.'+site+'').find('span[name = rain_hori]').text('');		
-	var M_rain_vert = $('.'+site+'').find('span[name = M_rain_vert]').text('');	
-	var M_rain_hori = $('.'+site+'').find('span[name = M_rain_hori]').text('');				
-	var error_Time_Vert = $('.'+site+'').find('span[name = error_Time_Vert]').text('');	
-	var error_Time_Hori = $('.'+site+'').find('span[name = error_Time_Hori]').text('');		
+	var M_Path_Vert = $('#'+site+'').find('span[name = M_path_vert]').text('');	
+	var M_Path_Hori = $('#'+site+'').find('span[name = M_path_hori]').text('');
+	var Rain_vert = $('#'+site+'').find('span[name = rain_vert]').text('');	
+	var Rain_hori = $('#'+site+'').find('span[name = rain_hori]').text('');		
+	var M_rain_vert = $('#'+site+'').find('span[name = M_rain_vert]').text('');	
+	var M_rain_hori = $('#'+site+'').find('span[name = M_rain_hori]').text('');				
+	var error_Time_Vert = $('#'+site+'').find('span[name = error_Time_Vert]').text('');	
+	var error_Time_Hori = $('#'+site+'').find('span[name = error_Time_Hori]').text('');		
 	if(version == 1)
 	{
 		if(isset(ProdID) && isset(version) && isset(Frequency) && isset(Bandwidth) && isset(FEC) && isset(Temperature) && isset(Modulation) && isset(RainZone)  && isset(LatA) && isset(LatB) && isset(LonA) && isset(LonB) && isset(Transmitter) && isset(AntennaHeightA) && isset(AntennaHeightB) && isset(antennaManuf) && isset(diameter_a) && isset(diameter_b) && isset(Losses))
@@ -1175,44 +1183,44 @@ function prev_calc(el)
 			}
 			if(!isset(version))
 			{
-				var warn_version =  $('.'+site+'').find('span[name = Ver_War]');	
+				var warn_version =  $('#'+site+'').find('span[name = Ver_War]');	
 				$(warn_version).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 				$(warn_version).css("color", bad);
 			}
 			if(!isset(Frequency))
 			{
 				console.log("Frequency ķip nav set: " +Frequency)
-				var warn =  $('.'+site+'').find('span[name = Freq_War]');	
+				var warn =  $('#'+site+'').find('span[name = Freq_War]');	
 				$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 				$(warn).css("color", bad);
 			}
 			if(!isset(Bandwidth))
 			{
-				var warn =  $('.'+site+'').find('span[name = Band_War]');	
+				var warn =  $('#'+site+'').find('span[name = Band_War]');	
 				$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 				$(warn).css("color", bad);
 			}
 			if(!isset(FEC))
 			{
-				var warn =  $('.'+site+'').find('span[name = FEC_War]');	
+				var warn =  $('#'+site+'').find('span[name = FEC_War]');	
 				$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 				$(warn).css("color", bad);
 			}	
 			if(!isset(Temperature))
 			{
-				var warn =  $('.'+site+'').find('span[name = temp_War]');	
+				var warn =  $('#'+site+'').find('span[name = temp_War]');	
 				$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 				$(warn).css("color", bad);
 			}	
 			if(!isset(Modulation))
 			{
-				var warn =  $('.'+site+'').find('span[name = Modu_War]');	
+				var warn =  $('#'+site+'').find('span[name = Modu_War]');	
 				$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 				$(warn).css("color", bad);
 			}
 			if(!isset(RainZone))
 			{
-				var warn =  $('.'+site+'').find('span[name = rain_War]');	
+				var warn =  $('#'+site+'').find('span[name = rain_War]');	
 				$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 				$(warn).css("color", bad);
 			}	
@@ -1234,7 +1242,7 @@ function prev_calc(el)
 			}	
 			if(!isset(Transmitter))
 			{
-				var warn =  $('.'+site+'').find('span[name = Trans_War]');	
+				var warn =  $('#'+site+'').find('span[name = Trans_War]');	
 				$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 				$(warn).css("color", bad);
 			}
@@ -1248,25 +1256,25 @@ function prev_calc(el)
 			}
 			if(!isset(antennaManuf))
 			{
-				var warn =  $('.'+site+'').find('span[name = Manuf_War]');	
+				var warn =  $('#'+site+'').find('span[name = Manuf_War]');	
 				$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 				$(warn).css("color", bad);
 			}	
 			if(!isset(diameter_a))
 			{
-				var warn =  $('.'+site+'').find('span[name = A_Diameter_War]');	
+				var warn =  $('#'+site+'').find('span[name = A_Diameter_War]');	
 				$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 				$(warn).css("color", bad);
 			}
 			if(!isset(diameter_b))
 			{
-				var warn =  $('.'+site+'').find('span[name = B_Diameter_War]');	
+				var warn =  $('#'+site+'').find('span[name = B_Diameter_War]');	
 				$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 				$(warn).css("color", bad);
 			}	
 			if(!isset(Losses))
 			{
-				var warn =  $('.'+site+'').find('span[name = Losses_Warn]');	
+				var warn =  $('#'+site+'').find('span[name = Losses_Warn]');	
 				$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 				$(warn).css("color", bad);
 			}			
@@ -1276,13 +1284,13 @@ function prev_calc(el)
 	}	
 	if(version == 2)
 	{
-		var mode = $('.'+site+'').find('select[name = AntennaMode]').val();
-		var signal_level_prim = $('.'+site+'').find('span[name = signal_level_prim]').text('');
-		var signal_level_stand = $('.'+site+'').find('span[name = signal_level_stand]').text('');
-		var RSSI_prim = $('.'+site+'').find('span[name = RSSI_prim]').text('');		
-		var RSSI_stand = $('.'+site+'').find('span[name = RSSI_stand]').text('');		
-		var Fade_Margin_prim = $('.'+site+'').find('span[name = Fade_Margin_prim]').text('');		
-		var Fade_Margin_stand = $('.'+site+'').find('span[name = Fade_Margin_stand]').text('');	
+		var mode = $('#'+site+'').find('select[name = AntennaMode]').val();
+		var signal_level_prim = $('#'+site+'').find('span[name = signal_level_prim]').text('');
+		var signal_level_stand = $('#'+site+'').find('span[name = signal_level_stand]').text('');
+		var RSSI_prim = $('#'+site+'').find('span[name = RSSI_prim]').text('');		
+		var RSSI_stand = $('#'+site+'').find('span[name = RSSI_stand]').text('');		
+		var Fade_Margin_prim = $('#'+site+'').find('span[name = Fade_Margin_prim]').text('');		
+		var Fade_Margin_stand = $('#'+site+'').find('span[name = Fade_Margin_stand]').text('');	
 		if(mode == 1)
 		{
 			if(ProdID && version && Odu && Frequency && Bandwidth && FEC && Temperature && Modulation && RainZone && LatA && LatB && LonA && LonB && Transmitter && AntennaHeightA && AntennaHeightB && diameter_a && Prim_Site_A && Prim_Site_B && Stand_Site_A && Stand_Site_B && Losses)
@@ -1313,44 +1321,44 @@ function prev_calc(el)
 				}
 				if(!isset(version))
 				{
-					var warn_version =  $('.'+site+'').find('span[name = Ver_War]');	
+					var warn_version =  $('#'+site+'').find('span[name = Ver_War]');	
 					$(warn_version).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn_version).css("color", bad);
 				}
 				if(!isset(Frequency))
 				{
 					console.log("Frequency ķip nav set: " +Frequency)
-					var warn =  $('.'+site+'').find('span[name = Freq_War]');	
+					var warn =  $('#'+site+'').find('span[name = Freq_War]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}
 				if(!isset(Bandwidth))
 				{
-					var warn =  $('.'+site+'').find('span[name = Band_War]');	
+					var warn =  $('#'+site+'').find('span[name = Band_War]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}
 				if(!isset(FEC))
 				{
-					var warn =  $('.'+site+'').find('span[name = FEC_War]');	
+					var warn =  $('#'+site+'').find('span[name = FEC_War]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}	
 				if(!isset(Temperature))
 				{
-					var warn =  $('.'+site+'').find('span[name = temp_War]');	
+					var warn =  $('#'+site+'').find('span[name = temp_War]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}	
 				if(!isset(Modulation))
 				{
-					var warn =  $('.'+site+'').find('span[name = Modu_War]');	
+					var warn =  $('#'+site+'').find('span[name = Modu_War]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}
 				if(!isset(RainZone))
 				{
-					var warn =  $('.'+site+'').find('span[name = rain_War]');	
+					var warn =  $('#'+site+'').find('span[name = rain_War]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}	
@@ -1372,7 +1380,7 @@ function prev_calc(el)
 				}	
 				if(!isset(Transmitter))
 				{
-					var warn =  $('.'+site+'').find('span[name = Trans_War]');	
+					var warn =  $('#'+site+'').find('span[name = Trans_War]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}
@@ -1386,55 +1394,55 @@ function prev_calc(el)
 				}
 				if(!isset(antennaManuf))
 				{
-					var warn =  $('.'+site+'').find('span[name = Manuf_War]');	
+					var warn =  $('#'+site+'').find('span[name = Manuf_War]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}	
 				if(!isset(diameter_a))
 				{
-					var warn =  $('.'+site+'').find('span[name = A_Diameter_War]');	
+					var warn =  $('#'+site+'').find('span[name = A_Diameter_War]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}
 				if(!isset(diameter_b))
 				{
-					var warn =  $('.'+site+'').find('span[name = B_Diameter_War]');	
+					var warn =  $('#'+site+'').find('span[name = B_Diameter_War]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}	
 				if(!isset(Losses))
 				{
-					var warn =  $('.'+site+'').find('span[name = Losses_Warn]');	
+					var warn =  $('#'+site+'').find('span[name = Losses_Warn]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}	
 				if(!isset(Odu))
 				{
-					var warn =  $('.'+site+'').find('span[name = Odu_War]');	
+					var warn =  $('#'+site+'').find('span[name = Odu_War]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}
 				if(!isset(Prim_Site_A))
 				{
-					var warn =  $('.'+site+'').find('span[name = prim_site_for_A]');	
+					var warn =  $('#'+site+'').find('span[name = prim_site_for_A]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}	
 				if(!isset(Prim_Site_B))
 				{
-					var warn =  $('.'+site+'').find('span[name = prim_site_for_B]');	
+					var warn =  $('#'+site+'').find('span[name = prim_site_for_B]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}	
 				if(!isset(Stand_Site_A))
 				{
-					var warn =  $('.'+site+'').find('span[name = stand_site_for_a]');	
+					var warn =  $('#'+site+'').find('span[name = stand_site_for_a]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}
 				if(!isset(Stand_Site_B))
 				{
-					var warn =  $('.'+site+'').find('span[name = stand_site_for_b]');	
+					var warn =  $('#'+site+'').find('span[name = stand_site_for_b]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}				
@@ -1476,44 +1484,44 @@ function prev_calc(el)
 				}
 				if(!isset(version))
 				{
-					var warn_version =  $('.'+site+'').find('span[name = Ver_War]');	
+					var warn_version =  $('#'+site+'').find('span[name = Ver_War]');	
 					$(warn_version).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn_version).css("color", bad);
 				}
 				if(!isset(Frequency))
 				{
 					console.log("Frequency ķip nav set: " +Frequency)
-					var warn =  $('.'+site+'').find('span[name = Freq_War]');	
+					var warn =  $('#'+site+'').find('span[name = Freq_War]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}
 				if(!isset(Bandwidth))
 				{
-					var warn =  $('.'+site+'').find('span[name = Band_War]');	
+					var warn =  $('#'+site+'').find('span[name = Band_War]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}
 				if(!isset(FEC))
 				{
-					var warn =  $('.'+site+'').find('span[name = FEC_War]');	
+					var warn =  $('#'+site+'').find('span[name = FEC_War]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}	
 				if(!isset(Temperature))
 				{
-					var warn =  $('.'+site+'').find('span[name = temp_War]');	
+					var warn =  $('#'+site+'').find('span[name = temp_War]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}	
 				if(!isset(Modulation))
 				{
-					var warn =  $('.'+site+'').find('span[name = Modu_War]');	
+					var warn =  $('#'+site+'').find('span[name = Modu_War]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}
 				if(!isset(RainZone))
 				{
-					var warn =  $('.'+site+'').find('span[name = rain_War]');	
+					var warn =  $('#'+site+'').find('span[name = rain_War]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}	
@@ -1535,7 +1543,7 @@ function prev_calc(el)
 				}	
 				if(!isset(Transmitter))
 				{
-					var warn =  $('.'+site+'').find('span[name = Trans_War]');	
+					var warn =  $('#'+site+'').find('span[name = Trans_War]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}
@@ -1549,37 +1557,37 @@ function prev_calc(el)
 				}
 				if(!isset(antennaManuf))
 				{
-					var warn =  $('.'+site+'').find('span[name = Manuf_War]');	
+					var warn =  $('#'+site+'').find('span[name = Manuf_War]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}	
 				if(!isset(diameter_a))
 				{
-					var warn =  $('.'+site+'').find('span[name = A_Diameter_War]');	
+					var warn =  $('#'+site+'').find('span[name = A_Diameter_War]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}
 				if(!isset(diameter_b))
 				{
-					var warn =  $('.'+site+'').find('span[name = B_Diameter_War]');	
+					var warn =  $('#'+site+'').find('span[name = B_Diameter_War]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}	
 				if(!isset(Losses))
 				{
-					var warn =  $('.'+site+'').find('span[name = Losses_Warn]');	
+					var warn =  $('#'+site+'').find('span[name = Losses_Warn]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}	
 				if(!isset(Odu))
 				{
-					var warn =  $('.'+site+'').find('span[name = Odu_War]');	
+					var warn =  $('#'+site+'').find('span[name = Odu_War]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}
 				if(!isset(mode))
 				{
-					var warn =  $('.'+site+'').find('span[name = Antenna_Mode_War]');	
+					var warn =  $('#'+site+'').find('span[name = Antenna_Mode_War]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}
@@ -1618,68 +1626,68 @@ function prev_calc(el)
 				}
 				if(!isset(version))
 				{
-					var warn_version =  $('.'+site+'').find('span[name = Ver_War]');	
+					var warn_version =  $('#'+site+'').find('span[name = Ver_War]');	
 					$(warn_version).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn_version).css("color", bad);
 				}
 				if(!isset(diameter_A_SD))
 				{
-					var warn_version =  $('.'+site+'').find('span[name = A_SD_Diameter_War]');	
+					var warn_version =  $('#'+site+'').find('span[name = A_SD_Diameter_War]');	
 					$(warn_version).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn_version).css("color", bad);
 				}
 				if(!isset(diameter_B_SD))
 				{
-					var warn_version =  $('.'+site+'').find('span[name = B_SD_Diameter_War]');	
+					var warn_version =  $('#'+site+'').find('span[name = B_SD_Diameter_War]');	
 					$(warn_version).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn_version).css("color", bad);
 				}
 				if(!isset(SD_Sep_A))
 				{
-					var warn_version =  $('.'+site+'').find('span[name = sd_sep_for_a]');	
+					var warn_version =  $('#'+site+'').find('span[name = sd_sep_for_a]');	
 					$(warn_version).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn_version).css("color", bad);
 				}					
 				if(!isset(SD_Sep_B))
 				{
-					var warn_version =  $('.'+site+'').find('span[name = sd_sep_for_b]');	
+					var warn_version =  $('#'+site+'').find('span[name = sd_sep_for_b]');	
 					$(warn_version).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn_version).css("color", bad);
 				}				
 				if(!isset(Frequency))
 				{
 					console.log("Frequency ķip nav set: " +Frequency)
-					var warn =  $('.'+site+'').find('span[name = Freq_War]');	
+					var warn =  $('#'+site+'').find('span[name = Freq_War]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}
 				if(!isset(Bandwidth))
 				{
-					var warn =  $('.'+site+'').find('span[name = Band_War]');	
+					var warn =  $('#'+site+'').find('span[name = Band_War]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}
 				if(!isset(FEC))
 				{
-					var warn =  $('.'+site+'').find('span[name = FEC_War]');	
+					var warn =  $('#'+site+'').find('span[name = FEC_War]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}	
 				if(!isset(Temperature))
 				{
-					var warn =  $('.'+site+'').find('span[name = temp_War]');	
+					var warn =  $('#'+site+'').find('span[name = temp_War]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}	
 				if(!isset(Modulation))
 				{
-					var warn =  $('.'+site+'').find('span[name = Modu_War]');	
+					var warn =  $('#'+site+'').find('span[name = Modu_War]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}
 				if(!isset(RainZone))
 				{
-					var warn =  $('.'+site+'').find('span[name = rain_War]');	
+					var warn =  $('#'+site+'').find('span[name = rain_War]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}	
@@ -1701,7 +1709,7 @@ function prev_calc(el)
 				}	
 				if(!isset(Transmitter))
 				{
-					var warn =  $('.'+site+'').find('span[name = Trans_War]');	
+					var warn =  $('#'+site+'').find('span[name = Trans_War]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}
@@ -1715,37 +1723,37 @@ function prev_calc(el)
 				}
 				if(!isset(antennaManuf))
 				{
-					var warn =  $('.'+site+'').find('span[name = Manuf_War]');	
+					var warn =  $('#'+site+'').find('span[name = Manuf_War]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}	
 				if(!isset(diameter_a))
 				{
-					var warn =  $('.'+site+'').find('span[name = A_Diameter_War]');	
+					var warn =  $('#'+site+'').find('span[name = A_Diameter_War]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}
 				if(!isset(diameter_b))
 				{
-					var warn =  $('.'+site+'').find('span[name = B_Diameter_War]');	
+					var warn =  $('#'+site+'').find('span[name = B_Diameter_War]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}	
 				if(!isset(Losses))
 				{
-					var warn =  $('.'+site+'').find('span[name = Losses_Warn]');	
+					var warn =  $('#'+site+'').find('span[name = Losses_Warn]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}	
 				if(!isset(Odu))
 				{
-					var warn =  $('.'+site+'').find('span[name = Odu_War]');	
+					var warn =  $('#'+site+'').find('span[name = Odu_War]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}
 				if(!isset(mode))
 				{
-					var warn =  $('.'+site+'').find('span[name = Antenna_Mode_War]');	
+					var warn =  $('#'+site+'').find('span[name = Antenna_Mode_War]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}
@@ -1783,56 +1791,56 @@ function prev_calc(el)
 				}
 				if(!isset(version))
 				{
-					var warn_version =  $('.'+site+'').find('span[name = Ver_War]');	
+					var warn_version =  $('#'+site+'').find('span[name = Ver_War]');	
 					$(warn_version).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn_version).css("color", bad);
 				}
 				if(!isset(Main_Freq))
 				{
-					var warn_version =  $('.'+site+'').find('span[name = Main_Freq_warn]');	
+					var warn_version =  $('#'+site+'').find('span[name = Main_Freq_warn]');	
 					$(warn_version).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn_version).css("color", bad);
 				}
 				if(!isset(Div_Freq))
 				{
-					var warn_version =  $('.'+site+'').find('span[name = Div_Freq_warn]');	
+					var warn_version =  $('#'+site+'').find('span[name = Div_Freq_warn]');	
 					$(warn_version).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn_version).css("color", bad);
 				}
 				if(!isset(Frequency))
 				{
 					console.log("Frequency ķip nav set: " +Frequency)
-					var warn =  $('.'+site+'').find('span[name = Freq_War]');	
+					var warn =  $('#'+site+'').find('span[name = Freq_War]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}
 				if(!isset(Bandwidth))
 				{
-					var warn =  $('.'+site+'').find('span[name = Band_War]');	
+					var warn =  $('#'+site+'').find('span[name = Band_War]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}
 				if(!isset(FEC))
 				{
-					var warn =  $('.'+site+'').find('span[name = FEC_War]');	
+					var warn =  $('#'+site+'').find('span[name = FEC_War]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}	
 				if(!isset(Temperature))
 				{
-					var warn =  $('.'+site+'').find('span[name = temp_War]');	
+					var warn =  $('#'+site+'').find('span[name = temp_War]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}	
 				if(!isset(Modulation))
 				{
-					var warn =  $('.'+site+'').find('span[name = Modu_War]');	
+					var warn =  $('#'+site+'').find('span[name = Modu_War]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}
 				if(!isset(RainZone))
 				{
-					var warn =  $('.'+site+'').find('span[name = rain_War]');	
+					var warn =  $('#'+site+'').find('span[name = rain_War]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}	
@@ -1854,7 +1862,7 @@ function prev_calc(el)
 				}	
 				if(!isset(Transmitter))
 				{
-					var warn =  $('.'+site+'').find('span[name = Trans_War]');	
+					var warn =  $('#'+site+'').find('span[name = Trans_War]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}
@@ -1868,37 +1876,37 @@ function prev_calc(el)
 				}
 				if(!isset(antennaManuf))
 				{
-					var warn =  $('.'+site+'').find('span[name = Manuf_War]');	
+					var warn =  $('#'+site+'').find('span[name = Manuf_War]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}	
 				if(!isset(diameter_a))
 				{
-					var warn =  $('.'+site+'').find('span[name = A_Diameter_War]');	
+					var warn =  $('#'+site+'').find('span[name = A_Diameter_War]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}
 				if(!isset(diameter_b))
 				{
-					var warn =  $('.'+site+'').find('span[name = B_Diameter_War]');	
+					var warn =  $('#'+site+'').find('span[name = B_Diameter_War]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}	
 				if(!isset(Losses))
 				{
-					var warn =  $('.'+site+'').find('span[name = Losses_Warn]');	
+					var warn =  $('#'+site+'').find('span[name = Losses_Warn]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}	
 				if(!isset(Odu))
 				{
-					var warn =  $('.'+site+'').find('span[name = Odu_War]');	
+					var warn =  $('#'+site+'').find('span[name = Odu_War]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}
 				if(!isset(mode))
 				{
-					var warn =  $('.'+site+'').find('span[name = Antenna_Mode_War]');	
+					var warn =  $('#'+site+'').find('span[name = Antenna_Mode_War]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}
@@ -1939,80 +1947,80 @@ function prev_calc(el)
 				}
 				if(!isset(Antenna_A_FD))
 				{
-					var warn_version =  $('.'+site+'').find('span[name = A_FD_Diameter_War]');	
+					var warn_version =  $('#'+site+'').find('span[name = A_FD_Diameter_War]');	
 					$(warn_version).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn_version).css("color", bad);
 				}
 				if(!isset(Antenna_B_FD))
 				{
-					var warn_version =  $('.'+site+'').find('span[name = B_FD_Diameter_War]');	
+					var warn_version =  $('#'+site+'').find('span[name = B_FD_Diameter_War]');	
 					$(warn_version).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn_version).css("color", bad);
 				}
 				if(!isset(Transmit_FD))
 				{
-					var warn_version =  $('.'+site+'').find('span[name = Trans_FD_War]');	
+					var warn_version =  $('#'+site+'').find('span[name = Trans_FD_War]');	
 					$(warn_version).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn_version).css("color", bad);
 				}
 				if(!isset(Frequency_FD))
 				{
-					var warn_version =  $('.'+site+'').find('span[name = Freq_FD_War]');	
+					var warn_version =  $('#'+site+'').find('span[name = Freq_FD_War]');	
 					$(warn_version).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn_version).css("color", bad);
 				}
 				if(!isset(version))
 				{
-					var warn_version =  $('.'+site+'').find('span[name = Ver_War]');	
+					var warn_version =  $('#'+site+'').find('span[name = Ver_War]');	
 					$(warn_version).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn_version).css("color", bad);
 				}
 				if(!isset(Main_Freq))
 				{
-					var warn_version =  $('.'+site+'').find('span[name = Main_Freq_warn]');	
+					var warn_version =  $('#'+site+'').find('span[name = Main_Freq_warn]');	
 					$(warn_version).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn_version).css("color", bad);
 				}
 				if(!isset(Div_Freq))
 				{
-					var warn_version =  $('.'+site+'').find('span[name = Div_Freq_warn]');	
+					var warn_version =  $('#'+site+'').find('span[name = Div_Freq_warn]');	
 					$(warn_version).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn_version).css("color", bad);
 				}
 				if(!isset(Frequency))
 				{
 					console.log("Frequency ķip nav set: " +Frequency)
-					var warn =  $('.'+site+'').find('span[name = Freq_War]');	
+					var warn =  $('#'+site+'').find('span[name = Freq_War]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}
 				if(!isset(Bandwidth))
 				{
-					var warn =  $('.'+site+'').find('span[name = Band_War]');	
+					var warn =  $('#'+site+'').find('span[name = Band_War]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}
 				if(!isset(FEC))
 				{
-					var warn =  $('.'+site+'').find('span[name = FEC_War]');	
+					var warn =  $('#'+site+'').find('span[name = FEC_War]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}	
 				if(!isset(Temperature))
 				{
-					var warn =  $('.'+site+'').find('span[name = temp_War]');	
+					var warn =  $('#'+site+'').find('span[name = temp_War]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}	
 				if(!isset(Modulation))
 				{
-					var warn =  $('.'+site+'').find('span[name = Modu_War]');	
+					var warn =  $('#'+site+'').find('span[name = Modu_War]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}
 				if(!isset(RainZone))
 				{
-					var warn =  $('.'+site+'').find('span[name = rain_War]');	
+					var warn =  $('#'+site+'').find('span[name = rain_War]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}	
@@ -2034,7 +2042,7 @@ function prev_calc(el)
 				}	
 				if(!isset(Transmitter))
 				{
-					var warn =  $('.'+site+'').find('span[name = Trans_War]');	
+					var warn =  $('#'+site+'').find('span[name = Trans_War]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}
@@ -2048,37 +2056,37 @@ function prev_calc(el)
 				}
 				if(!isset(antennaManuf))
 				{
-					var warn =  $('.'+site+'').find('span[name = Manuf_War]');	
+					var warn =  $('#'+site+'').find('span[name = Manuf_War]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}	
 				if(!isset(diameter_a))
 				{
-					var warn =  $('.'+site+'').find('span[name = A_Diameter_War]');	
+					var warn =  $('#'+site+'').find('span[name = A_Diameter_War]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}
 				if(!isset(diameter_b))
 				{
-					var warn =  $('.'+site+'').find('span[name = B_Diameter_War]');	
+					var warn =  $('#'+site+'').find('span[name = B_Diameter_War]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}	
 				if(!isset(Losses))
 				{
-					var warn =  $('.'+site+'').find('span[name = Losses_Warn]');	
+					var warn =  $('#'+site+'').find('span[name = Losses_Warn]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}	
 				if(!isset(Odu))
 				{
-					var warn =  $('.'+site+'').find('span[name = Odu_War]');	
+					var warn =  $('#'+site+'').find('span[name = Odu_War]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}
 				if(!isset(mode))
 				{
-					var warn =  $('.'+site+'').find('span[name = Antenna_Mode_War]');	
+					var warn =  $('#'+site+'').find('span[name = Antenna_Mode_War]');	
 					$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 					$(warn).css("color", bad);
 				}
@@ -2092,57 +2100,67 @@ function prev_calc(el)
 function calcPath(el)
 {
 	$(el).button('loading');
-	var site = $(el).parent().parent().attr('class'); 
-	var ProdID = ProdID = $('.'+site+'').find('div[name = ProdID]').val();
-	var version = $('.'+site+'').find('select[name = Version]').val(); 
-	var Frequency = $('.'+site+'').find('select[name=Frequency]').val();
-	var BandwidthTMP = $('.'+site+'').find('select[name=Bandwidth]').val();
+	var site = $(el).parent().parent().attr('id'); 
+	var ProdID = ProdID = $('#'+site+'').find('div[name = ProdID]').val();
+	var version = $('#'+site+'').find('select[name = Version]').val(); 
+	var Frequency = $('#'+site+'').find('select[name=Frequency]').val();
+	var BandwidthTMP = $('#'+site+'').find('select[name=Bandwidth]').val();
 	var BandSplit = BandwidthTMP.split("|");
 	var Bandwidth = BandSplit[0];
 	var Standart = BandSplit[1]; 
-	var FEC =  $('.'+site+'').find('select[name=FEC]').val();
-	var Temperature = $('.'+site+'').find('input[name=Temperature]').val();	
-	var Modulation = $('.'+site+'').find('select[name=rModulation]').val();	
-	var RainZone = $('.'+site+'').find('select[name=Rainzone]').val();
-	var LatA = $('.'+site+'').find('input[name=LatA]').val();
-	var LatB = $('.'+site+'').find('input[name=LatB]').val();	
-	var LonA = $('.'+site+'').find('input[name=LonA]').val();
-	var LonB = $('.'+site+'').find('input[name=LonB]').val();	
-	var Transmitter = $('.'+site+'').find('select[name=Transmitter]').val();
-	var Antenna_Amount = $('.'+site+'').find('select[name = Antenas_amount]').val();
-	var AntennaHeightA = $('.'+site+'').find('input[name=AntennaA]').val();
-	var AntennaHeightB = $('.'+site+'').find('input[name=AntennaB]').val();
-	var antennaManuf = $('.'+site+'').find('select[name=AntennaManuf]').val();	
-	var diameter_a = $('.'+site+'').find('select[name = diameter_A]').val();
-	var diameter_b = $('.'+site+'').find('select[name = diameter_B]').val();
-	var diameter_a2 = $('.'+site+'').find('span[name = diameter_A2]').val();
-	var diameter_b2 = $('.'+site+'').find('span[name = diameter_B2]').val();
-	var Main_Freq = $('.'+site+'').find('input[name = Main_Freq]').val();
-	var Div_Freq = $('.'+site+'').find('input[name = Div_Freq]').val();
-	var Losses = $('.'+site+'').find('input[name=Losses]').val();	
-	var diameter_A_SD = $('.'+site+'').find('select[name = diameter_A_SD]').val();
-	var diameter_B_SD = $('.'+site+'').find('select[name = diameter_B_SD]').val();
-	var Stand_Site_A = $('.'+site+'').find('input[name = Stand_Site_A]').val();
-	var Stand_Site_B = $('.'+site+'').find('input[name = Stand_Site_B]').val();
-	var Prim_Site_A = $('.'+site+'').find('input[name = Prim_Site_A]').val();
-	var Prim_Site_B = $('.'+site+'').find('input[name = Prim_Site_B]').val();	
-	var	Antenna_A_FD = $('.'+site+'').find('select[name = diameter_A_FD]').val();
-	var	Antenna_B_FD = $('.'+site+'').find('select[name = diameter_B_FD]').val();
-	var SD_Sep_A = $('.'+site+'').find('input[name = SD_sep_A]').val();
-	var SD_Sep_B = $('.'+site+'').find('input[name = SD_sep_B]').val();	
-	var Frequency_FD = $('.'+site+'').find('select[name = Frequency_FD]').val();
-	var Transmit_FD = $('.'+site+'').find('select[name = Transmitter_FD]').val();
+	var FEC =  $('#'+site+'').find('select[name=FEC]').val();
+	var Temperature = $('#'+site+'').find('input[name=Temperature]').val();	
+	var Modulation = $('#'+site+'').find('select[name=rModulation]').val();	
+	var RainZone = $('#'+site+'').find('select[name=Rainzone]').val();
+	/*var LatA = $('#'+site+'').find('input[name=LatA]').val();
+	var LatB = $('#'+site+'').find('input[name=LatB]').val();	
+	var LonA = $('#'+site+'').find('input[name=LonA]').val();
+	var LonB = $('#'+site+'').find('input[name=LonB]').val();	
+	*/
+	var DistanceTXT = $('#li'+site+'').find('div[myid=Dist]').text();
+	var Distance = DistanceTXT.slice(0,-2);
+
+	console.log("CONSOLE DISTANCEL : "+Distance+"  "+site+" " +(site + 1)); 
+	var LatA = $('#point'+site+'').find('input[myid=Lat]').val();
+	var LonA = $('#point'+site+'').find('input[myid=Lon]').val();
+	var LatB = $('#point'+(parseInt(site) + 1)+'').find('input[myid=Lat]').val();
+	var LonB = $('#point'+(parseInt(site) + 1)+'').find('input[myid=Lon]').val();
+
+	var Transmitter = $('#'+site+'').find('select[name=Transmitter]').val();
+	var Antenna_Amount = $('#'+site+'').find('select[name = Antenas_amount]').val();
+	var AntennaHeightA = $('#'+site+'').find('input[name=AntennaA]').val();
+	var AntennaHeightB = $('#'+site+'').find('input[name=AntennaB]').val();
+	var antennaManuf = $('#'+site+'').find('select[name=AntennaManuf]').val();	
+	var diameter_a = $('#'+site+'').find('select[name = diameter_A]').val();
+	var diameter_b = $('#'+site+'').find('select[name = diameter_B]').val();
+	var diameter_a2 = $('#'+site+'').find('span[name = diameter_A2]').val();
+	var diameter_b2 = $('#'+site+'').find('span[name = diameter_B2]').val();
+	var Main_Freq = $('#'+site+'').find('input[name = Main_Freq]').val();
+	var Div_Freq = $('#'+site+'').find('input[name = Div_Freq]').val();
+	var Losses = $('#'+site+'').find('input[name=Losses]').val();	
+	var diameter_A_SD = $('#'+site+'').find('select[name = diameter_A_SD]').val();
+	var diameter_B_SD = $('#'+site+'').find('select[name = diameter_B_SD]').val();
+	var Stand_Site_A = $('#'+site+'').find('input[name = Stand_Site_A]').val();
+	var Stand_Site_B = $('#'+site+'').find('input[name = Stand_Site_B]').val();
+	var Prim_Site_A = $('#'+site+'').find('input[name = Prim_Site_A]').val();
+	var Prim_Site_B = $('#'+site+'').find('input[name = Prim_Site_B]').val();	
+	var	Antenna_A_FD = $('#'+site+'').find('select[name = diameter_A_FD]').val();
+	var	Antenna_B_FD = $('#'+site+'').find('select[name = diameter_B_FD]').val();
+	var SD_Sep_A = $('#'+site+'').find('input[name = SD_sep_A]').val();
+	var SD_Sep_B = $('#'+site+'').find('input[name = SD_sep_B]').val();	
+	var Frequency_FD = $('#'+site+'').find('select[name = Frequency_FD]').val();
+	var Transmit_FD = $('#'+site+'').find('select[name = Transmitter_FD]').val();
 	
 	if(version == 1)
 	{		
-		var M_Path_Vert = $('.'+site+'').find('span[name = M_path_vert]').text('');	
-		var M_Path_Hori = $('.'+site+'').find('span[name = M_path_hori]').text('');
-		var Rain_vert = $('.'+site+'').find('span[name = rain_vert]').text('');	
-		var Rain_hori = $('.'+site+'').find('span[name = rain_hori]').text('');		
-		var M_rain_vert = $('.'+site+'').find('span[name = M_rain_vert]').text('');	
-		var M_rain_hori = $('.'+site+'').find('span[name = M_rain_hori]').text('');				
-		var error_Time_Vert = $('.'+site+'').find('span[name = error_Time_Vert]').text('');	
-		var error_Time_Hori = $('.'+site+'').find('span[name = error_Time_Hori]').text('');		
+		var M_Path_Vert = $('#'+site+'').find('span[name = M_path_vert]').text('');	
+		var M_Path_Hori = $('#'+site+'').find('span[name = M_path_hori]').text('');
+		var Rain_vert = $('#'+site+'').find('span[name = rain_vert]').text('');	
+		var Rain_hori = $('#'+site+'').find('span[name = rain_hori]').text('');		
+		var M_rain_vert = $('#'+site+'').find('span[name = M_rain_vert]').text('');	
+		var M_rain_hori = $('#'+site+'').find('span[name = M_rain_hori]').text('');				
+		var error_Time_Vert = $('#'+site+'').find('span[name = error_Time_Vert]').text('');	
+		var error_Time_Hori = $('#'+site+'').find('span[name = error_Time_Hori]').text('');		
 
 		
 		Antenna_Amount = 0;
@@ -2161,7 +2179,7 @@ function calcPath(el)
 		
 		
 		console.log("Calculating for Version 1"); 
-			$.post( "AjaxFunctions.php", { func: 'calc_res', ProdID: ProdID, version: version, diameter_a: diameter_a, diameter_b: diameter_b, AntennaHeightA: AntennaHeightA, AntennaHeightB: AntennaHeightB, Transmitter: Transmitter, Extra_diameter_A: diameter_A_SD, Extra_diameter_B: diameter_B_SD, Antenna_Menu: Antenna_Amount, LatA: LatA, LatB: LatB, LonA: LonA, LonB: LonB, Frequency: Frequency, Losses: Losses, Stand_Site_A: Stand_Site_A, Stand_Site_B: Stand_Site_B, Prim_Site_A: Prim_Site_A, Prim_Site_B: Prim_Site_B, Bandwidth: Bandwidth, Standart: Standart, FEC: FEC, Modulation: Modulation, Temperature: Temperature, Manufacturer: antennaManuf, Frequency_FD: Frequency_FD, Transmit_FD: Transmit_FD, RainZone: RainZone, SD_Sep_A: SD_Sep_A, SD_Sep_B: SD_Sep_B, Main_Freq: Main_Freq, Div_Freq: Div_Freq}, function(response)
+			$.post( "AjaxFunctions.php", { func: 'calc_res', Distance: Distance, ProdID: ProdID, version: version, diameter_a: diameter_a, diameter_b: diameter_b, AntennaHeightA: AntennaHeightA, AntennaHeightB: AntennaHeightB, Transmitter: Transmitter, Extra_diameter_A: diameter_A_SD, Extra_diameter_B: diameter_B_SD, Antenna_Menu: Antenna_Amount, LatA: LatA, LatB: LatB, LonA: LonA, LonB: LonB, Frequency: Frequency, Losses: Losses, Stand_Site_A: Stand_Site_A, Stand_Site_B: Stand_Site_B, Prim_Site_A: Prim_Site_A, Prim_Site_B: Prim_Site_B, Bandwidth: Bandwidth, Standart: Standart, FEC: FEC, Modulation: Modulation, Temperature: Temperature, Manufacturer: antennaManuf, Frequency_FD: Frequency_FD, Transmit_FD: Transmit_FD, RainZone: RainZone, SD_Sep_A: SD_Sep_A, SD_Sep_B: SD_Sep_B, Main_Freq: Main_Freq, Div_Freq: Div_Freq}, function(response)
 			{	
 				//alert(response);
 				var Data = $.parseJSON(response);
@@ -2191,26 +2209,26 @@ function calcPath(el)
 	}
 	if(version == 2)
 	{		
-		var mode = $('.'+site+'').find('select[name = AntennaMode]').val();
+		var mode = $('#'+site+'').find('select[name = AntennaMode]').val();
 		console.log("Version == 2, Mode = "+mode);
 		if(mode == 1)
 		{
-			var M_path_vert_Prim = $('.'+site+'').find('span[name = M_path_vert_Prim]').text('');
-			var M_path_hori_Prim = $('.'+site+'').find('span[name = M_path_hori_Prim]').text('');
-			var M_path_vert_Stand = $('.'+site+'').find('span[name = M_path_vert_Stand]').text('');
-			var M_path_hori_Stand = $('.'+site+'').find('span[name = M_path_hori_Stand]').text('');
-			var rain_vert_prim = $('.'+site+'').find('span[name = rain_vert_prim]').text('');
-			var rain_hori_prim = $('.'+site+'').find('span[name = rain_hori_prim]').text('');
-			var rain_vert_stand = $('.'+site+'').find('span[name = rain_vert_stand]').text('');
-			var rain_hori_stand = $('.'+site+'').find('span[name = rain_hori_stand]').text('');
-			var M_rain_vert_prim = $('.'+site+'').find('span[name = M_rain_vert_prim]').text('');
-			var M_rain_hori_prim = $('.'+site+'').find('span[name = M_rain_hori_prim]').text('');
-			var M_rain_vert_stand = $('.'+site+'').find('span[name = M_rain_vert_stand]').text('');
-			var M_rain_hori_stand = $('.'+site+'').find('span[name = M_rain_hori_stand]').text('');			
-			var error_Time_Vert_prim = $('.'+site+'').find('span[name = error_Time_Vert_prim]').text('');	
-			var error_Time_Hori_prim = $('.'+site+'').find('span[name = error_Time_Hori_prim]').text('');	
-			var error_Time_Vert_stand = $('.'+site+'').find('span[name = error_Time_Vert_stand]').text('');	
-			var error_Time_Hori_stand = $('.'+site+'').find('span[name = error_Time_Hori_stand]').text('');	
+			var M_path_vert_Prim = $('#'+site+'').find('span[name = M_path_vert_Prim]').text('');
+			var M_path_hori_Prim = $('#'+site+'').find('span[name = M_path_hori_Prim]').text('');
+			var M_path_vert_Stand = $('#'+site+'').find('span[name = M_path_vert_Stand]').text('');
+			var M_path_hori_Stand = $('#'+site+'').find('span[name = M_path_hori_Stand]').text('');
+			var rain_vert_prim = $('#'+site+'').find('span[name = rain_vert_prim]').text('');
+			var rain_hori_prim = $('#'+site+'').find('span[name = rain_hori_prim]').text('');
+			var rain_vert_stand = $('#'+site+'').find('span[name = rain_vert_stand]').text('');
+			var rain_hori_stand = $('#'+site+'').find('span[name = rain_hori_stand]').text('');
+			var M_rain_vert_prim = $('#'+site+'').find('span[name = M_rain_vert_prim]').text('');
+			var M_rain_hori_prim = $('#'+site+'').find('span[name = M_rain_hori_prim]').text('');
+			var M_rain_vert_stand = $('#'+site+'').find('span[name = M_rain_vert_stand]').text('');
+			var M_rain_hori_stand = $('#'+site+'').find('span[name = M_rain_hori_stand]').text('');			
+			var error_Time_Vert_prim = $('#'+site+'').find('span[name = error_Time_Vert_prim]').text('');	
+			var error_Time_Hori_prim = $('#'+site+'').find('span[name = error_Time_Hori_prim]').text('');	
+			var error_Time_Vert_stand = $('#'+site+'').find('span[name = error_Time_Vert_stand]').text('');	
+			var error_Time_Hori_stand = $('#'+site+'').find('span[name = error_Time_Hori_stand]').text('');	
 			diameter_a2 = 0; 
 			diameter_b2 = 0;  
 			SD_Sep_A = 0;
@@ -2219,7 +2237,7 @@ function calcPath(el)
 			Div_Freq = 0; 
 		
 			console.log("Calculating for Version 2 mode "+mode); 
-			$.post( "AjaxFunctions.php", { func: 'calc_res', ProdID: ProdID, version: version, diameter_a: diameter_a, diameter_b: diameter_b, AntennaHeightA: AntennaHeightA, AntennaHeightB: AntennaHeightB, Transmitter: Transmitter, Extra_diameter_A: diameter_a2, Extra_diameter_B: diameter_b2, Antenna_Menu: mode, LatA: LatA, LatB: LatB, LonA: LonA, LonB: LonB, Frequency: Frequency, Losses: Losses, Stand_Site_A: Stand_Site_A, Stand_Site_B: Stand_Site_B, Prim_Site_A: Prim_Site_A, Prim_Site_B: Prim_Site_B, Bandwidth: Bandwidth, Standart: Standart, FEC: FEC, Modulation: Modulation, Temperature: Temperature, Manufacturer: antennaManuf, Frequency_FD: Frequency_FD, Transmit_FD: Transmit_FD, RainZone: RainZone, SD_Sep_A: SD_Sep_A, SD_Sep_B: SD_Sep_B, Main_Freq: Main_Freq, Div_Freq: Div_Freq}, function(response)
+			$.post( "AjaxFunctions.php", { func: 'calc_res', Distance: Distance, ProdID: ProdID, version: version, diameter_a: diameter_a, diameter_b: diameter_b, AntennaHeightA: AntennaHeightA, AntennaHeightB: AntennaHeightB, Transmitter: Transmitter, Extra_diameter_A: diameter_a2, Extra_diameter_B: diameter_b2, Antenna_Menu: mode, LatA: LatA, LatB: LatB, LonA: LonA, LonB: LonB, Frequency: Frequency, Losses: Losses, Stand_Site_A: Stand_Site_A, Stand_Site_B: Stand_Site_B, Prim_Site_A: Prim_Site_A, Prim_Site_B: Prim_Site_B, Bandwidth: Bandwidth, Standart: Standart, FEC: FEC, Modulation: Modulation, Temperature: Temperature, Manufacturer: antennaManuf, Frequency_FD: Frequency_FD, Transmit_FD: Transmit_FD, RainZone: RainZone, SD_Sep_A: SD_Sep_A, SD_Sep_B: SD_Sep_B, Main_Freq: Main_Freq, Div_Freq: Div_Freq}, function(response)
 			{	
 				console.log(response); 
 				var Data = $.parseJSON(response);
@@ -2268,14 +2286,14 @@ function calcPath(el)
 		}
 		if(mode == 2)
 		{	
-			var M_Path_Vert = $('.'+site+'').find('span[name = M_path_vert]').text('');	
-			var M_Path_Hori = $('.'+site+'').find('span[name = M_path_hori]').text('');
-			var Rain_vert = $('.'+site+'').find('span[name = rain_vert]').text('');	
-			var Rain_hori = $('.'+site+'').find('span[name = rain_hori]').text('');		
-			var M_rain_vert = $('.'+site+'').find('span[name = M_rain_vert]').text('');	
-			var M_rain_hori = $('.'+site+'').find('span[name = M_rain_hori]').text('');				
-			var error_Time_Vert = $('.'+site+'').find('span[name = error_Time_Vert]').text('');	
-			var error_Time_Hori = $('.'+site+'').find('span[name = error_Time_Hori]').text('');
+			var M_Path_Vert = $('#'+site+'').find('span[name = M_path_vert]').text('');	
+			var M_Path_Hori = $('#'+site+'').find('span[name = M_path_hori]').text('');
+			var Rain_vert = $('#'+site+'').find('span[name = rain_vert]').text('');	
+			var Rain_hori = $('#'+site+'').find('span[name = rain_hori]').text('');		
+			var M_rain_vert = $('#'+site+'').find('span[name = M_rain_vert]').text('');	
+			var M_rain_hori = $('#'+site+'').find('span[name = M_rain_hori]').text('');				
+			var error_Time_Vert = $('#'+site+'').find('span[name = error_Time_Vert]').text('');	
+			var error_Time_Hori = $('#'+site+'').find('span[name = error_Time_Hori]').text('');
 			diameter_a2 = diameter_a; 
 			diameter_b2 = diameter_b;  
 			Stand_Site_A = 0; 
@@ -2290,7 +2308,7 @@ function calcPath(el)
 			Div_Freq = 0; 			
 		
 			console.log("Calculating for Version 2 mode "+mode); 
-			$.post( "AjaxFunctions.php", { func: 'calc_res', ProdID: ProdID, version: version, diameter_a: diameter_a, diameter_b: diameter_b, AntennaHeightA: AntennaHeightA, AntennaHeightB: AntennaHeightB, Transmitter: Transmitter, Extra_diameter_A: diameter_a2, Extra_diameter_B: diameter_b2, Antenna_Menu: mode, LatA: LatA, LatB: LatB, LonA: LonA, LonB: LonB, Frequency: Frequency, Losses: Losses, Stand_Site_A: Stand_Site_A, Stand_Site_B: Stand_Site_B, Prim_Site_A: Prim_Site_A, Prim_Site_B: Prim_Site_B, Bandwidth: Bandwidth, Standart: Standart, FEC: FEC, Modulation: Modulation, Temperature: Temperature, Manufacturer: antennaManuf, Frequency_FD: Frequency_FD, Transmit_FD: Transmit_FD, RainZone: RainZone, SD_Sep_A: SD_Sep_A, SD_Sep_B: SD_Sep_B, Main_Freq: Main_Freq, Div_Freq: Div_Freq}, function(response)
+			$.post( "AjaxFunctions.php", { func: 'calc_res', Distance: Distance, ProdID: ProdID, version: version, diameter_a: diameter_a, diameter_b: diameter_b, AntennaHeightA: AntennaHeightA, AntennaHeightB: AntennaHeightB, Transmitter: Transmitter, Extra_diameter_A: diameter_a2, Extra_diameter_B: diameter_b2, Antenna_Menu: mode, LatA: LatA, LatB: LatB, LonA: LonA, LonB: LonB, Frequency: Frequency, Losses: Losses, Stand_Site_A: Stand_Site_A, Stand_Site_B: Stand_Site_B, Prim_Site_A: Prim_Site_A, Prim_Site_B: Prim_Site_B, Bandwidth: Bandwidth, Standart: Standart, FEC: FEC, Modulation: Modulation, Temperature: Temperature, Manufacturer: antennaManuf, Frequency_FD: Frequency_FD, Transmit_FD: Transmit_FD, RainZone: RainZone, SD_Sep_A: SD_Sep_A, SD_Sep_B: SD_Sep_B, Main_Freq: Main_Freq, Div_Freq: Div_Freq}, function(response)
 			{	
 				var Data = $.parseJSON(response);
 				console.log(response);
@@ -2320,17 +2338,17 @@ function calcPath(el)
 	}
 	if(version == 3)
 	{	
-		var M_Path_Vert = $('.'+site+'').find('span[name = M_path_vert]').text('');	
-		var M_Path_Hori = $('.'+site+'').find('span[name = M_path_hori]').text('');
-		var Rain_vert = $('.'+site+'').find('span[name = rain_vert]').text('');	
-		var Rain_hori = $('.'+site+'').find('span[name = rain_hori]').text('');		
-		var M_rain_vert = $('.'+site+'').find('span[name = M_rain_vert]').text('');	
-		var M_rain_hori = $('.'+site+'').find('span[name = M_rain_hori]').text('');				
-		var error_Time_Vert = $('.'+site+'').find('span[name = error_Time_Vert]').text('');	
-		var error_Time_Hori = $('.'+site+'').find('span[name = error_Time_Hori]').text('');		
+		var M_Path_Vert = $('#'+site+'').find('span[name = M_path_vert]').text('');	
+		var M_Path_Hori = $('#'+site+'').find('span[name = M_path_hori]').text('');
+		var Rain_vert = $('#'+site+'').find('span[name = rain_vert]').text('');	
+		var Rain_hori = $('#'+site+'').find('span[name = rain_hori]').text('');		
+		var M_rain_vert = $('#'+site+'').find('span[name = M_rain_vert]').text('');	
+		var M_rain_hori = $('#'+site+'').find('span[name = M_rain_hori]').text('');				
+		var error_Time_Vert = $('#'+site+'').find('span[name = error_Time_Vert]').text('');	
+		var error_Time_Hori = $('#'+site+'').find('span[name = error_Time_Hori]').text('');		
 
-		var SD_Sep_A = $('.'+site+'').find('input[name = SD_sep_A]').val();
-		var SD_Sep_B = $('.'+site+'').find('input[name = SD_sep_B]').val();
+		var SD_Sep_A = $('#'+site+'').find('input[name = SD_sep_A]').val();
+		var SD_Sep_B = $('#'+site+'').find('input[name = SD_sep_B]').val();
 		
 		Antenna_Amount = 0;
 		Stand_Site_A = 0; 
@@ -2343,7 +2361,7 @@ function calcPath(el)
 		Div_Freq = 0; 
 		
 		console.log("Calculating for Version 3"); 
-			$.post( "AjaxFunctions.php", { func: 'calc_res', ProdID: ProdID, version: version, diameter_a: diameter_a, diameter_b: diameter_b, AntennaHeightA: AntennaHeightA, AntennaHeightB: AntennaHeightB, Transmitter: Transmitter, Extra_diameter_A: diameter_A_SD, Extra_diameter_B: diameter_B_SD, Antenna_Menu: Antenna_Amount, LatA: LatA, LatB: LatB, LonA: LonA, LonB: LonB, Frequency: Frequency, Losses: Losses, Stand_Site_A: Stand_Site_A, Stand_Site_B: Stand_Site_B, Prim_Site_A: Prim_Site_A, Prim_Site_B: Prim_Site_B, Bandwidth: Bandwidth, Standart: Standart, FEC: FEC, Modulation: Modulation, Temperature: Temperature, Manufacturer: antennaManuf, Frequency_FD: Frequency_FD, Transmit_FD: Transmit_FD, RainZone: RainZone, SD_Sep_A: SD_Sep_A, SD_Sep_B: SD_Sep_B, Main_Freq: Main_Freq, Div_Freq: Div_Freq}, function(response)
+			$.post( "AjaxFunctions.php", { func: 'calc_res', Distance: Distance, ProdID: ProdID, version: version, diameter_a: diameter_a, diameter_b: diameter_b, AntennaHeightA: AntennaHeightA, AntennaHeightB: AntennaHeightB, Transmitter: Transmitter, Extra_diameter_A: diameter_A_SD, Extra_diameter_B: diameter_B_SD, Antenna_Menu: Antenna_Amount, LatA: LatA, LatB: LatB, LonA: LonA, LonB: LonB, Frequency: Frequency, Losses: Losses, Stand_Site_A: Stand_Site_A, Stand_Site_B: Stand_Site_B, Prim_Site_A: Prim_Site_A, Prim_Site_B: Prim_Site_B, Bandwidth: Bandwidth, Standart: Standart, FEC: FEC, Modulation: Modulation, Temperature: Temperature, Manufacturer: antennaManuf, Frequency_FD: Frequency_FD, Transmit_FD: Transmit_FD, RainZone: RainZone, SD_Sep_A: SD_Sep_A, SD_Sep_B: SD_Sep_B, Main_Freq: Main_Freq, Div_Freq: Div_Freq}, function(response)
 			{	
 				//alert(response);
 				var Data = $.parseJSON(response);
@@ -2374,23 +2392,23 @@ function calcPath(el)
 	}
 	if(version == 4)
 	{	
-		var M_Path_Vert = $('.'+site+'').find('span[name = M_path_vert]').text('');	
-		var M_Path_Hori = $('.'+site+'').find('span[name = M_path_hori]').text('');
-		var Rain_vert = $('.'+site+'').find('span[name = rain_vert]').text('');	
-		var Rain_hori = $('.'+site+'').find('span[name = rain_hori]').text('');		
-		var M_rain_vert = $('.'+site+'').find('span[name = M_rain_vert]').text('');	
-		var M_rain_hori = $('.'+site+'').find('span[name = M_rain_hori]').text('');				
-		var error_Time_Vert = $('.'+site+'').find('span[name = error_Time_Vert]').text('');	
-		var error_Time_Hori = $('.'+site+'').find('span[name = error_Time_Hori]').text('');
-		var diameter_A_FD = $('.'+site+'').find('select[name = diameter_A_FD]').val();
-		var diameter_B_FD = $('.'+site+'').find('select[name = diameter_B_FD]').val();		
+		var M_Path_Vert = $('#'+site+'').find('span[name = M_path_vert]').text('');	
+		var M_Path_Hori = $('#'+site+'').find('span[name = M_path_hori]').text('');
+		var Rain_vert = $('#'+site+'').find('span[name = rain_vert]').text('');	
+		var Rain_hori = $('#'+site+'').find('span[name = rain_hori]').text('');		
+		var M_rain_vert = $('#'+site+'').find('span[name = M_rain_vert]').text('');	
+		var M_rain_hori = $('#'+site+'').find('span[name = M_rain_hori]').text('');				
+		var error_Time_Vert = $('#'+site+'').find('span[name = error_Time_Vert]').text('');	
+		var error_Time_Hori = $('#'+site+'').find('span[name = error_Time_Hori]').text('');
+		var diameter_A_FD = $('#'+site+'').find('select[name = diameter_A_FD]').val();
+		var diameter_B_FD = $('#'+site+'').find('select[name = diameter_B_FD]').val();		
 
-		var SD_Sep_A = $('.'+site+'').find('input[name = SD_sep_A]').val();
-		var SD_Sep_B = $('.'+site+'').find('input[name = SD_sep_B]').val();
+		var SD_Sep_A = $('#'+site+'').find('input[name = SD_sep_A]').val();
+		var SD_Sep_B = $('#'+site+'').find('input[name = SD_sep_B]').val();
 		
 		
-		//var Main_Freq = $('.'+site+'').find('input[name = Main_Freq]').val();
-		//var Div_Freq = $('.'+site+'').find('input[name = Div_Freq]').val();
+		//var Main_Freq = $('#'+site+'').find('input[name = Main_Freq]').val();
+		//var Div_Freq = $('#'+site+'').find('input[name = Div_Freq]').val();
 		
 		Stand_Site_A = 0; 
 		Stand_Site_B = 0; 
@@ -2398,7 +2416,7 @@ function calcPath(el)
 		Prim_Site_B = 0; 
 
 		console.log("Calculating for Version 1"); 
-			$.post( "AjaxFunctions.php", { func: 'calc_res', ProdID: ProdID, version: version, diameter_a: diameter_a, diameter_b: diameter_b, AntennaHeightA: AntennaHeightA, AntennaHeightB: AntennaHeightB, Transmitter: Transmitter, Extra_diameter_A: diameter_A_FD, Extra_diameter_B: diameter_B_FD, Antenna_Menu: Antenna_Amount, LatA: LatA, LatB: LatB, LonA: LonA, LonB: LonB, Frequency: Frequency, Losses: Losses, Stand_Site_A: Stand_Site_A, Stand_Site_B: Stand_Site_B, Prim_Site_A: Prim_Site_A, Prim_Site_B: Prim_Site_B, Bandwidth: Bandwidth, Standart: Standart, FEC: FEC, Modulation: Modulation, Temperature: Temperature, Manufacturer: antennaManuf, Frequency_FD: Frequency_FD, Transmit_FD: Transmit_FD, RainZone: RainZone, SD_Sep_A: SD_Sep_A, SD_Sep_B: SD_Sep_B, Main_Freq: Main_Freq, Div_Freq: Div_Freq}, function(response)
+			$.post( "AjaxFunctions.php", { func: 'calc_res', Distance: Distance, ProdID: ProdID, version: version, diameter_a: diameter_a, diameter_b: diameter_b, AntennaHeightA: AntennaHeightA, AntennaHeightB: AntennaHeightB, Transmitter: Transmitter, Extra_diameter_A: diameter_A_FD, Extra_diameter_B: diameter_B_FD, Antenna_Menu: Antenna_Amount, LatA: LatA, LatB: LatB, LonA: LonA, LonB: LonB, Frequency: Frequency, Losses: Losses, Stand_Site_A: Stand_Site_A, Stand_Site_B: Stand_Site_B, Prim_Site_A: Prim_Site_A, Prim_Site_B: Prim_Site_B, Bandwidth: Bandwidth, Standart: Standart, FEC: FEC, Modulation: Modulation, Temperature: Temperature, Manufacturer: antennaManuf, Frequency_FD: Frequency_FD, Transmit_FD: Transmit_FD, RainZone: RainZone, SD_Sep_A: SD_Sep_A, SD_Sep_B: SD_Sep_B, Main_Freq: Main_Freq, Div_Freq: Div_Freq}, function(response)
 			{	
 				//alert(response);
 				var Data = $.parseJSON(response);
@@ -2427,11 +2445,4 @@ function calcPath(el)
 	
 	}
 	
-}
-function stopCalc(el)
-{
-	var site = $(el).parent().parent().attr('class'); 
-	var Succ_Button = $('.'+site+'').find('button[name = Stop]');
-	console.log(site);
-	$(Succ_Button).button('reset');
 }

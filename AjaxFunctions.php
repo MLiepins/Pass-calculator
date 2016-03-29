@@ -289,9 +289,9 @@ if(isset($_POST['func']) && !empty($_POST['func']))
 		break; 
 		
 		case 'calc_res':
-				$Distance = calculateDistance($_POST['LatA'], $_POST['LonA'], $_POST['LatB'], $_POST['LonB']);
+				//$Distance = calculateDistance($_POST['LatA'], $_POST['LonA'], $_POST['LatB'], $_POST['LonB']);
 				$result = array(
-				'distance' => $Distance,
+				'distance' => $_POST['Distance'],
 				'Product' => $_POST['ProdID'],
 				'LatA' => $_POST['LatA'],
 				'LonA' => $_POST['LonA'],

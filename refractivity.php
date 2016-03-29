@@ -30,8 +30,8 @@
 			var DivID = 1; 
 			$("#AddLink").click(function(){
 				$('<h4>Calculate link no '+DivID+'</h4>').appendTo('#content');
-				$('<div class = "'+DivID+'"></div>').appendTo('#content');
-				$('.'+DivID+'').load('HTMLframe.html');
+				$('<div id = "'+DivID+'"></div>').appendTo('#content');
+				$('#'+DivID+'').load('HTMLframe.html');
 				DivID = DivID + 1;
 			});
 			
