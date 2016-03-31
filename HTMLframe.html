@@ -76,7 +76,7 @@
 		<td>Mode</td>
 		<td>
 			<select onchange = "changeAntennaMode(this)" name = "AntennaMode" class = "static">
-					<option value="">Please select the mode</option>
+					<option value="" disabled selected value>Please select the mode</option>
 					<option value="1">Using 2 antennas and coupler</option>
 					<option value="2">Using 4 antennas</option>
 			</select>
@@ -173,19 +173,19 @@
 	</tr>
 	<tr class = "Coupler_Atten" hidden>
 		<td>Primary link:</td>
-		<td><div name = "l_coup_site_A"><input type="number" name = "Prim_Site_A" onchange = "prim_site_for_A(this)" class = "static"></span>
+		<td><div name = "l_coup_site_A"></div><input type="number" name = "Prim_Site_A" onchange = "prim_site_for_A(this)" class = "static"></span>
 			<span name = "prim_site_for_A" class="glyphicon glyphicon-remove" style="color:red"></span>	
 		</td>
-		<td><div name = "l_coup_site_B"> <input type="number" name = "Prim_Site_B" onchange = "prim_site_for_B(this)" class = "static" ></span>
+		<td><div name = "l_coup_site_B"></div> <input type="number" name = "Prim_Site_B" onchange = "prim_site_for_B(this)" class = "static" ></span>
 			<span name = "prim_site_for_B" class="glyphicon glyphicon-remove" style="color:red"></span>	
 		</td>
 	</tr>
 	<tr class = "Coupler_Atten" hidden>
 		<td> Standby link:</td>
-		<td><div name = "l_coup_site_A"><input type="number" name = "Stand_Site_A" onchange = "Stand_Site_link_A(this)" class = "static"></span>
+		<td><div name = "l_coup_site_A"></div><input type="number" name = "Stand_Site_A" onchange = "Stand_Site_link_A(this)" class = "static"></span>
 			<span name = "stand_site_for_a" class="glyphicon glyphicon-remove" style="color:red"></span> 
 		</td>
-		<td><div name = "l_coup_site_B"><input type="number" name = "Stand_Site_B" onchange = "Stand_Site_link_B(this)" class = "static"></span>
+		<td><div name = "l_coup_site_B"></div><input type="number" name = "Stand_Site_B" onchange = "Stand_Site_link_B(this)" class = "static"></span>
 			<span name = "stand_site_for_b" class="glyphicon glyphicon-remove" style="color:red"></span> 
 		</td>
 	</tr>
