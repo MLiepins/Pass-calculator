@@ -1,12 +1,19 @@
-
+	<h4 class = "frameTitle"></h4>
 	<form class="form-DecDeg" method="GET">
 	<table class="table table-bordered"  style="width: auto">
 	<div name = "ProdID" value = "" hidden></div>
 	<div name = "storageFreq" value = "" hidden></div>
+	
+	<div name = "tmp_Antenna_A" value = "" hidden></div>
+	<div name = "tmp_Antenna_B" value = "" hidden></div>
+	
+	<tr>
+		<td colspan = "2" class = "bold">Hardware</td>
+	</tr>
 	<tr>
 		<td>Version: </td>
 		<td>
-			<select onchange="verChange(this)" name = "Version" class = "Version">
+			<select onchange="verChange(this)" name = "Version" class = "Version static">
 				<option value="" disabled selected value >Please select version</option>
 				<option value="1">1+0</option>
 				<option value="2">1+1 HSB</option>
@@ -19,7 +26,7 @@
 	<tr>
 		<td>Select Product: </td>
 		<td>
-			<select onchange = "prodChange(this)" name = "Productx1" class = "Products">
+			<select onchange = "prodChange(this)" name = "Productx1" class = "Products static">
 				<option value="">Please first select version</option>
 			</select>
 			<span name = "Prod_War" class="glyphicon glyphicon-remove" style="color:red"></span>
@@ -28,7 +35,7 @@
 	<tr  class = "odu" hidden>
 		<td>Odu type</td>
 		<td>
-			<select onchange = "oduChange(this)" name = "Odu" class = "OduVal">
+			<select onchange = "oduChange(this)" name = "Odu" class = "OduVal static">
 				<option value="" disabled selected value>Choose odu type</option>
 				<option value="1">Phoenix ODU</option>
 				<option value="2">R Odu</option>
@@ -39,135 +46,36 @@
 	<tr>
 		<td>Frequency</td>
 		<td>
-			<select onchange = "FreqChange(this)" name = "Frequency">
+			<select onchange = "FreqChange(this)" name = "Frequency" class = "static">
 					<option value="">Please first select product</option>
 			</select>
 			<span name = "Freq_War" class="glyphicon glyphicon-remove" style="color:red"></span>
 		</td>
 	</tr>
-	<tr>
-		<td>Channel bandwidth</td>
-		<td>
-			<select name = "Bandwidth" onchange = "bandwidthChange(this)">
-					<option value="">Please first select Frequency</option>
-			</select>
-			<span name = "Band_War" class="glyphicon glyphicon-remove" style="color:red"></span>
-			<br><span name = "capacity"> </span>
+	<tr class = "Diversity" hidden >
+		<td>Main frequency </td>
+		<td><input type="number" name="Main_Freq" onchange = "change_Main_Freq(this)" class = "static">
+		<span name = "Main_Freq_warn" class="glyphicon glyphicon-remove" style="color:red"></span></td>
+	</tr>
+	<tr class = "Diversity" hidden >
+		<td>Diversity frequency</td> 
+		<td><input type="number" name="Div_Freq" onchange = "change_Div_Freq(this)" class = "static">
+			<span name = "Div_Freq_warn" class="glyphicon glyphicon-remove" style="color:red"></span>
 		</td>
 	</tr>
-	<tr>
-		<td>Operational mode</td>
-		<td>
-			<select onchange = "changeFEC(this)" name = "FEC">
-			<option value="">Please first select Bandwidth</option>
-			</select>
-			<span name = "FEC_War" class="glyphicon glyphicon-remove" style="color:red"></span>
-		</td>
-	</tr>	
-	<tr>
-		<td>Annual temperature</td> 
-		<td><input type="number" name="Temperature" placeholder="Temperature" onchange= "getTemperature(this)">
-		<span name = "temp_War" class="glyphicon glyphicon-remove" style="color:red"></span>
-		</td>
-	</tr>
-	<tr>
-		<td>Radio modulation</td>
-		<td>
-			<select onchange = "changeModulation(this)" name = "rModulation">
-					<option value="">Please first select FEC</option>
-			</select>
-			<span name = "Modu_War" class="glyphicon glyphicon-remove" style="color:red"></span>
-		</td>
-	</tr>	
-	<tr>
-		<tr>
-		<td>Rainzone</td>
-		<td><select name = "Rainzone" onchange = "changeRainzone(this)">
-			<option value="" disabled selected value>Select Rainzone</option>
-			<option value="A">A</option>
-			<option value="B">B</option>
-			<option value="C">C</option>
-			<option value="D">D</option>
-			<option value="E">E</option>
-			<option value="F">F</option>
-			<option value="G">G</option>
-			<option value="H">H</option>
-			<option value="J">J</option>
-			<option value="K">K</option>
-			<option value="L">L</option>
-			<option value="M">M</option>
-			<option value="N">N</option>
-			<option value="P">P</option>
-			<option value="Q">Q</option>
-		</select>
-		<span name = "rain_War" class="glyphicon glyphicon-remove" style="color:red"></span>
-		<span name = "RainZoneResult"></span>
-		</td>
-		</tr>
-	</tr>
-	<tr>
-		<td>Coordinates</td>
-		<td>
-			 Lat/Lon A: <input type="number" name="LatA" placeholder = "Latitude A" onchange = "changeCoordinates(this)"> 
-						<input type="number" name="LonA" placeholder = "Longitude A" onchange = "changeCoordinates(this)">
-			<br>
-			Lat/Lon B: <input type="number" name="LatB" placeholder = "Latitude B" onchange = "changeCoordinates(this)"> 
-						<input type="number" name="LonB" placeholder = "Longitude B" onchange = "changeCoordinates(this)">
-			<span name = "DistanceResult"></span>
-		</td>
-	</tr>	
-	<tr>
-		<td>Transmitter power</td>
-		<td>
-			<select name = "Transmitter" onchange = "changeTrans(this)">
-					<option value="">Please first select modulation</option>
-			</select>
-			<span name = "Trans_War" class="glyphicon glyphicon-remove" style="color:red"></span>
-		</td>
-	</tr>
-	<tr class = "Diversity" hidden>
-		<td>Amount of antenas</td>
-		<td>
-			<select onchange = "ChangeAmountofAntenas(this)" name = "Antenas_amount">
-					<option value="" disabled selected value>Please select the amount of antenas</option>
-					<option value="1">Using 2 antenas</option>
-					<option value="2">Using 4 antenas</option>
-			</select>
-			<span name = "Ant_amount_War" class="glyphicon glyphicon-remove" style="color:red"></span>
-		</td>
-	</tr>
-
 	<tr class = "FD_params" hidden>
 		<td>Frequency FD</td>
 		<td>
-			<select onchange = "changeFreqFD(this)" name = "Frequency_FD">
+			<select onchange = "changeFreqFD(this)" name = "Frequency_FD" class = "static">
 					<option value="">Please first select product</option>
 			</select>
 			<span name = "Freq_FD_War" class="glyphicon glyphicon-remove" style="color:red"></span>
 		</td>
-	</tr>
-	<tr class = "FD_params" hidden>
-		<td>Transmitter power FD</td>
-		<td>
-			<select onchange = "changeTransFD(this)" name = "Transmitter_FD">
-					<option value="">Please first select modulation</option>
-			</select>
-			<span name = "Trans_FD_War" class="glyphicon glyphicon-remove" style="color:red"></span>
-		</td>
-	</tr>
-	
-	<tr>
-		<td>Antenna heights</td>
-		<td>
-			 Antenna A height over sea level<br><input type="number" name="AntennaA"> 
-			<br>Antenna B height over sea level<br><input type="number" name="AntennaB">
-
-		</td>
-	</tr>
+	</tr>		
 	<tr class = "h_AntennaMode" hidden>
 		<td>Mode</td>
 		<td>
-			<select onchange = "changeAntennaMode(this)" name = "AntennaMode">
+			<select onchange = "changeAntennaMode(this)" name = "AntennaMode" class = "static">
 					<option value="">Please select the mode</option>
 					<option value="1">Using 2 antennas and coupler</option>
 					<option value="2">Using 4 antennas</option>
@@ -175,10 +83,21 @@
 			<span name = "Antenna_Mode_War" class="glyphicon glyphicon-remove" style="color:red"></span>
 		</td>
 	</tr>
+	<tr class = "Diversity" hidden>
+		<td>Amount of antenas</td>
+		<td>
+			<select onchange = "ChangeAmountofAntenas(this)" name = "Antenas_amount" class = "static">
+					<option value="" disabled selected value>Please select the amount of antenas</option>
+					<option value="1">Using 2 antenas</option>
+					<option value="2">Using 4 antenas</option>
+			</select>
+			<span name = "Ant_amount_War" class="glyphicon glyphicon-remove" style="color:red"></span>
+		</td>
+	</tr>
 	<tr>
 		<td>Antenna manufacturer</td>
 		<td>
-			<select onchange = "changeAntennaManuf(this)" name = "AntennaManuf">
+			<select onchange = "changeAntennaManuf(this)" name = "AntennaManuf" class = "static">
 					<option value="">Please first select Product</option>
 			</select>
 				<span name = "Manuf_War" class="glyphicon glyphicon-remove" style="color:red"></span>
@@ -186,15 +105,15 @@
 	</tr>
 	<tr>
 		<td>Antenna Diameters</td>
-		<td>Antenna A<br>
-		<select onchange = "change_A_Diameter(this)" name = "diameter_A">
+		<td><div name = "l_AntennaA"></div>
+		<select onchange = "change_A_Diameter(this)" name = "diameter_A" class = "static">
 				<option value="">Please first choose Antenna manufacturer</option>
 			</select>
 			<span name = "A_Diameter_War" class="glyphicon glyphicon-remove" style="color:red"></span>
 			<span name = "result_dA"></span>
 		<br>
-		Antenna B<br>
-			<select onchange = "change_B_Diameter(this)" name = "diameter_B">
+		<div name = "l_AntennaB"></div>
+			<select onchange = "change_B_Diameter(this)" name = "diameter_B" class = "static">
 					<option value="">Please first choose Antenna manufacturer</option>
 			</select>
 			<span name = "B_Diameter_War" class="glyphicon glyphicon-remove" style="color:red"></span>
@@ -202,31 +121,32 @@
 		</td>
 		
 		
-		<td class = "Antenna_SD" hidden>Antenna A SD<br>
-			<select onchange = "change_A_Diameter_SD(this)" name = "diameter_A_SD">
+		<td class = "Antenna_SD" hidden><div name = "l_AntennaASD"></div><br>
+			<select onchange = "change_A_Diameter_SD(this)" name = "diameter_A_SD" class = "static">
 					<option value="">Please first choose Antenna manufacturer</option>
 			</select>
 			<span name = "A_SD_Diameter_War" class="glyphicon glyphicon-remove" style="color:red"></span>
 			<span name = "result_dA_SD"></span><br>
-			Antenna B SD<br>
-			<select onchange = "change_B_Diameter_SD(this)" name = "diameter_B_SD">
+			<div name = "l_AntennaBSD"><br>
+			<select onchange = "change_B_Diameter_SD(this)" name = "diameter_B_SD" class = "static">
 					<option value="">Please first choose Antenna manufacturer</option>
 			</select>
 			<span name = "B_SD_Diameter_War" class="glyphicon glyphicon-remove" style="color:red"></span>
 			<span name = "result_dB_SD"></span>
 		</td>
-		<td class = "Antenna_FD" hidden>Antenna A FD<br>
-			<select onchange = "change_A_Diameter_FD(this)" name = "diameter_A_FD">
-				<option value="">Please first choose Antenna manufacturer</option>
-			</select>
-			<span name = "A_FD_Diameter_War" class="glyphicon glyphicon-remove" style="color:red"></span>
-			<span name = "result_dA_FD"></span><br>
-			Antenna B FD<br>
-			<select onchange = "change_B_Diameter_FD(this)" name = "diameter_B_FD">
+		<td class = "Antenna_FD" hidden>
+			<div name = "l_AntennaAFD"></div>
+				<select onchange = "change_A_Diameter_FD(this)" name = "diameter_A_FD" class = "static">
 					<option value="">Please first choose Antenna manufacturer</option>
-			</select>
-			<span name = "B_FD_Diameter_War" class="glyphicon glyphicon-remove" style="color:red"></span>
-			<span name = "result_dB_FD"></span>
+				</select>
+				<span name = "A_FD_Diameter_War" class="glyphicon glyphicon-remove" style="color:red"></span>
+				<span name = "result_dA_FD"></span><br>
+			<div name = "l_AntennaBFD"></div>
+				<select onchange = "change_B_Diameter_FD(this)" name = "diameter_B_FD" class = "static">
+					<option value="">Please first choose Antenna manufacturer</option>
+				</select>
+				<span name = "B_FD_Diameter_War" class="glyphicon glyphicon-remove" style="color:red"></span>
+				<span name = "result_dB_FD"></span>
 		</td>
 		<td class = "extra_diameter" hidden >Antenna A2<br>
 			Diameter: <span name = "diameter_A2"></span><br>
@@ -239,11 +159,11 @@
 	</tr>
 	<tr class = "Antenna_SD"  hidden>
 		<td> Antenna vertical separation</td>
-		<td>SD separation for A: <input type="number" name="SD_sep_A" onchange= "sd_Sep_for_a(this)">
+		<td><div name = "l_sd_sep_A"></div> <input type="number" name="SD_sep_A" onchange= "sd_Sep_for_a(this)" class = "static">
 			<span name = "sd_sep_for_a" class="glyphicon glyphicon-remove" style="color:red"></span>		
 		</td>
 	
-		<td>SD separation for B: <input type="number" name="SD_sep_B" onchange= "sd_Sep_for_b(this)">
+		<td><div name = "l_sd_sep_B"></div><input type="number" name="SD_sep_B" onchange= "sd_Sep_for_b(this)" class = "static">
 			<span name = "sd_sep_for_b" class="glyphicon glyphicon-remove" style="color:red"></span>		
 		</td>
 	
@@ -253,76 +173,131 @@
 	</tr>
 	<tr class = "Coupler_Atten" hidden>
 		<td>Primary link:</td>
-		<td>Site A: <input type="number" name = "Prim_Site_A" onchange = "prim_site_for_A(this)"></span>
+		<td><div name = "l_coup_site_A"><input type="number" name = "Prim_Site_A" onchange = "prim_site_for_A(this)" class = "static"></span>
 			<span name = "prim_site_for_A" class="glyphicon glyphicon-remove" style="color:red"></span>	
 		</td>
-		<td>Site B: <input type="number" name = "Prim_Site_B" onchange = "prim_site_for_B(this)" ></span>
+		<td><div name = "l_coup_site_B"> <input type="number" name = "Prim_Site_B" onchange = "prim_site_for_B(this)" class = "static" ></span>
 			<span name = "prim_site_for_B" class="glyphicon glyphicon-remove" style="color:red"></span>	
 		</td>
 	</tr>
 	<tr class = "Coupler_Atten" hidden>
 		<td> Standby link:</td>
-		<td>Site A: <input type="number" name = "Stand_Site_A" onchange = "Stand_Site_link_A(this)"></span>
+		<td><div name = "l_coup_site_A"><input type="number" name = "Stand_Site_A" onchange = "Stand_Site_link_A(this)" class = "static"></span>
 			<span name = "stand_site_for_a" class="glyphicon glyphicon-remove" style="color:red"></span> 
 		</td>
-		<td>Site B: <input type="number" name = "Stand_Site_B" onchange = "Stand_Site_link_B(this)"></span>
+		<td><div name = "l_coup_site_B"><input type="number" name = "Stand_Site_B" onchange = "Stand_Site_link_B(this)" class = "static"></span>
 			<span name = "stand_site_for_b" class="glyphicon glyphicon-remove" style="color:red"></span> 
 		</td>
 	</tr>
-	<tr class = "Diversity" hidden >
-		<td>Main frequency <br><input type="number" name="Main_Freq" onchange = "change_Main_Freq(this)">
-			<span name = "Main_Freq_warn" class="glyphicon glyphicon-remove" style="color:red"></span>
-		</td>	
-		<td>Diversity frequency<br> <input type="number" name="Div_Freq" onchange = "change_Div_Freq(this)">
-			<span name = "Div_Freq_warn" class="glyphicon glyphicon-remove" style="color:red"></span>
+	<tr>
+		<td colspan = "2" class = "bold">Configuration</td>
+	</tr>
+	<tr>
+		<td>Channel bandwidth</td>
+		<td>
+			<select name = "Bandwidth" onchange = "bandwidthChange(this)" class = "static">
+					<option value="">Please first select Frequency</option>
+			</select>
+			<span name = "Band_War" class="glyphicon glyphicon-remove" style="color:red"></span>
+			<br><span name = "capacity"> </span>
+		</td>
+	</tr>	
+	<tr>
+		<td>Radio modulation</td>
+		<td>
+			<select onchange = "changeModulation(this)" name = "rModulation" class = "static">
+					<option value="">Please first select bandwidth</option>
+			</select>
+			<span name = "Modu_War" class="glyphicon glyphicon-remove" style="color:red"></span>
+		</td>
+	</tr>
+	<tr>
+		<td>Operational mode</td>
+		<td>
+			<select onchange = "changeFEC(this)" name = "FEC" class = "static">
+			<option value="">Please first select modulation</option>
+			</select>
+			<span name = "FEC_War" class="glyphicon glyphicon-remove" style="color:red"></span>
+		</td>
+	</tr>	
+	<tr>
+		<td>Transmitter power</td>
+		<td>
+			<select name = "Transmitter" onchange = "changeTrans(this)" class = "static">
+					<option value="">Please first select modulation</option>
+			</select>
+			<span name = "Trans_War" class="glyphicon glyphicon-remove" style="color:red"></span>
+		</td>
+	</tr>
+	<tr class = "FD_params" hidden>
+		<td>Transmitter power FD</td>
+		<td>
+			<select onchange = "changeTransFD(this)" name = "Transmitter_FD" class = "static">
+					<option value="">Please first select modulation</option>
+			</select>
+			<span name = "Trans_FD_War" class="glyphicon glyphicon-remove" style="color:red"></span>
 		</td>
 	</tr>
 	<tr>
 		<td>Losses</td>
-			<td><input type="number" name="Losses" onchange = "prev_calc(this)" placeholder="Losses">
+			<td><input type="number" name="Losses" onchange = "prev_calc(this)" value = "0" class = "static">
 				<span name = "Losses_Warn" class="glyphicon glyphicon-remove" style="color:red"></span>
 			</td>
 	</tr>
 	</table> 
-	<h4>Results</h4>
-	<table class="table table-bordered" style="width: auto">
+	<h4 class = "bold"> Signal quality</h4>
+	<table class="table table-bordered" id = "TableWidth">
+	<tr>
+		<td style = "visibility: hidden"></td>
+		<td class = "bold">RX Threshold</td>
+		<td class = "bold">Results</td>
+	</tr>
 	<tr class = "Primary">
 		<td>Received signal level: </td>
+		<td class = "rsl_label"></td>
 		<td><span name = "signal_level"></span></td>
 	</tr>
 	<tr class = "Standby" hidden>
 		<td>Received signal level: </td>
+		<td class = "prim_l_sl"></td>
 		<td>Primary link: <span name = "signal_level_prim"></span></td>
+		<td class = "stand_l_sl"></td>
 		<td>Standby link: <span name = "signal_level_stand"></span></td>
 	</tr>
 	<tr class = "Primary">
 		<td >RSSI: </td>
+		<td class = "rssi_label"></td>
 		<td><span name = "RSSI"></span></td>
 	</tr>
 	<tr class = "Standby" hidden>
 		<td >RSSI: </td>
+		<td class = "prim_l_rssi"></td>
 		<td>Primary link: <span name = "RSSI_prim"></span></td>
+		<td class = "stand_l_rssi"></td>
 		<td>Standby link: <span name = "RSSI_stand"></span></td>
 	</tr>
 	<tr class = "Primary">
 		<td>Fade margin: </td>
+		<td></td>
 		<td><span name = "Fade_Margin"></span></td>
 	</tr>
 	<tr class = "Standby" hidden>
 		<td>Fade margin: </td>
+		<td></td>
 		<td>Primary link: <span name = "Fade_Margin_prim"></span></td>
+		<td></td>
 		<td>Standby link: <span name = "Fade_Margin_stand"></span></td>
 	</tr>
 	<tr>
-		<td>Rx Threshold: </td>
-		<td><span name = "Rx_Threshold"></span></td>
-	</tr>
-	<tr>
 		<td>EIRP: </td>
+		<td></td>
 		<td><span name = "EIRP"></span></td>
 	</tr>
+	</table>
+	<h4 class = "bold"> Availability</h4>
+	<table class="table table-bordered" id = "TableWidth">
 	<tr class = "Primary">
-		<td>Calculated results</td>
+		<td style = "visibility: hidden"></td>
 		<td>Vertical</td>
 		<td>Horizontal</td>
 	</tr>

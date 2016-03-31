@@ -63,7 +63,7 @@ function getBandwidth($conn, $ProdID, $Frequency)
 
 function getModulation($conn, $ProdID, $Frequency, $Bandwidth, $Standart, $FEC)
 {
-	$sql = "SELECT `Modulation` FROM `rx_treshold` WHERE `ProductID` = $ProdID AND `Standart` = '$Standart' AND `BandWidth` = $Bandwidth AND `FrequencyBand` = $Frequency AND `FEC` = $FEC GROUP BY `Modulation` DESC";
+	$sql = "SELECT `Modulation` FROM `rx_treshold` WHERE `ProductID` = $ProdID AND `Standart` = '$Standart' AND `BandWidth` = $Bandwidth AND `FrequencyBand` = $Frequency AND `FEC` = $FEC GROUP BY `Modulation` ASC";
 	$result = $conn->query($sql);
 	while($row = mysqli_fetch_assoc($result))
 	{

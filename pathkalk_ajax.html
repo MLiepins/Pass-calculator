@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <head>
+<link href="../Style/css.css" rel="stylesheet">
 <title>Calculator</title>
 
 <style>
@@ -70,10 +71,16 @@ var elevation= new google.maps.ElevationService;
 google.maps.event.addDomListener(window, 'load', initialize);
 function spawn(id)
 {
-	console.log("test");
 	$('<div id = "'+(id)+'"></div>').appendTo('#content');
-	$('<h4>Calculate link no '+(id)+'</h4>').appendTo('#'+id);
-	$('#'+(id)+'').load('HTMLframe.html');
+	$('#'+id).load(('HTMLframe.html'), function() {
+		var Label = $('#li'+id).find('div[myid=link_label]').text();
+		var Pieces = Label.split('->');
+		$('#'+id).find('h4[class=frameTitle]').text("Site "+Pieces[0]+ " to " +Pieces[1]);
+		$('#'+id).find('div[name=tmp_Antenna_A]').val(Pieces[0]);
+		$('#'+id).find('div[name=tmp_Antenna_B]').val(Pieces[1]);
+		$('#'+id).find('div[name=l_AntennaA]').text("Antenna "+Pieces[0]);
+		$('#'+id).find('div[name=l_AntennaB]').text("Antenna "+Pieces[1]);
+	});
 }
 
 function initialize() 
@@ -294,7 +301,7 @@ var l = document.getElementById("point"+x).querySelector("[myid='Label']").inner
 	if(count - x != 1)
 	{
 		document.getElementById("li"+x).parentNode.removeChild(document.getElementById("li"+x));
-		document.getElementsById(x)[0].parentNode.removeChild(document.getElementsById(x)[0]);
+		document.getElementById(x)[0].parentNode.removeChild(document.getElementById(x)[0]);
 	}
 	else 
 	{
@@ -302,7 +309,7 @@ var l = document.getElementById("point"+x).querySelector("[myid='Label']").inner
 	document.getElementById("point"+(x-1)).querySelector("[myid='arrowsdown']").style.display='none';
 	document.getElementById("point"+(x-1)).querySelector("[myid='h1']").style.display='none';
 	document.getElementById("point"+(x-1)).querySelector("[myid='h1']").value=0;
-	document.getElementsById(x-1)[0].parentNode.removeChild(document.getElementsById(x-1)[0]);
+	document.getElementById(x-1)[0].parentNode.removeChild(document.getElementById(x-1)[0]);
 	}
 	if(count - x != 1)
 	for(i=parseInt(x)+1;i<count;i++)
@@ -318,7 +325,7 @@ var l = document.getElementById("point"+x).querySelector("[myid='Label']").inner
 		if(document.getElementById("li"+i))
 		{
 		document.getElementById("li"+i).setAttribute("id","li"+(i-1));
-		document.getElementsById(i)[0].setAttribute("class", i - 1);
+		document.getElementById(i)[0].setAttribute("class", i - 1);
 		}
 		
 		if(markers[i])
@@ -923,7 +930,7 @@ return n_array;
 	</a>
 </li>
 <li id="li0">
-	<a myid="link_href" href="#DF0t">
+	<a myid="link_href" href="#3">
 		<div myid="link_label">A->B</div>
 		<div myid="Dist">
 		</div>
@@ -941,7 +948,7 @@ return n_array;
 <div>
 	Rain Zone:
 </div>
-<select id="RainZone">
+<select id="RainZone" onchange = "changeRainzone(count)">
 	<option value="A">A:8mm/h</option>
 	<option value="B">B:12mm/h</option>
 	<option value="C">C:15mm/h</option>
@@ -961,7 +968,7 @@ return n_array;
 <div>
 	Annual temperature:
 </div>
-<input type="number" step="any" id="Temperature" placeholder="C">
+<input type="number" step="any" id="Temperature" onchange="getTemperature()">
 </div>
 </div>
 
