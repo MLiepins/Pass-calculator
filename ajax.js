@@ -110,7 +110,10 @@ function verChange(el)
 				if(item.id == tmp_prod_select) $(prodSelect).val(item.id);
 			});
 			manageVersionChange(el);
-			if(isset(Frequency) && isset(tmp_prod_select)) getAntennaManuf(el, Frequency);
+			if(isset(Frequency) && isset(prodSelect))
+			{
+				getAntennaManuf(el, Frequency);
+			}
 		}).done(function(){
 			
 			prev_calc(el);
@@ -134,6 +137,7 @@ function prodChange(el)
 	var ProdID = $('#'+site+'').find('div[name = ProdID]').empty();
 	var odu = $('#'+site+'').find('select[name = Odu]').val(2);
 	var tmp_freq = $('#'+site+'').find('select[name=Frequency]').val();
+			console.log("FREKVENCE: "+tmp_freq);	
 	
 	if(version == 1)
 	{
@@ -148,7 +152,7 @@ function prodChange(el)
 				$(ProdID).val(result);
 				getFrequency(el, result);
 			}
-		});
+		}); 
 	}
 	else
 	{
@@ -223,6 +227,7 @@ function getFrequency(el, ProdID)
 			}
 			else
 			{
+				getAntennaManuf(el, $(freqSelect).val());
 				var warn_odu =  $('#'+site+'').find('span[name = Freq_War]');	
 				$(warn_odu).removeClass( "glyphicon glyphicon-remove" ).addClass( "glyphicon glyphicon-ok" );
 				$(warn_odu).css("color", good);
@@ -524,7 +529,13 @@ function getAntennaManuf(el, Frequency)
 				if(item.ID == tmp_antennaManuf) $(antennaManuf).val(item.ID);
 			});
 		}).done(function(){
-			
+			if(isset(antennaManuf))
+			{
+				console.log("This gets called");
+				var warn =  $('#'+site+'').find('span[name = Manuf_War]');	
+				$(warn).removeClass( "glyphicon glyphicon-remove" ).addClass( "glyphicon glyphicon-ok" );
+				$(warn).css("color", good);
+			}	
 			prev_calc(el);
 		}); 
 	}
@@ -545,7 +556,6 @@ function changeAntennaManuf(el)
 	{
 		if(version == 1)
 		{
-			
 			$.post( "AjaxFunctions.php", { func: 'antennaDiameter', antennaManuf: antennaManuf, Frequency: Frequency}, function(response)
 			{	
 				var Data = $.parseJSON(response);
@@ -555,9 +565,16 @@ function changeAntennaManuf(el)
 				{
 					$('<option value="'+item.Diameter+'">'+item.Diameter+'</option>').appendTo(diameter_a);
 					$('<option value="'+item.Diameter+'">'+item.Diameter+'</option>').appendTo(diameter_b);
-					
-					if(item.Diameter == tmp_diameter_a) $(diameter_a).val(item.Diameter); 
-					if(item.Diameter == tmp_diameter_b) $(diameter_b).val(item.Diameter); 
+					if(item.Diameter == tmp_diameter_a)
+					{
+						$(diameter_a).val(item.Diameter); 
+						change_A_Diameter(el);
+					}
+					if(item.Diameter == tmp_diameter_b)
+					{
+						$(diameter_b).val(item.Diameter); 
+						change_B_Diameter(el);
+					}	
 				});
 			}).done(function(){
 			
@@ -579,8 +596,16 @@ function changeAntennaManuf(el)
 						$('<option value="'+item.Diameter+'">'+item.Diameter+'</option>').appendTo(diameter_a);
 						$('<option value="'+item.Diameter+'">'+item.Diameter+'</option>').appendTo(diameter_b);
 						
-						if(item.Diameter == tmp_diameter_a) $(diameter_a).val(item.Diameter); 
-						if(item.Diameter == tmp_diameter_b) $(diameter_b).val(item.Diameter); 
+						if(item.Diameter == tmp_diameter_a)
+						{
+							$(diameter_a).val(item.Diameter); 
+							change_A_Diameter(el);
+						} 
+						if(item.Diameter == tmp_diameter_b)
+						{
+							$(diameter_b).val(item.Diameter); 
+							change_B_Diameter(el);
+						}
 					});
 				}).done(function(){
 			prev_calc(el);
@@ -602,10 +627,18 @@ function changeAntennaManuf(el)
 						$('<option value="'+item.Diameter+'">'+item.Diameter+'</option>').appendTo(diameter_a);
 						$('<option value="'+item.Diameter+'">'+item.Diameter+'</option>').appendTo(diameter_b);
 						
-						if(item.Diameter == tmp_diameter_a) $(diameter_a).val(item.Diameter); 
-						if(item.Diameter == tmp_diameter_b) $(diameter_b).val(item.Diameter); 
-						//$('<option value="'+item.Diameter+'">'+item.Diameter+'</option>').appendTo(diameter_a2);
-						//$('<option value="'+item.Diameter+'">'+item.Diameter+'</option>').appendTo(diameter_b2);
+						if(item.Diameter == tmp_diameter_a)
+						{
+							$(diameter_a).val(item.Diameter); 
+							change_A_Diameter(el);
+							change_A2_Diameter(el);
+						}
+						if(item.Diameter == tmp_diameter_b)
+						{
+							$(diameter_b).val(item.Diameter); 
+							change_B_Diameter(el);
+							change_B2_Diameter(el);
+						}
 					});
 				}).done(function(){
 			prev_calc(el);
@@ -632,10 +665,26 @@ function changeAntennaManuf(el)
 						$('<option value="'+item.Diameter+'">'+item.Diameter+'</option>').appendTo(diameter_A_SD);
 						$('<option value="'+item.Diameter+'">'+item.Diameter+'</option>').appendTo(diameter_B_SD);
 						
-						if(item.Diameter == tmp_diameter_A_SD) $(diameter_A_SD).val(item.Diameter); 
-						if(item.Diameter == tmp_diameter_B_SD) $(diameter_B_SD).val(item.Diameter); 
-						if(item.Diameter == tmp_diameter_a) $(diameter_a).val(item.Diameter); 
-						if(item.Diameter == tmp_diameter_b) $(diameter_b).val(item.Diameter); 
+						if(item.Diameter == tmp_diameter_A_SD)
+						{
+							$(diameter_A_SD).val(item.Diameter);
+							change_A_Diameter_SD(el);
+						}	
+						if(item.Diameter == tmp_diameter_B_SD)
+						{
+							$(diameter_B_SD).val(item.Diameter); 
+							change_B_Diameter_SD(el);
+						}
+						if(item.Diameter == tmp_diameter_a)
+						{
+							$(diameter_a).val(item.Diameter); 
+							change_A_Diameter(el);
+						}
+						if(item.Diameter == tmp_diameter_b) 
+						{
+							$(diameter_b).val(item.Diameter);
+							change_B_Diameter(el);
+						}
 					});
 				}).done(function(){
 				prev_calc(el);
@@ -655,8 +704,16 @@ function changeAntennaManuf(el)
 					{
 						$('<option value="'+item.Diameter+'">'+item.Diameter+'</option>').appendTo(diameter_a);
 						$('<option value="'+item.Diameter+'">'+item.Diameter+'</option>').appendTo(diameter_b);
-						if(item.Diameter == tmp_diameter_a) $(diameter_a).val(item.Diameter); 
-						if(item.Diameter == tmp_diameter_b) $(diameter_b).val(item.Diameter); 
+						if(item.Diameter == tmp_diameter_a)
+						{
+							$(diameter_a).val(item.Diameter); 
+							change_A_Diameter(el);
+						}
+						if(item.Diameter == tmp_diameter_b)
+						{
+							$(diameter_b).val(item.Diameter); 
+							change_B_Diameter(el);
+						}
 					});
 				}).done(function(){
 				prev_calc(el);
@@ -682,10 +739,26 @@ function changeAntennaManuf(el)
 						$('<option value="'+item.Diameter+'">'+item.Diameter+'</option>').appendTo(diameter_A_FD);
 						$('<option value="'+item.Diameter+'">'+item.Diameter+'</option>').appendTo(diameter_B_FD);
 												
-						if(item.Diameter == tmp_diameter_A_FD) $(diameter_A_FD).val(item.Diameter); 
-						if(item.Diameter == tmp_diameter_B_FD) $(diameter_B_FD).val(item.Diameter); 
-						if(item.Diameter == tmp_diameter_a) $(diameter_a).val(item.Diameter); 
-						if(item.Diameter == tmp_diameter_b) $(diameter_b).val(item.Diameter); 
+						if(item.Diameter == tmp_diameter_A_FD)
+						{
+							$(diameter_A_FD).val(item.Diameter); 
+							change_A_Diameter_FD(el);
+						}
+						if(item.Diameter == tmp_diameter_B_FD)
+						{
+							$(diameter_B_FD).val(item.Diameter); 
+							change_B_Diameter_FD(el);
+						}
+						if(item.Diameter == tmp_diameter_a)
+						{
+							$(diameter_a).val(item.Diameter); 
+							change_A_Diameter(el);
+						}
+						if(item.Diameter == tmp_diameter_b) 
+						{
+							$(diameter_b).val(item.Diameter); 
+							change_B_Diameter(el);
+						}
 					});
 				}).done(function(){
 				prev_calc(el);
@@ -701,6 +774,7 @@ function changeAntennaManuf(el)
 	}
 	else
 	{
+		console.log("REāli nav set..."); 
 		var warn_manuf =  $('#'+site+'').find('span[name = Manuf_War]');	
 		$(warn_manuf).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 		$(warn_manuf).css("color", bad);
@@ -1162,7 +1236,6 @@ function bandwidthChange(el)
 }
 function prev_calc(el)
 {
-	console.log("Recalculate function gets called.");
 	var site = $(el).parent().parent().parent().parent().parent().parent().attr('id'); 
 	var ProdID = $('#'+site+'').find('div[name = ProdID]').val();
 	var version = $('#'+site+'').find('select[name = Version]').val();
@@ -1170,9 +1243,18 @@ function prev_calc(el)
 	var Frequency = $('#'+site+'').find('select[name=Frequency]').val();
 	
 	var BandwidthTMP = $('#'+site+'').find('select[name=Bandwidth]').val();
-	var BandSplit = BandwidthTMP.split("|");
-	var Bandwidth = BandSplit[0];
-	var Standart = BandSplit[1]; 
+	if(isset(BandwidthTMP))
+	{
+		var BandSplit = BandwidthTMP.split("|");
+		var Bandwidth = BandSplit[0];
+		var Standart = BandSplit[1]; 
+	}
+	else 
+	{
+		var BandSplit = null;
+		var Bandwidth = null;
+		var Standart = null; 
+	}
 	var product = $('#'+site+'').find('select[name = Productx1]').val();
 	
 	var FEC =  $('#'+site+'').find('select[name=FEC]').val();
@@ -1181,7 +1263,6 @@ function prev_calc(el)
 	var Modulation = $('#'+site+'').find('select[name=rModulation]').val();	
 	//var RainZone = $('#'+site+'').find('select[name=Rainzone]').val();
 	var RainZone = $('#RainZone').val(); 
-	console.log("RainZone = " +RainZone);
 	
 	/*var LatA = $('#'+site+'').find('input[name=LatA]').val();
 	var LatB = $('#'+site+'').find('input[name=LatB]').val();	
@@ -1208,8 +1289,6 @@ function prev_calc(el)
 	
 	var AntennaHeightA = parseFloat(splitHeightA[0]) + parseFloat(aboveGroundA);
 	var AntennaHeightB = parseFloat(splitHeightB[0]) + parseFloat(aboveGroundB);
-	
-	console.log("!ALERT!: " +AntennaHeightA+"  "+AntennaHeightB);
 	
 	var antennaManuf = $('#'+site+'').find('select[name=AntennaManuf]').val();	
 	var diameter_a = $('#'+site+'').find('select[name = diameter_A]').val();
@@ -1361,7 +1440,6 @@ function prev_calc(el)
 			}
 			if(!isset(Frequency))
 			{
-				console.log("Frequency ķip nav set: " +Frequency)
 				var warn =  $('#'+site+'').find('span[name = Freq_War]');	
 				$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 				$(warn).css("color", bad);
@@ -1465,7 +1543,7 @@ function prev_calc(el)
 		$(signal_level_prim).parent().css("background-color", "");	
 		if(mode == 1)
 		{
-			if(ProdID && version && Odu && Frequency && Bandwidth && FEC && Temperature && Modulation && RainZone && LatA && LatB && LonA && LonB && Transmitter && AntennaHeightA && AntennaHeightB && diameter_a && Prim_Site_A && Prim_Site_B && Stand_Site_A && Stand_Site_B && Losses)
+			if(isset(antennaManuf) && isset(ProdID) && isset(version) && isset(Odu) && isset(Frequency) && isset(Bandwidth) && isset(FEC) && isset(Temperature) && isset(Modulation) && isset(RainZone) && isset(LatA) && isset(LatB) && isset(LonA) && isset(LonB) && isset(Transmitter) && isset(AntennaHeightA) && isset(AntennaHeightB) && isset(diameter_a) && isset(diameter_b) && isset(Prim_Site_A) && isset(Prim_Site_B) && isset(Stand_Site_A) && isset(Stand_Site_B) && isset(Losses))
 			{
 				$.post( "AjaxFunctions.php", { func: 'prev_calc', ProdID: ProdID, version: version, diameter_a: diameter_a, diameter_b: diameter_b, AntennaHeightA: AntennaHeightA, AntennaHeightB: AntennaHeightB, Transmitter: Transmitter, Extra_diameter_A: diameter_A_SD, Extra_diameter_B: diameter_B_SD, Antenna_Menu: mode, LatA: LatA, LatB: LatB, LonA: LonA, LonB: LonB, Frequency: Frequency, Losses: Losses, Stand_Site_A: Stand_Site_A, Stand_Site_B: Stand_Site_B, Prim_Site_A: Prim_Site_A, Prim_Site_B: Prim_Site_B, Bandwidth: Bandwidth, Standart: Standart, FEC: FEC, Modulation: Modulation, Temperature: Temperature, Manufacturer: antennaManuf, Frequency_FD: Frequency_FD, Transmit_FD: Transmit_FD}, function(response)
 				{	
