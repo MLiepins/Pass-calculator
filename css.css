@@ -1,0 +1,36 @@
+.bold
+{
+	font-weight: bold; 
+}
+
+.static
+{
+	width: 22em; 
+	max-width: 1000px; 
+}
+#TableWidth
+{
+	width: auto;
+}
+
+.circle{
+    background: #dddddd;
+    border-radius: 50%;
+}
+.float_Left{
+	
+	float: left; 
+	margin-right: 10px;
+	margin-top: 10px;
+}
+.float_Right{
+	
+	float: left; 
+	margin-top: 10px;
+}
+.sec_Line{
+	clear: left;
+}
+.table-nonfluid {
+   width: 36em !important;
+}

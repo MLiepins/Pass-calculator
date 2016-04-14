@@ -1,43 +1,53 @@
 <?php
 include 'connection.php';
-
-function findRef($cord1, $cord2)
-{
-		include '../Auth/connection.php';
-		$cord1Ref = findClosest($cord1);
-		$cord2Ref = findClosest($cord2);
-		$sql = "SELECT Refr FROM refractivity WHERE Lat =  '$cord1Ref' and Lon = '$cord2Ref'";
-		$result = $conn->query($sql);
-		$data = mysqli_fetch_array($result);
-		$result = $data[0];
-		return $result; 
-}
 function findClosestLatitude($num)
 {
+	//Funkcija, kas atrod tuvākos zemes platuma grādus ar soli 1.5 grādi. 
+	//Mainīgais, kas glabā robežvērtību. 
 	$prev = 0; 
+	
+	//Ja padotā zemes platuma vērtība ir nulle, tad arī tuvākā zemes platuma vērtība ir nulle. 
 	if($num == 0) return $num; 
+	
+	//Ja zemes platuma vērtība atrodas zemes ziemeļu daļā.
 	if($num < 0)
 	{
+		
+		//Kā zemākā iespējamā vērtība tiek iestatīta -90
 		$prev = -90; 
+		
+		//Ciklā tiek palielināta zemākā iespējamā vērtība ar 1.5 grādu soli līdz kamēr tā sasniedz nulli.  
 		for($i = -90; $i<=0; $i = $i + 1.5)
 		{
+			
+			//pārbaude, vai zemes platuma vērtība ir lielāka par zemāko iespējamo vērtību un mazāka par no cikla iegūto vērtību
 			if($num > $prev && $num < $i)
 			{
-				//echo " ".$i." ".$num." "; 
+				//Izrēķina starpību starp iegūtu noapaļoto zemes platumu grādos un doto zemes platumu grādos
 				$temp1 = $num - $i;
+				
+				//Izrēķina starpību starp zemāko platumu grādos un doto zemes platumu grādos
 				$temp2 = ($prev + ($num*-1));
-				//echo $temp1. " ".$temp2." "; 
+				
+				//Ja iegūtā noapaļotā un dotā zemes platuma starpība ir lielāka par zemākā platuma un dotā zemes platuma starpību, tad noapaļotais zemes platums ir tuvākais zemes platums grādos dotajai vērtībai. 
 				if($temp1 > $temp2) 
 				{
+					
+					//Mainīgajam $num piešķir noapaļoto cikla vērtību un ņemot vērā, ka vērtība ir atrasta pārtrauc cikla darbību. 
 					$num = $i;
 					break;
 				}
+					//Ja zemākā platuma un dotā zemes platuma starpība ir lielāka par iegūtā noapaļotā un dotā zemes platuma starpību, tad noapaļotais zemes platums ir tuvākais zemes platums grādos dotajai vērtībai. 
 				else
 				{
+					
+					//Mainīgajam $num piešķir zemāko zemes platuma vērtību grādus un pārtrauc cikla darbību. 
 					$num = $prev; 
 					break; 
 				}
 			}
+			
+			//Ja dotā vērtība netiek atrasta intervālā no zemākās iespējamās līdz cikla padotajai vērtībai, tad kā zemākā vērtība tiek iestatīta cikla padotā vērtība. 
 			else
 			{
 				$prev = $i;
@@ -45,61 +55,96 @@ function findClosestLatitude($num)
 		}
 		
 	}
+	//Ja padotā zemes platuma vērtība atrodas zemes dienvidu daļā.
 	else
 	{
+		//Mainīgais, kas glabā zemāko iespējamo vērtību, kas šajā gadijumā ir nulle. 
 		$prev = 0; 
+		
+		//Ciklā tiek palielināta zemākā iespējamā vērtība ar 1.5 grādu soli līdz kamēr tā sasniedz deviņdesmit grādus.  
 		for($i = 0; $i <= 90; $i = $i + 1.5)
 		{
+			//pārbaude, vai zemes platuma vērtība ir lielāka par zemāko iespējamo vērtību un mazāka par no cikla iegūto vērtību
 			if($num > $prev && $num < $i)
 			{
+				//Izrēķina starpību starp iegūtu noapaļoto zemes platumu grādos un doto zemes platumu grādos
 				$temp1 = $i - $num;
+				
+				//Izrēķina starpību starp zemāko platumu grādos un doto zemes platumu grādos
 				$temp2 = $num - $prev;
+				
+				//Ja iegūtā noapaļotā un dotā zemes platuma starpība ir mazāka par zemākā platuma un dotā zemes platuma starpību, tad noapaļotais zemes platums ir tuvākais zemes platums grādos dotajai vērtībai. 
 				if($temp1 < $temp2) 
 				{
+					//Mainīgajam $num piešķir noapaļoto cikla vērtību un ņemot vērā, ka vērtība ir atrasta pārtrauc cikla darbību. 
 					$num = $i;
 					break;
 				}
+				//Ja iegūtā noapaļotā un dotā zemes platuma starpība ir lielāka par zemākā platuma un dotā zemes platuma starpību, tad zemākais zemes platums ir tuvākais zemes platums grādos dotajai vērtībai. 
 				else
 				{
+					//Mainīgajam $num piešķir zemāko zemes platuma vērtību grādus un pārtrauc cikla darbību. 
 					$num = $prev; 
 					break; 
 				}
 			}
 			else
 			{
+				//Ja dotā vērtība netiek atrasta intervālā no zemākās iespējamās līdz cikla padotajai vērtībai, tad kā zemākā vērtība tiek iestatīta cikla padotā vērtība. 
 				$prev = $i;
 			}
 		}
 		
 	}
+	
+	//Atgriež tuvāko zemes platumu grādos padotajam zemes platumam. 
     return $num;
 }
 function findClosest($num)
 {
+	//Funkcija, kas atrod tuvākos zemes garuma grādus ar soli 1.5 grādi. 
+	//Mainīgais, kas glabā zemāko iespējamo vērtību. 
 	$prev = 0; 
+	
+	//Ja dotais zemes garums ir nulle, tad arī tuvākie zemes garuma grādi būs nulle. 
 	if($num == 0) return $num; 
+	
+	//Pārbaude, vai dotie garuma grādi atrodas uz rietumiem no nulles meridiānas. 
 	if($num < 0)
 	{
+		//Mazākā iespējamā vērtība tiek iestatīta -180 grādi.
 		$prev = -180; 
+		
+		//Ciklā intervāls ir no -180 līdz nulles meridiānai, katrā cikla izsaukumā mainīgā i vērtība tiek palielināta par 1.5 grādiem, jo jāmeklē tuvākie iespējamie grādi ar soli 1.5 grādi. 
 		for($i = -180; $i<=0; $i = $i + 1.5)
 		{
+			
+			//Pārbaude, vai dotie zemes garuma grādi ir lielāki par mazākajiem iespējamajiem un mazāki par no cikla iegūto vērtību
 			if($num > $prev && $num < $i)
 			{
-				//echo " ".$i." ".$num." "; 
+				
+				//Izrēķina starpību starp dotajiem zemes garuma grādiem un no cikla iegūtajiem zemes garuma grādiem
 				$temp1 = $num - $i;
+				
+				//Starpības starp dotajiem zemes garuma grādiem un zemākajiem iespējamajiem zemes garuma grādiem aprēķināšana
 				$temp2 = ($prev + ($num*-1));
-				//echo $temp1. " ".$temp2." "; 
+				
+				//Pārbaude, vai doto zemes garuma grādu un no cikla iegūtu zemes garuma grādu starpība ir lielāka par doto zemes garuma grādu un zemāko iespējamo zemes garuma grādu starpību. 
 				if($temp1 > $temp2) 
 				{
 					$num = $i;
 					break;
 				}
+				
+				//Pārbaude, vai doto zemes garuma grādu un no cikla iegūtu zemes garuma grādu starpība ir mazāka par doto zemes garuma grādu un zemāko iespējamo zemes garuma grādu starpību. 
 				else
 				{
 					$num = $prev; 
 					break; 
 				}
 			}
+			
+			//Ja dotie zemes garuma grādi neietilpst intervālā starp mazākajiem iespējamajiem grādiem un no cikla iegūtajiem grādiem, tad kā mazākā iespējamā vērtība tiek iestatīta no cikla iegūtā vērtība. 
 			else
 			{
 				$prev = $i;
@@ -107,26 +152,43 @@ function findClosest($num)
 		}
 		
 	}
+	//Pārbaude, vai dotie garuma grādi atrodas uz austrumiem no nulles meridiānas. 
 	else
 	{
+		//Zemākā iespējamā vērtība tiek iestatīta nulles meridiāna. 
 		$prev = 0; 
+		
+		
+		//Cikls darbojas intervālā no nulles meridīānas līdz 180 grādiem ar soli 1.5 grādi. 
 		for($i = 0; $i <= 180; $i = $i + 1.5)
 		{
+			
+			//Pārbade, vai dotie zemes garuma grādi ir lielāki par zemāko iespējamo vērtību un mazāki par no cikla iegūtu vērtību
 			if($num > $prev && $num < $i)
 			{
+				
+				//Starpības starp dotajiem zemes garuma grādiem un no cikla iegūtajiem zemes garuma grādiem aprēķināšana
 				$temp1 = $i - $num;
+			
+				//Starpības starp dotajiem zemes garuma grādiem un mazākajiem iespējamajiem zemes garuma grādiem
 				$temp2 = $num - $prev;
+				
+				//Pārbaude, vai starpība starp dotajiem zemes garuma grādiem un no cikla iegūtajiem zemes garuma grādiem ir mazāka par doto zemes garuma grādu un mazāko iespējamo zemes garuma grādu starpību. 
 				if($temp1 < $temp2) 
 				{
 					$num = $i;
 					break;
 				}
+				
+				//Pārbaude, vai starpība starp dotajiem zemes garuma grādiem un no cikla iegūtajiem zemes garuma grādiem ir lielāka par doto zemes garuma grādu un mazāko iespējamo zemes garuma grādu starpību. 
 				else
 				{
 					$num = $prev; 
 					break; 
 				}
 			}
+			
+			//Ja dotie zemes garuma grādi nav lielāki par zemāko iespējamo vērtīb vai nav mazāki par no cikla iegūto vērtību, tad kā zemākā vērtība tiek iestatīta no cikla iegūtā vērtība. 
 			else
 			{
 				$prev = $i;
@@ -134,170 +196,230 @@ function findClosest($num)
 		}
 		
 	}
+	
+	//Atgriež tuvākos zemes garuma grādus dotajiem zemes garuma grādiem 1.5 grādu intervālā. 
     return $num;
 }
-
 function findClosestLower($num)
 {
+	//Funkcija, kas atrod tuvāko zemes garuma vērtību, kas ir mazāka par doto vērtību 1.5 grādu intervālā. 
+	//Mainīgais, kas glabā mazāko iespējamo vērtību. 
 	$prev = 0; 
+	
+	//Ja padotā zemes garuma vērtība ir nulle, tad arī tuvākā vērtība ir nulle. 
 	if($num == 0) return $num; 
+	
+	//Pārbaude, vai zemes garuma grādi atrodas uz rietumiem no nulles meridiānas. 
 	if($num < 0)
 	{
+		
+		//Kā mazākā iespējamā vērtība tiek iestatīti -180 grādi. 
 		$prev = -180; 
+		
+		//Cikls darbojas intervālā no mazākās iespējamās vērtības līdz nulles meridiānai ar soli 1.5 grādi. 
 		for($i = -180; $i<=0; $i = $i + 1.5)
 		{
+			
+			//Pārbaude, vai dotā vērtība atrodas intervālā starp mazāko iespējamo vērtību un no cikla iegūto vērtību.
 			if($num > $prev && $num < $i)
 			{
 					$num = $prev; 
 					break; 
 			}
+			
+			//Pārbaude, vai dotā vērtība neatrodas intervālā starp mazāko iespējamo vērtību un no cikla iegūto vērtību.
 			else
 			{
+				
+				//Mazākā iespējamā vērtība tiek iestatīta kā cikla iegūtā vērtība. 
 				$prev = $i;
 			}
 		}
 		
 	}
+	
+	//Pārbaude, vai zemes garuma grādi atrodas uz austrumiem no nulles meridiānas. 
 	else
 	{
+		
+		//Kā mazākā iespējamā vērtība tiek iestatīta nulles meridiāna.
 		$prev = 0; 
+		
+		//Cikls darbojas intervālā no mazākās iespējamās vērtības līdz 180 grādiem ar soli 1.5 grādi. 
 		for($i = 0; $i <= 180; $i = $i + 1.5)
 		{
+			
+			//Pārbaude, vai dotā vērtība atrodas intervālā starp mazāko iespējamo vērtību un no cikla iegūto vērtību.
 			if($num > $prev && $num < $i)
 			{
 					$num = $prev; 
 					break; 
 			}
+			
+			//Pārbaude, vai dotā vērtība neatrodas intervālā starp mazāko iespējamo vērtību un no cikla iegūto vērtību.
 			else
 			{
+				
+				//Mazākā iespējamā vērtība tiek iestatīta kā no cikla iegūtā vērtība. 
 				$prev = $i;
 			}
 		}
 		
 	}
+	
+	//Tiek atgriezta tuvākā zemes garuma vērtība, kas ir mazāka par doto vērtību zemes garuma vērtību. 
     return $num;
 }
-
-function convertDegToDec($Deg, $Min, $Sec)
+function ceil_step($num)
 {
-	$result = number_format(($Deg + $Min/60 + $Sec/3600)*2/2,7);
-	return $result;	
+	//Funkcija, kas noapaļo doto vērtību uz augšu ar soli 1.5 grādi. 
+	//Mainīgais, kas glabā mazāko iespējamo vērtību. 
+	$prev = 0; 
+	
+	//Ja padotā zemes platuma vērtība ir nulle, tad arī tuvākā vērtība ir nulle. 
+	if($num == 0) return $num; 
+	
+	//Pārbaude, vai zemes platuma grādi atrodas uz rietumiem no nulles meridiānas. 
+	if($num < 0)
+	{
+		
+		//Kā mazākā iespējamā vērtība tiek iestatīti -90 grādi. 
+		$prev = -180; 
+		
+		//Cikls darbojas intervālā no mazākās iespējamās vērtības līdz nulles meridiānai ar soli 1.5 grādi. 
+		for($i = -180; $i<=0; $i = $i + 1.5)
+		{
+			
+			//Pārbaude, vai dotā vērtība atrodas intervālā starp mazāko iespējamo vērtību un no cikla iegūto vērtību.
+			if($num > $prev && $num < $i)
+			{
+					$num = $i; 
+					break; 
+			}
+			
+			//Pārbaude, vai dotā vērtība neatrodas intervālā starp mazāko iespējamo vērtību un no cikla iegūto vērtību.
+			else
+			{
+				
+				//Mazākā iespējamā vērtība tiek iestatīta kā cikla iegūtā vērtība. 
+				$prev = $i;
+			}
+		}
+		
+	}
+	
+	//Pārbaude, vai zemes platuma grādi atrodas uz austrumiem no nulles meridiānas. 
+	else
+	{
+		
+		//Kā mazākā iespējamā vērtība tiek iestatīta nulles meridiāna.
+		$prev = 0; 
+		
+		//Cikls darbojas intervālā no mazākās iespējamās vērtības līdz 90 grādiem ar soli 1.5 grādi. 
+		for($i = 0; $i <= 180; $i = $i + 1.5)
+		{
+			
+			//Pārbaude, vai dotā vērtība atrodas intervālā starp mazāko iespējamo vērtību un no cikla iegūto vērtību.
+			if($num > $prev && $num < $i)
+			{
+					$num = $i; 
+					break; 
+			}
+			
+			//Pārbaude, vai dotā vērtība neatrodas intervālā starp mazāko iespējamo vērtību un no cikla iegūto vērtību.
+			else
+			{
+				
+				//Mazākā iespējamā vērtība tiek iestatīta kā no cikla iegūtā vērtība. 
+				$prev = $i;
+			}
+		}
+		
+	}
+	
+	//Tiek atgriezta tuvākā zemes platuma vērtība, kas ir mazāka par doto vērtību zemes platuma vērtību. 
+    return $num;
 }
-function calculateDistance($LatA, $LonA, $LatB, $LonB)
-{
-	$Rmax = 6378.135;//AX4
-	$Rmin = 6356.75;//AX6
-	$latFrom = deg2rad($LatA);
-	$lonFrom = deg2rad($LonA);
-	$latTo = deg2rad($LatB);
-	$lonTo = deg2rad($LonB);
-	//echo $latTo." ".$lonTo; 
-	//echo $LatA." ".$LonA." ".$LatB." ".$LonB;  
-	$AY9 = ($latFrom+$latTo)/2;
-	$dLon = $lonTo - $lonFrom; 
-	$Radius  = pow($Rmax, 2)/(sqrt(pow(($Rmax * cos($AY9)), 2) + pow(($Rmin * sin($AY9)),2)));
-	$a = pow(cos($latTo) * sin($dLon), 2) + pow(cos($latFrom) * sin($latTo) - sin($latFrom) * cos($latTo) * cos($dLon), 2);
-	$b = sin($latFrom) * sin($latTo) + cos($latFrom) * cos($latTo) * cos($dLon);
-	$angle = atan2(sqrt($a), $b);
-	$distance = $angle * $Radius; 
-	return $distance; 
-}
-function getPointRefractGrad($LatA, $LonA, $LatB, $LonB)
+function getPointRefractGrad($conn, $LatA, $LonA, $LatB, $LonB)
 {	
-	include '../Auth/connection.php';
+	//Funkcija, kas aprēķina punkta atstarošānās koeficientu. 
+	//Doto zemes garumu vidējā vērtība.
 	$vLat = (($LatA + $LatB)/2);
-	$vLon = (($LonA + $LonB)/2);  
-	//echo $vLat."  ".$vLon; 
-	$stepLat = $vLat/1.5;
-	$stepLon = $vLon/1.5;
-	$point1Lat = ceil(abs($stepLat)) - 1;
-	$point2Lat = ceil(abs($stepLat));
-	$point1Lon = ceil(abs($stepLon)) - 1;
-	$point2Lon = ceil(abs($stepLon));
-	$addr11 = 0;
-	$addr12 = 0;
-	$addr13 = 0;
-	$addr14 = 0;
-	$addr21 = 0;
-	$addr22 = 0;
-	$addr23 = 0;
-	$addr24 = 0;
-	$result1 = 0;
-	$result2 = 0; 
 	
-	if($vLat > 0)
-	{
-		$addr14 = 61 - $point1Lat;
-		$addr24 = 61 - $point2Lat; 
-		$addr11 = $addr24;
-		$addr21 = $addr14; 
-		$result1 = 61 - abs($stepLat);
-	}
-	else
-	{
-		$result1 = 61 + abs($stepLat);
-		$addr14 = 61 + $point1Lat; 
-		$addr24 = 61 + $point2Lat; 
-		$addr11 = $addr14;
-		$addr21 = $addr24; 
-	}
-	if($vLon > 0)
-	{
-		$addr13 = $point1Lon + 1;
-		$addr23 = $point2Lon + 1; 
-		$addr12 = $addr13;
-		$addr22 = $addr23; 
-		$result2 = abs($stepLon) + 1; 
-	}
-	else
-	{
-		$addr13 = 241 - $point1Lon;
-		$addr23 = 241 - $point2Lon; 
-		$addr12 = $addr23;
-		$addr22 = $addr13; 
-		$result2 = 241 - abs($stepLon);
-	}
+	//Doto zemes platumu vidējā vērtība. 
+	$vLon = (($LonA + $LonB)/2); 
 
+	//Uz augšu noapaļota vidējā zemes garuma vērtība.
+	$rounded_latitude = ceil_step($vLat);
 	
+	//Uz leju noapaļota vidējā zemes garuma vērtība. 
+	$lower_latitude = $rounded_latitude - 1.5;
+
+	//Uz augšu noapaļota vidējā zemes platuma vērtība. 
+	$rounded_longitude = ceil_step($vLon);  
+	
+	//Uz leju noapaļota vidējā zemes platuma vērtība. 
+	$lower_longitude = $rounded_longitude - 1.5;
+	
+	//Atrod tuvāko zemes garuma vērtību dotajam vidējajam zemes garumam. 
 	$MidLat = findClosestLatitude($vLat);
+	
+	//Atrod tuvāko vērtību, kas mazāka par doto vidējo zemes platumu. 
 	$MidLon = findClosestLower($vLon);
-	//echo $MidLat." ".$MidLon; 
-	//echo $vLat;
-	if($MidLon == -180) $MidLon = $MidLon * -1; 
-	else $MidLat = findClosestLatitude($vLat + 1);
-	//echo $MidLat."  ".$MidLon;
+
+	//Pagaidu mainīgais, kuram tiek piešķirta vidējā zemes garuma vērtība. Pagaidu mainīgais izveidots, lai saglabātu orģinālo vērtību zemes platumam un garumam. 
 	$tmp1 = $MidLat; 
+	
+	//Pagaidu mainīgais, kuram piešķirta vidējā zemes platuma vērtība. 
 	$tmp2 = $MidLon; 
+	
+	//Tiek atlasīti dati no "Refractivity" tabulas, kurā glabājas zemes atstarošānās koeficienti 110x100 km laukumiem. 
 	$result = $conn->query("SELECT Refr FROM refractivity WHERE Lat =  '$MidLat' and Lon = '$MidLon'");
 	$v1 = mysqli_fetch_array($result); 	
-	//echo " v1 ".$v1[0]." "; 
 
+	//Pārbaude, kas gadijumā, ja vidējā zemes platuma vērtība ir sasniegusi robežvērtību izvēlas vērtību no otra gala.
 	if($MidLon == 180) $tmp2 = findClosest(($MidLon * (-1)) + 1);
+	
+	//Citādi mainīgā vērtība tiek palielināta par vienu grādu un atrasts tuvākā iespējamā vērtība, kas dalās ar 1.5
 	else $tmp2 = findClosest($tmp2 + 1);
+	
+	//Tiek atlasīti dati no "Refractivity" tabulas, kurā glabājas zemes atstarošānās koeficienti 110x100 km laukumiem. 
 	$result = $conn->query("SELECT Refr FROM refractivity WHERE Lat =  '$tmp1' and Lon = '$tmp2'");
 	$v2 = mysqli_fetch_array($result); 
-	$tmp2 = $MidLon; 
-	//echo " v2 ".$v2[0]." ";
 	
+	// Pagaidu mainīgā vērtība tiek atjaunota uz orģinālo vidējā zemes platuma vērtību. 
+	$tmp2 = $MidLon; 
+	
+	//Vidējā zemes garuma pagaidu mainīgā vērtība tiek samazināta par viens.
 	$tmp1 = findClosest($tmp1 - 1); 
+	
+	//Tiek atlasīti dati no "Refractivity" tabulas, kurā glabājas zemes atstarošānās koeficienti 110x100 km laukumiem. 
 	$result = $conn->query("SELECT Refr FROM refractivity WHERE Lat =  '$tmp1' and Lon = '$tmp2'");
 	$v3 = mysqli_fetch_array($result);
-	//echo " v3 ".$v3[0]." ";	
 	
+	//Pārbaude, kas gadijumā, ja vidējā zemes platuma vērtība ir sasniegusi robežvērtību izvēlas vērtību no otra gala.	
 	if($MidLon == 180) $tmp2 = findClosest(($MidLon * (-1)) + 1);
+
+	//Citādi mainīgā vērtība tiek palielināta par vienu grādu un atrasts tuvākā iespējamā vērtība, kas dalās ar 1.5	
 	else $tmp2 = findClosest($tmp2 + 1);
-	$result = $conn->query("SELECT Refr FROM refractivity WHERE Lat =  '$tmp1' and Lon = '$tmp2'");
-	$v4 = mysqli_fetch_array($result); 
-	//echo " v4 ".$v4[0]." ";
 	
-	$tmp1 = $MidLat; 
-	$PointRefractGrad = $v1[0] * ($addr21 - $result1) * ($addr22 - $result2)+ $v3[0] * ($result1 -$addr11)* ($addr22 - $result2) + $v2[0] * ($addr21 - $result1) * ($result2 - $addr12) + $v4[0] * ($result1 - $addr11) * ($result2 - $addr12);
-	//echo $PointRefractGrad; 
+	//Tiek atlasīti dati no "Refractivity" tabulas, kurā glabājas zemes atstarošānās koeficienti 110x100 km laukumiem. 	
+	$result = $conn->query("SELECT Refr FROM refractivity WHERE Lat =  '$tmp1' and Lon = '$tmp2'");
+	$v4 = mysqli_fetch_array($result);  
+	
+	//Tiek aprēķināts zemes atstarošānās koeificients četriem 110 x 110km lieliem laukumiem. 
+	$PointRefractGrad = $v1[0] * (($lower_latitude - $vLat) / -1.5) * (($rounded_longitude - $vLon)/1.5)+
+						$v3[0] * (($rounded_latitude - $vLat) / 1.5) * (($rounded_longitude - $vLon)/1.5)+ 
+						$v2[0] * (($lower_latitude - $vLat) / -1.5) * (($vLon - $lower_longitude) / 1.5)+ 
+						$v4[0] * (($rounded_latitude - $vLat) / 1.5) * (($vLon - $lower_longitude) / 1.5);
+	
+	//Tiek atgriezta zemes atstarošanās koeficienta noteiktam reģionam vērtība. 
 	return $PointRefractGrad; 
 }
 function getFadeMargin($Antenna_Menu, $Version, $Frequency_FD, $Transmit_FD,  $distance, $Frequency, $TransmitPow, $AntennaA, $Losses, $AntennaB, $Antenna_A_Extra, $Antenna_B_Extra, $RXThreshold, $a, $prim_SiteA , $prim_SiteB , $stand_SiteA , $stand_SiteB)
 {
-	$FSL = 92.4 + 20 * log10($distance) + 20 * log10($Frequency);//BC3 
+	//Funkcija, kas aprēķina jūtības slieksni.
+	$FSL = 92.4 + 20 * log10($distance) + 20 * log10($Frequency);
 	if($Version == 1)
 	{
 		$RX = $TransmitPow + $AntennaA - $FSL - $a - $Losses + $AntennaB;//BD3  
@@ -695,7 +817,11 @@ function GetAnthenaParams($conn, $Manufacturer, $Frequency, $Diameter)
 	$sql = "SELECT `Gain` FROM `anthenagains` WHERE `Frequence` = $Frequency and `Diameter` LIKE $Diameter and `Manuf_ID` = $Manufacturer limit 1";
 	$result = $conn->query($sql);
 	$data = mysqli_fetch_array($result);
+	//$out['1'] = $Manufacturer;
+	//$out['2'] = $Frequency;
+	//$out['3'] = $Diameter;
 	return $data[0]; 
+	return $out; 
 }
 function ErroredTime($MRainAvailVert, $MRainAvailHor)
 {
@@ -1022,7 +1148,7 @@ function SD($FrequencyFD, $AntennasAmount, $Version, $MainFreq, $DivFreq, $Selec
 		$dF_tmp = abs($MainFreq - $DivFreq);
 		if($dF_tmp > 0.5)$dF = 0.5;
 		else $dF = $dF_tmp;
-		if($AntennasAmount == 1)
+		if($AntennasAmount == 2)
 		{
 			if($Frequency > $FrequencyFD ) $f = $FrequencyFD;
 			else $f = $Frequency;		
@@ -1122,7 +1248,7 @@ function Calculate_MainBlock($conn, $var)
 {
 	$distance = $var['distance'];
 	$Product = $var['Product']; 
-	$PointRefractGrad = getPointRefractGrad($var['LatA'], $var['LonA'], $var['LatB'], $var['LonB']); 
+	$PointRefractGrad = getPointRefractGrad($conn, $var['LatA'], $var['LonA'], $var['LatB'], $var['LonB']); 
 	if($var['Version'] == 2 )
 	{
 		if($var['Antenna_Menu'] == 2) 
@@ -1135,8 +1261,10 @@ function Calculate_MainBlock($conn, $var)
 	$sa = Sa($conn, $var['LatA'], $var['LonA'], $var['LatB'], $var['LonB']);
 	$gain_Antenna_A = GetAnthenaParams($conn, $var['Manufacturer'], $var['Frequency'], $var['Diameter_A']);
 	$gain_Antenna_B = GetAnthenaParams($conn, $var['Manufacturer'], $var['Frequency'], $var['Diameter_B']);
+	
 	$gain_Antenna_A_Extra = GetAnthenaParams($conn, $var['Manufacturer'], $var['Frequency'], $var['Extra_diameter_A']);
 	$gain_Antenna_B_Extra = GetAnthenaParams($conn, $var['Manufacturer'], $var['Frequency'], $var['Extra_diameter_B']);
+	
 	if($var['Version'] != 4) $EIRP = max($gain_Antenna_A, $gain_Antenna_B) + $var['TransmitPow']; 
 	else $EIRP = max($gain_Antenna_A, $gain_Antenna_B, $gain_Antenna_A_Extra, $gain_Antenna_B_Extra) + $var['TransmitPow'];
 	
@@ -1173,12 +1301,12 @@ function Calculate_MainBlock($conn, $var)
 				if($TotalMultipath['TotalPath106'] > 0) $MPAvailabilityVert = $TotalMultipath['TotalPath106'];
 				else $MPAvailabilityVert = "NA";
 				$result[] = array(
-				'MultipathVert' =>	$TotalMultipath['TotalPath106'],
-				'MultipathHor' =>	$TotalMultipath['TotalPath106'],
-				'Rain_Vert' => $RainAvailVert,
-				'Rain_Hor' => $RainAvailHor,
-				'Multipath_Rain_Vert' => $MRainAvailVert,
-				'Multipath_Rain_Hor' => $MRainAvailHor, 
+				'MultipathVert' =>	round($TotalMultipath['TotalPath106'], 3),
+				'MultipathHor' =>	round($TotalMultipath['TotalPath106'], 3), 
+				'Rain_Vert' => round($RainAvailVert, 3), 
+				'Rain_Hor' => round($RainAvailHor, 3), 
+				'Multipath_Rain_Vert' => round($MRainAvailVert, 3), 
+				'Multipath_Rain_Hor' => round($MRainAvailHor, 3),
 				'Error_Vert' => $Output_ErroredTimeV,
 				'Error_Hor' => $Output_ErroredTimeH
 				); 
@@ -1202,12 +1330,12 @@ function Calculate_MainBlock($conn, $var)
 					if($TotalMultipath['TotalPath106'] > 0 ) $MPAvailabilityVert =$TotalMultipath['TotalPath106'];
 					else $MPAvailabilityVert = "NA";
 					$result[] = array(
-						'MultipathVert' =>	$TotalMultipath['Availability106'],
-						'MultipathHor' =>	$TotalMultipath['Availability106'],
-						'Rain_Vert' => $RainAvailVert,
-						'Rain_Hor' => $RainAvailHor,
-						'Multipath_Rain_Vert' => $MRainAvailVert,
-						'Multipath_Rain_Hor' => $MRainAvailHor, 
+						'MultipathVert' =>	round($TotalMultipath['Availability106'], 3),
+						'MultipathHor' =>	round($TotalMultipath['Availability106'], 3),
+						'Rain_Vert' => round($RainAvailVert, 3), 
+						'Rain_Hor' => round($RainAvailHor, 3), 
+						'Multipath_Rain_Vert' => round($MRainAvailVert, 3), 
+						'Multipath_Rain_Hor' => round($MRainAvailHor, 3),
 						'Error_Vert' => $Output_ErroredTimeV,
 						'Error_Hor' => $Output_ErroredTimeH
 					); 
@@ -1246,18 +1374,18 @@ function Calculate_MainBlock($conn, $var)
 					else $MPAvailabilityVert = "NA";
 					
 					$result[] = array(
-						'MultipathVert_stand' =>	$TotalMultipath['Availability106'],
-						'MultipathHor_stand' =>	$TotalMultipath['Availability106'],
-						'MultipathVert_prim' =>	$TotalMultipath['Availability103'],
-						'MultipathHor_prim' =>	$TotalMultipath['Availability103'],						
-						'Rain_Vert_stand' => $RainAvailVert_stand,
-						'Rain_Hor_stand' => $RainAvailHor_stand,
-						'Rain_Vert_prim' => $RainAvailVert_prim,
-						'Rain_Hor_prim' => $RainAvailHor_prim,
-						'Multipath_Rain_Vert_stand' => $MRainAvailHor_Ver_stand,
-						'Multipath_Rain_Hor_stand' => $MRainAvail_Hor_stand,
-						'Multipath_Rain_Vert_prim' => $MRainAvail_Vert_prim,
-						'Multipath_Rain_Hor_prim' => $MRainAvail_Hor_prim, 
+						'MultipathVert_stand' => round($TotalMultipath['Availability106'], 3),
+						'MultipathHor_stand' =>	round($TotalMultipath['Availability106'], 3),
+						'MultipathVert_prim' =>	round($TotalMultipath['Availability103'], 3),
+						'MultipathHor_prim' =>	round($TotalMultipath['Availability103'], 3),					
+						'Rain_Vert_stand' => round($RainAvailVert_stand, 3),
+						'Rain_Hor_stand' => round($RainAvailHor_stand, 3),
+						'Rain_Vert_prim' => round($RainAvailVert_prim, 3),
+						'Rain_Hor_prim' => round($RainAvailHor_prim, 3),
+						'Multipath_Rain_Vert_stand' => round( $MRainAvailHor_Ver_stand, 3), 
+						'Multipath_Rain_Hor_stand' => round($MRainAvail_Hor_stand, 3), 
+						'Multipath_Rain_Vert_prim' => round($MRainAvail_Vert_prim, 3),
+						'Multipath_Rain_Hor_prim' => round($MRainAvail_Hor_prim, 3),
 						'Error_Vert_prim' => $Output_ErroredTimeV_prim,
 						'Error_Hor_prim' => $Output_ErroredTimeH_prim,
 						'Error_Vert_stand' => $Output_ErroredTimeV_stand,
@@ -1283,12 +1411,12 @@ function Calculate_MainBlock($conn, $var)
 				if($SD['Pt3'] > 0 ) $MPAvailabilityVert = $SD['Pt3'];
 				else $MPAvailabilityVert = "NA";
 				$result[] = array(
-				'MultipathVert' =>	$TotalMultipath['TotalPath106'],
-				'MultipathHor' =>	$TotalMultipath['TotalPath106'],
-				'Rain_Vert' => $RainAvailVert,
-				'Rain_Hor' => $RainAvailHor,
-				'Multipath_Rain_Vert' => $MRainAvailVert,
-				'Multipath_Rain_Hor' => $MRainAvailHor, 
+				'MultipathVert' =>	round($TotalMultipath['TotalPath106'], 3),
+				'MultipathHor' =>	round($TotalMultipath['TotalPath106'], 3),
+				'Rain_Vert' => round($RainAvailVert, 3),
+				'Rain_Hor' => round($RainAvailHor, 3),
+				'Multipath_Rain_Vert' => round($MRainAvailVert, 3),
+				'Multipath_Rain_Hor' => round($MRainAvailHor, 3), 
 				'Error_Vert' => $Output_ErroredTimeV,
 				'Error_Hor' => $Output_ErroredTimeH
 				); 
@@ -1310,14 +1438,13 @@ function Calculate_MainBlock($conn, $var)
 					$Output_ErroredTimeH = $ErroredTime['H_Hours'].":".$ErroredTime['H_Mins'];
 					if($SD['Pt3'] > 0 ) $MPAvailabilityVert = $SD['Pt3'];
 					else $MPAvailabilityVert = "NA";
-				
 					$result[] = array(
-					'MultipathVert' =>	$TotalMultipath['TotalPath106'],
-					'MultipathHor' =>	$TotalMultipath['TotalPath106'],
-					'Rain_Vert' => $RainAvailVert,
-					'Rain_Hor' => $RainAvailHor,
-					'Multipath_Rain_Vert' => $MRainAvailVert,
-					'Multipath_Rain_Hor' => $MRainAvailHor, 
+					'MultipathVert' =>	round($TotalMultipath['TotalPath106'], 3),
+					'MultipathHor' =>	round($TotalMultipath['TotalPath106'], 3),
+					'Rain_Vert' => round($RainAvailVert, 3),
+					'Rain_Hor' => round($RainAvailHor, 3),
+					'Multipath_Rain_Vert' => round($MRainAvailVert, 3),
+					'Multipath_Rain_Hor' => round($MRainAvailHor, 3), 
 					'Error_Vert' => $Output_ErroredTimeV,
 					'Error_Hor' => $Output_ErroredTimeH
 					); 

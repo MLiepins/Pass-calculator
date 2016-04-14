@@ -60,7 +60,6 @@ function getBandwidth($conn, $ProdID, $Frequency)
 	}
 	echo json_encode($object);
 }
-
 function getModulation($conn, $ProdID, $Frequency, $Bandwidth, $Standart)
 {
 	$sql = "SELECT `Modulation` FROM `rx_treshold` WHERE `ProductID` = $ProdID AND `Standart` = '$Standart' AND `BandWidth` = $Bandwidth AND `FrequencyBand` = $Frequency  GROUP BY `Modulation` ORDER BY CAST(`Modulation` AS UNSIGNED)";
@@ -111,12 +110,6 @@ function getTransmitter($conn, $ProdID, $Modulation, $Frequency)
 		);
 	}
 	echo json_encode($object);
-}
-function getDistance($LatA, $LatB, $LonA, $LonB)
-{
-	$distance = calculateDistance($LatA, $LonA, $LatB, $LonB);
-	$rounededDistance = round($distance, 3);
-	echo json_encode($rounededDistance);
 }
 function getAntennaManuf($conn, $ProdID, $Frequency)
 {
@@ -179,19 +172,18 @@ function getFEC($conn, $ProdID, $Frequency, $Bandwidth, $Standart, $Modulation)
 	}
 	echo json_encode($object);
 }
-function getPrev_Calculations($conn, $ProdID, $Version, $Antenna_A_Diameter, $Antenna_B_Diameter, $Antenna_Height_A, $Antenna_Height_B, $Transmitter, $Extra_diameter_A, $Extra_diameter_B, $Antenna_Menu, $LatA, $LatB, $LonA, $LonB, $Frequency, $Losses, $Stand_Site_A, $Stand_Site_B, $Prim_Site_A, $Prim_Site_B, $Bandwidth, $Standart, $FEC, $Modulation, $Temperature, $Manufacturer, $Frequency_FD, $Transmit_FD)
+function getPrev_Calculations($conn, $ProdID, $Version, $Antenna_A_Diameter, $Antenna_B_Diameter, $Antenna_Height_A, $Antenna_Height_B, $Transmitter, $Extra_diameter_A, $Extra_diameter_B, $Antenna_Menu, $LatA, $LatB, $LonA, $LonB, $Frequency, $Losses, $Stand_Site_A, $Stand_Site_B, $Prim_Site_A, $Prim_Site_B, $Bandwidth, $Standart, $FEC, $Modulation, $Temperature, $Manufacturer, $Frequency_FD, $Transmit_FD, $Distance)
 {
 	$params_AntennaA = GetAnthenaParams($conn, $Manufacturer, $Frequency, $Antenna_A_Diameter);
 	$params_AntennaB = GetAnthenaParams($conn, $Manufacturer, $Frequency, $Antenna_B_Diameter);
 	$Extra_params_AntennaA = 0;
 	$Extra_params_AntennaB = 0; 
-	if($Version == 4 || $Version == 3 || ($Version == 2 && $Antenna_Menu == 2))
+	if(($Version == 4 && $Antenna_Menu == 2)  || $Version == 3 || ($Version == 2 && $Antenna_Menu == 2))
 	{
 		$Extra_params_AntennaA = GetAnthenaParams($conn, $Manufacturer, $Frequency, $Extra_diameter_A);
 		$Extra_params_AntennaB = GetAnthenaParams($conn, $Manufacturer, $Frequency, $Extra_diameter_B);
 	}
-	
-	$Distance = calculateDistance($LatA, $LonA, $LatB, $LonB);
+
 	$Threshold = getThreshold($conn, $Frequency, $Bandwidth, $Standart, $FEC, $Modulation, $ProdID);
 	$a = Attenuation($Frequency, $Temperature , $LatA, $LatB, $Antenna_Height_A, $Antenna_Height_B, $Distance); 
 	$FadeMargin = getFadeMargin($Antenna_Menu, $Version, $Frequency_FD, $Transmit_FD, $Distance, $Frequency, $Transmitter, $params_AntennaA, $Losses, $params_AntennaB, $Extra_params_AntennaA, $Extra_params_AntennaA, $Threshold, $a, $Prim_Site_A, $Prim_Site_B, $Stand_Site_A , $Stand_Site_B);
@@ -234,10 +226,6 @@ function getPrev_Calculations($conn, $ProdID, $Version, $Antenna_A_Diameter, $An
 	}
 	echo json_encode($result);
 }
-
-
-
-
 if(isset($_POST['func']) && !empty($_POST['func']))
 {
 	$func = $_POST['func'];
@@ -263,9 +251,6 @@ if(isset($_POST['func']) && !empty($_POST['func']))
 		
 		case 'Transmitter':  getTransmitter($conn, $_POST['ProdID'], $_POST['Modulation'], $_POST['Frequency']);		
 		break;	
-		
-		case 'Distance':  getDistance($_POST['LatA'], $_POST['LatB'], $_POST['LonA'], $_POST['LonB']);		
-		break;	
 
 		case 'antennaManuf':  getAntennaManuf($conn, $_POST['ProdID'], $_POST['Frequency']);		
 		break;
@@ -285,8 +270,9 @@ if(isset($_POST['func']) && !empty($_POST['func']))
 		case 'FadeMargin': getFadeMargin_Echo($_POST['Coupler'], $_POST['Prim_Site_A'], $_POST['Prim_Site_B'], $_POST['Stand_Site_A'], $_POST['Stand_Site_B'], $_POST['Frequency'], $_POST['Temperature'], $_POST['LatA'], $_POST['LatB'], $_POST['distance'], $_POST['version'], $_POST['AntennaA'], $_POST['AntennaB'], $_POST['Threshold'], $_POST['Transmitter'], $_POST['Losses']);
 		break;
 		
-		case 'prev_calc': getPrev_Calculations($conn, $_POST['ProdID'], $_POST['version'], $_POST['diameter_a'], $_POST['diameter_b'], $_POST['AntennaHeightA'], $_POST['AntennaHeightB'], $_POST['Transmitter'], $_POST['Extra_diameter_A'], $_POST['Extra_diameter_B'], $_POST['Antenna_Menu'], $_POST['LatA'], $_POST['LatB'],$_POST['LonA'], $_POST['LonB'], $_POST['Frequency'], $_POST['Losses'], $_POST['Stand_Site_A'], $_POST['Stand_Site_B'], $_POST['Prim_Site_A'],$_POST['Prim_Site_B'], $_POST['Bandwidth'], $_POST['Standart'], $_POST['FEC'], $_POST['Modulation'], $_POST['Temperature'], $_POST['Manufacturer'], $_POST['Frequency_FD'], $_POST['Transmit_FD']);	
+		case 'prev_calc': getPrev_Calculations($conn, $_POST['ProdID'], $_POST['version'], $_POST['diameter_a'], $_POST['diameter_b'], $_POST['AntennaHeightA'], $_POST['AntennaHeightB'], $_POST['Transmitter'], $_POST['Extra_diameter_A'], $_POST['Extra_diameter_B'], $_POST['Antenna_Menu'], $_POST['LatA'], $_POST['LatB'],$_POST['LonA'], $_POST['LonB'], $_POST['Frequency'], $_POST['Losses'], $_POST['Stand_Site_A'], $_POST['Stand_Site_B'], $_POST['Prim_Site_A'],$_POST['Prim_Site_B'], $_POST['Bandwidth'], $_POST['Standart'], $_POST['FEC'], $_POST['Modulation'], $_POST['Temperature'], $_POST['Manufacturer'], $_POST['Frequency_FD'], $_POST['Transmit_FD'], $_POST['Distance']);	
 		break; 
+		
 		
 		case 'calc_res':
 				//$Distance = calculateDistance($_POST['LatA'], $_POST['LonA'], $_POST['LatB'], $_POST['LonB']);

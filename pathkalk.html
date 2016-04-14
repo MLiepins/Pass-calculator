@@ -1,0 +1,1401 @@
+<!DOCTYPE html>
+<head>
+<title>Calculator</title>
+<link href="../Style/css.css" rel="stylesheet">
+<meta charset="UTF-8">
+
+<style>
+:target:before {
+  content:"";
+  display:block;
+  height:65px; /* fixed header height*/
+  margin:-65px 0 0; /* negative fixed header height */
+}
+ul {
+    list-style-type: none;
+    margin: auto;
+right: 0;
+    left: 0;
+    overflow: hidden;
+    background-color: #999;
+position: fixed;
+    top: 0px;
+width:100%;
+    max-width:1024px;
+z-index:2;
+padding:0;
+height:65px;
+}
+
+li {
+    display: inline-block;
+float:left;
+position:relative;
+height:auto;
+ 
+}
+    
+li[id^='li'],li:first-child,li:last-child,#addButton,li[myid='gear']{
+height:inherit;
+border-style:outset;
+border-color:#aaa;
+border-width:5px 5px 5px 5px;
+}
+li[id^='li'],li:first-child a{
+
+}
+li[myid='gear'],li:last-child {
+    float:right;
+}
+a img{
+width:auto;
+}
+li{
+    display:flex;
+align-items:center;
+}
+
+li a {
+    display: flex;
+flex-direction: column;
+justify-content: center;
+    color: white;
+    text-align: center;
+min-width:75px;
+height:100%;
+    text-decoration: none;
+}
+li[id^='li']:hover,li:first-child:hover,li:last-child:hover,
+#addButton:hover,li[myid='gear']:hover{
+    border-style:inset;
+}
+
+input {
+max-width:160px;
+}
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type=number] {
+    -moz-appearance:textfield;
+}
+
+///////
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+z-index:2;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    max-width: 160px;
+    overflow: auto;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+.dropdown-content a {
+display:block;
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+}
+
+.dropdown a:hover {
+background-color: #f1f1f1;
+}
+
+.show {display:block;}
+</style>
+
+<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBa4eMYQmYgaW-LTrPhjxI4ZmgPwAHna-g&libraries=places"></script>
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<script src="jquery-2.2.3.min.js"></script>
+<script src="ajax.js"></script>
+<script>
+//google maps funkcijas
+//console.log(document.childNodes);
+var map;
+var cashe = [];
+var markers = [null,null];
+var Path = new google.maps.Polyline({
+    strokeColor: '#FF0000',
+    strokeOpacity: 1.0,
+    strokeWeight: 2
+  });
+var elevations = [];
+var count=2;
+var oldHref;
+var autocomplete = [];
+var dist = [];
+var elevation= new google.maps.ElevationService;
+google.maps.event.addDomListener(window, 'load', initialize);
+
+function spawn(id)
+{
+	$('<div id = "'+(id)+'"></div>').appendTo('#content');
+	$('#'+id).load(('HTMLframe.html'), function() {
+		var Label = $('#li'+id).find('div[myid=link_label]').text();
+		var Pieces = Label.split('->');
+		
+		var LetterA = String.fromCharCode(65+id);
+		var LetterB = String.fromCharCode(65+(id+1));
+		
+		$('#'+id).find('h4[class=frameTitle]').html("Site <img src='"+LetterA+".png'> to <img src='"+LetterB+".png'>");
+		$('#'+id).find('div[name=tmp_Antenna_A]').val(LetterA);
+		$('#'+id).find('div[name=tmp_Antenna_B]').val(LetterB);
+		$('#'+id).find('div[name=l_AntennaA]').text("Antenna "+LetterA);
+		$('#'+id).find('div[name=l_AntennaB]').text("Antenna "+LetterB);
+	});
+}
+
+function changeHeight(el)
+{
+	DrawTopo(); 
+	
+	var site = $(el).parent().parent().parent().parent().attr('id');  
+	console.log("SITE: "+site);
+	var Pieces = site.split('point');
+	if((Pieces[1] - 1) >= 0)
+	{
+		var prevFrame = $('#content').find('div[id = '+(Pieces[1] - 1)+']');
+		var Frame = $('#content').find('div[id = '+Pieces[1]+']');
+		var prevFrameID = $(prevFrame).find('select[name = Version]');
+		var FrameID = $(Frame).find('select[name = Version]');
+		$(prevFrameID).each(function() 
+		{
+			prev_calc(this); 
+		});
+		$(FrameID).each(function() 
+		{
+			prev_calc(this); 
+		});		
+	}
+	else
+	{
+		var Frame = $('#content').find('div[id = '+Pieces[1]+']');
+		var FrameID = $(Frame).find('select[name = Version]');
+		$(FrameID).each(function() 
+		{
+			prev_calc(this); 
+		});			
+	}
+}
+
+
+
+
+function initialize() 
+{
+   var mapProp = 
+   {
+     center:new google.maps.LatLng(56.94459965214196,24.10400390625),
+     zoom:5,
+	 //disableDefaultUI: true,
+     mapTypeId:google.maps.MapTypeId.ROADMAP
+   }; 
+			
+			
+	map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+	google.maps.event.addListener(map, 'click',function(event) {placeMarker(event.latLng,10);});
+	Path.setMap(map);
+	var defaultBounds = new google.maps.LatLngBounds(
+		new google.maps.LatLng(-90, -180),
+		new google.maps.LatLng(90, 180));
+
+	var options = {
+	bounds:defaultBounds,
+	types: ['geocode']
+	};
+	autocompleteservice = new google.maps.places.AutocompleteService();
+	input1=document.getElementById("point0").querySelector("[myid='Addres']");
+	autocomplete[0] = new google.maps.places.Autocomplete(input1,options);
+	google.maps.event.addListener(autocomplete[0], 'place_changed',function() {PlaceChange(0,autocomplete[0].getPlace())});
+	input2=document.getElementById("point1").querySelector("[myid='Addres']");
+	autocomplete[1] = new google.maps.places.Autocomplete(input2,options);
+	google.maps.event.addListener(autocomplete[1], 'place_changed',function() {PlaceChange(1,autocomplete[1].getPlace())});
+	spawn(0); 
+} 
+function PlaceChange(n,Loc)
+{
+document.getElementById("point"+n).querySelector("[myid='Lat']").value=Loc.geometry.location.lat();
+document.getElementById("point"+n).querySelector("[myid='Lon']").value=Loc.geometry.location.lng();
+placeMarker(Loc.geometry.location,n);
+}
+function CheckTopo(nr)
+{
+	for(var i = parseInt(nr)-1;i>=0;i--)
+	{
+	if(markers[i]) 
+	{
+	getTopo(i,parseInt(nr));
+	break;
+	}
+	}
+	for(i = parseInt(nr)+1;i<count;i++)
+	{
+	if(markers[i]) 
+	{
+	getTopo(parseInt(nr),i);
+	break;
+	}
+	}
+	//DrawTopo();
+}
+function getTopo(a,b)
+{		
+		//console.log("getTopo",a,b);
+		dist[a]=(google.maps.geometry.spherical.computeDistanceBetween(markers[a].getPosition(),markers[b].getPosition())/1000).toFixed(1);
+		document.getElementById("li"+a).querySelector("[myid='Dist']").innerHTML=dist[a]+"Km";
+		var path = [markers[a].getPosition(),markers[b].getPosition()];
+		{
+		elevation.getElevationAlongPath({path:path,
+										samples:100},function(elevation,status){elevationrecieve(elevation,status,a)});
+		}
+}
+function placeMarker(location,n) 
+{		
+		var i;
+		var check=false;
+		if(n==10)
+		{
+		for(i = 0;i<count;i++)
+			{
+			if(markers[i] == null)
+			{
+				var Url;
+				switch(i)
+				{
+				case 0:Url="marker_red.png";
+					break;
+				case 1:Url="marker_blue.png";
+					break;
+				case 2:Url="marker_purple.png";
+					break;
+				case 3:Url="marker_green.png";
+					break;
+				case 4:Url="marker_yellow.png";
+					break;
+				}
+				
+				var Icon ={url:Url,labelOrigin:({x:11,y:12})};
+				
+				var marker = new google.maps.Marker({
+				position: location, 
+				label:String.fromCharCode(i+65),
+				map: map,
+				draggable:true,
+				icon:Icon
+				});
+				markers[i]=marker;
+				markers[i].addListener('drag',function() {markerDrag(i)});
+				markers[i].addListener('dragend',function() {markerDragEnd(i)});
+				document.getElementById("point"+i).querySelector("[myid='Lat']").value=location.lat();
+				document.getElementById("point"+i).querySelector("[myid='Lon']").value=location.lng();
+				AddToPath(i);
+				CheckTopo(i);
+				check=true;
+				break;
+			}
+			}
+		if(!check)
+		{
+		if(AddPoint())
+		placeMarker(location,10);
+		}
+		}
+		else
+		{
+		var Url;
+				switch(n)
+				{
+				case 0:Url="marker_red.png";
+					break;
+				case 1:Url="marker_blue.png";
+					break;
+				case 2:Url="marker_purple.png";
+					break;
+				case 3:Url="marker_green.png";
+					break;
+				case 4:Url="marker_yellow.png";
+					break;
+				}
+				
+		var Icon ={url:Url,labelOrigin:({x:11,y:12})};
+		
+		var marker = new google.maps.Marker({
+				position: location, 
+				label:document.getElementById("point"+parseInt(n)).querySelector("[myid='Label']").getAttribute("value"),
+				map: map,
+				draggable:true,
+				icon:Icon
+				});
+		if(markers[n])
+		{
+			markers[n].setMap(null);
+			RemoveFromPath(n);
+		}
+		markers[n]=marker;
+		markers[n].addListener('drag',function() {markerDrag(n)});
+		markers[n].addListener('dragend',function() {markerDragEnd(n)});
+		markers[n].setMap(map);	
+		AddToPath(n);
+		CheckTopo(n);
+		
+		var bounds = new google.maps.LatLngBounds();
+		for(i=0;i<markers.length;i++)
+		{
+		if(markers[i])
+		bounds.extend(markers[i].getPosition());
+		}
+		map.fitBounds(bounds);
+		if(map.getZoom()>20)map.setZoom(11);
+		}
+		CheckAdd();
+}
+function CheckAdd()
+{
+if(count == 5)
+{
+document.getElementById("addButton").querySelector("[myid='enabled']").style.display="none";
+document.getElementById("addButton").querySelector("[myid='disabled']").style.display="none";
+}
+else
+if(markers[count-1] && count <5)
+{
+document.getElementById("addButton").querySelector("[myid='enabled']").style.display="inline";
+document.getElementById("addButton").querySelector("[myid='disabled']").style.display="none";
+}
+else 
+{
+document.getElementById("addButton").querySelector("[myid='enabled']").style.display="none";
+document.getElementById("addButton").querySelector("[myid='disabled']").style.display="inline";
+}
+}
+function RemoveFromPath(nr)
+{
+/*var nullCount=0;
+	for(var i=0;i<nr;i++)
+	{
+		if(markers[i].getMap() == null) nullCount++;
+	}
+Path.getPath().removeAt(nr-nullCount);*/
+Path.getPath().removeAt(nr);
+}
+function AddToPath(nr)
+{
+/*var nullCount=0;
+Path.setMap(map);
+	for(var i=0;i<nr;i++)
+	{
+	if(markers[i].getMap() == null)
+	{
+	nullCount++;
+	}
+	}
+	Path.getPath().insertAt(nr-nullCount,markers[nr].getPosition());*/
+	Path.getPath().insertAt(nr,markers[nr].getPosition());
+}
+function markerDrag(i)
+{
+document.getElementById("point"+i).querySelector("[myid='Lat']").value=markers[i].getPosition().lat();
+document.getElementById("point"+i).querySelector("[myid='Lon']").value=markers[i].getPosition().lng();
+RemoveFromPath(i);
+AddToPath(i);
+}
+function markerDragEnd(i)
+{
+document.getElementById("point"+i).querySelector("[myid='Addres']").value='';
+CheckTopo(i);
+
+//prev_calc(el)
+
+	console.log("i == "+i);
+	if((i - 1) >= 0)
+	{
+		var FrameID = $('#'+i).find('select[name = Version]');
+		var prev_FrameID = $('#'+(i-1)).find('select[name = Version]');
+		$(FrameID).each(function() 
+		{
+			prev_calc(this); 
+		});		
+		$(prev_FrameID).each(function() 
+		{
+			prev_calc(this); 
+		});		
+	}
+	else
+	{
+		var FrameID = $('#'+i).find('select[name = Version]');
+		$(FrameID).each(function() 
+		{
+			prev_calc(this); 
+		});			
+	}
+
+}
+function AddMarkerListener(nr,val)
+{
+markers[nr].addListener('drag',function() {markerDrag(val)});
+markers[nr].addListener('dragend',function() {markerDragEnd(val)});
+}
+function Del()
+{
+if(count>2)
+{
+document.getElementById("point"+(count-1)).parentNode.removeChild(document.getElementById("point"+(count-1)));
+var el = document.getElementById("nav");
+var sel = "[myid='Label"+(count-1)+"']";
+el.removeChild(el.querySelector(sel));
+el.removeChild(document.getElementById("li"+(count-2)));
+document.getElementById("point"+(count-2)).querySelector("[src = 'delete.png']").style.display="inline";
+document.getElementById("point"+(count-2)).querySelector("[src = 'arrows_down.png']").style.display="none";
+document.getElementById("point"+(count-2)).querySelector("[myid = 'h1']").style.display="none";
+document.getElementById((count-2)).parentNode.removeChild(document.getElementById((count-2)));
+
+
+google.maps.event.clearInstanceListeners(autocomplete[count-1]);
+autocomplete.splice(count-1,1);
+if(markers[count-1])
+{
+elevations.splice(count-2,1);
+RemoveFromPath(count-1);
+markers[count-1].setMap(null);
+google.maps.event.clearInstanceListeners(markers[count-1]);
+markers.splice(count-1,1);
+}
+count--;
+if(count==2)
+document.getElementById("point"+(count-1)).querySelector("[src='delete.png']").style.display="none";
+CheckAdd();
+DrawTopo();
+}
+/*if(count>1)
+{
+var el;
+var i;
+var l = document.getElementById("point"+x).querySelector("[myid='Label']").innerHTML;
+
+	document.getElementById("point"+x).parentNode.removeChild(document.getElementById("point"+x));
+	
+	for(i=0;i<count;i++)
+	{
+	if(i != x)
+	{
+	el = document.getElementById("point"+i);
+	if(el.querySelector("[myid='Label']").innerHTML.charCodeAt(0) > l.charCodeAt(0) )
+	el.querySelector("[myid='Label']").innerHTML=String.fromCharCode(el.querySelector("[myid='Label']").innerHTML.charCodeAt(0)-1);
+	if(markers[i])
+	markers[i].setLabel(el.querySelector("[myid='Label']").innerHTML);
+	}
+	}
+	
+	if(x == 0)
+		{
+		if(count == 2)
+		{
+		document.getElementById("point1").querySelector("[myid='h1']").value=document.getElementById("point1").querySelector("[myid='h']").value;
+		document.getElementById("point1").querySelector("[myid='h1']").style.display='inline';
+		}
+		document.getElementById("point1").querySelector("[myid='arrowsup']").style.display='none';
+		document.getElementById("point1").querySelector("[myid='h']").style.display='none';
+		document.getElementById("point1").querySelector("[myid='h']").value=0;
+		}
+	
+	if(count - x == 1)
+	//document.getElementById("li"+x).parentNode.removeChild(document.getElementById("li"+x));
+	//else 
+	{
+	//document.getElementById("li"+(x-1)).parentNode.removeChild(document.getElementById("li"+(x-1)));
+	document.getElementById("point"+(x-1)).querySelector("[myid='arrowsdown']").style.display='none';
+	console.log("hide h1",x-1);
+	document.getElementById("point"+(x-1)).querySelector("[myid='h1']").style.display='none';
+	document.getElementById("point"+(x-1)).querySelector("[myid='h1']").value=0;
+	}
+	if(count - x != 1)
+	for(i=parseInt(x)+1;i<count;i++)
+	{
+	el = document.getElementById("point"+i);
+		//el.querySelector("[myid='Label']").innerHTML=String.fromCharCode(el.querySelector("[myid='Label']").innerHTML.charCodeAt(0)-1);
+		el.setAttribute("id","point"+(i-1));
+		el.querySelector("[myid='Lat']").setAttribute("onchange","Markerinput(this,"+(i-1)+")");
+		el.querySelector("[myid='Lon']").setAttribute("onchange","Markerinput(this,"+(i-1)+")");
+		el.querySelector("[myid='arrowsup']").setAttribute("onclick","switchM("+(i-1)+",'up')");
+		el.querySelector("[myid='arrowsdown']").setAttribute("onclick","switchM("+(i-1)+",'down')");
+		*/
+		/*if(document.getElementById("li"+i))
+		{
+		document.getElementById("li"+i).setAttribute("id","li"+(i-1));
+		}*/
+		/*
+		if(markers[i])
+		{
+		google.maps.event.clearListeners(markers[i],'drag');
+		google.maps.event.clearListeners(markers[i],'dragend');
+		AddMarkerListener(i,i-1);
+		}
+	}
+	*/
+	/*for(i=0;i<count-2;i++)
+	{
+		document.getElementById("li"+i).querySelector("[myid='link_label']").innerHTML=document.getElementById("point"+i).querySelector("[myid='Label']").innerHTML+"->"+document.getElementById("point"+(i+1)).querySelector("[myid='Label']").innerHTML;
+		document.getElementById("li"+i).querySelector("[myid='link_href']").setAttribute("href","#"+i+"t");
+	}*/
+	/*if(markers[x])
+	{
+	markers[x].setMap(null);
+	RemoveFromPath(x);
+	}
+	google.maps.event.clearInstanceListeners(autocomplete[x]);
+	markers.splice(parseInt(x),1);
+	autocomplete.splice(parseInt(x),1);
+	if(count - x != 1)
+	elevations.splice(x,1);
+	else elevations.splice(x-1,1);
+	count--;
+	if(count - x != 0)
+	CheckTopo(parseInt(x));
+	else DrawTopo();
+	if(count == 1)DrawTopo();
+	CheckAdd();
+}*/
+}
+function elevationrecieve(elevationsg,status,nr)
+{
+if(status !== google.maps.ElevationStatus.OK)
+{
+console.log(status);
+}
+else
+{
+elevations[nr]=elevationsg;
+DrawTopo();
+}
+}
+function cl()
+{
+var canvas = document.getElementById("TopoMap");
+canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+}
+function DrawTower(X,Y,towerWidth,towerHeight,scale)
+{
+var canvas = document.getElementById("TopoMap");
+var ctx = canvas.getContext("2d");
+var yi,iold=0;
+if(towerHeight != 0)
+{
+ctx.beginPath();
+
+var r=2;
+ctx.arc(X,Y-towerHeight+r,r,0,2*Math.PI);
+ctx.fillStyle="#000000";
+ctx.fill();
+ctx.strokeStyle="#000000";
+ctx.lineWidth=1;
+ctx.moveTo(X,Y-towerHeight+r);
+ctx.lineTo(X,Y-towerHeight+r*2);
+ctx.lineTo(X+(towerWidth/2),Y);
+ctx.lineTo(X-(towerWidth/2),Y);
+ctx.lineTo(X,Y-towerHeight+r*2);
+ctx.lineTo(X,Y);
+for(var i=scale*3;i<towerHeight-r*2;i+=scale*5)
+{
+yi=towerWidth/2*(towerHeight-r*2-i)/(towerHeight-r*2);
+ctx.moveTo(X-yi,Y-i);
+ctx.lineTo(X+yi,Y-i);
+ctx.lineTo(X,Y-iold);
+ctx.lineTo(X-yi,Y-i);
+iold=i;
+}
+ctx.closePath();
+ctx.stroke();
+}
+}	
+function DrawSin(X1,Y1,X2,Y2,faze,krasa)
+{
+	var canvas = document.getElementById("TopoMap");
+	var ctx = canvas.getContext("2d");
+	var wavelength = 20;
+	var amplitude = 5;
+	ctx.strokeStyle=krasa;
+	ctx.beginPath();
+	ctx.moveTo(X1,Y1);
+	for(var i = X1;i<=X2;i++)
+	{
+	ctx.lineTo(i,Y1+(i-X1)*(Y1-Y2)/(X1-X2)+Math.sin((((i-X1)*wavelength)%360*(Math.PI/180))+faze)*amplitude);
+	}
+	ctx.moveTo(X1,Y1);
+	ctx.closePath();
+	ctx.stroke();
+}
+function DrawTopo()
+{
+	var angle,offset,offset1;
+	var canvas = document.getElementById("TopoMap");
+	var ctx = canvas.getContext("2d");
+	var min=0,max=0;
+	var scale;
+	var pixel_count;
+	var i,j,counter,prev = null;
+	var h = [[],[],[]];
+	var tmp = -1;//,R=6371000;
+	var towerCount=1,towerWidth=10,towerWidthScale;
+	var padding_right=10;
+	var padding_left=30;
+	var padding_top=10;
+	var padding_bottom=10;
+	var scaleWidth=50;
+	var color;
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
+	//console.log("drawTopo");
+	if(elevations)
+	{
+		for(i = 0;i<count;i++)
+		{
+			h[0][i] = parseInt(document.getElementById("point"+i).querySelector("[myid='h']").value);
+			h[1][i] = parseInt(document.getElementById("point"+i).querySelector("[myid='h1']").value);
+			h[2][i]=Math.max(h[0][i],h[1][i]);
+			if(elevations[i])
+			{
+				if((h[2][i]+elevations[i][0].elevation)>max)max=h[2][i]+elevations[i][0].elevation;
+			}
+			else 
+			if(elevations[i-1])
+			if((h[2][i]+elevations[i-1][99].elevation)>max)max=h[2][i]+elevations[i-1][99].elevation;
+		}
+		
+		//////////antenu max+elevations h min dist 
+		for(i=0;i<count-1;i++)
+		if(elevations[i])
+		for(j=0;j<100;j++)
+		{
+		if(elevations[i][j].elevation > max)max=elevations[i][j].elevation;
+		if(elevations[i][j].elevation < min)min=elevations[i][j].elevation;
+		}
+		
+		for(i=0;i<count-1;i++)
+		if(elevations[i])towerCount++;
+		
+		scale = (canvas.height-(padding_top+padding_bottom))/(max-min);////////min vienmer <=0 max-min=>max+abs(min)
+		
+		towerWidthScale=(towerWidth*100*(towerCount-1))/((canvas.width-(padding_left+padding_right+scaleWidth))-towerWidth*towerCount);
+		
+		ctx.translate(padding_left+scaleWidth,canvas.height-padding_bottom+min*scale);
+		
+		
+		if(towerWidthScale>towerWidth)
+		{
+		pixel_count=1;
+		ctx.scale((canvas.width-(padding_left+padding_right+scaleWidth))/(towerCount*towerWidthScale+100*(towerCount-1)),1);
+		}
+		else
+		{
+		towerWidthScale=towerWidth;
+		pixel_count=Math.floor((canvas.width-(padding_left+padding_right+scaleWidth))/(towerCount*towerWidthScale+100*(towerCount-1)));
+		ctx.scale((canvas.width-(padding_left+padding_right+scaleWidth))/(towerCount*towerWidthScale+100*pixel_count*(towerCount-1)),1);
+		}
+		
+		
+		for(i = 0;i<count-1;i++)
+		if(elevations[i])
+		{
+			switch(document.getElementById("point"+i).querySelector("[myid='Label']").getAttribute("value"))
+				{
+				case 'A':ctx.fillStyle="#F76058";
+					break;
+				case 'B':ctx.fillStyle="#6058F7";
+					break;
+				case 'C':ctx.fillStyle="#B442FD";
+					break;
+				case 'D':ctx.fillStyle="#60F758";
+					break;
+				case 'E':ctx.fillStyle="#F8EC7F";
+					break;
+				}
+			ctx.fillRect(tmp*100*pixel_count+j*pixel_count+((tmp+1)*towerWidthScale),-min*scale,towerWidthScale,(-elevations[i][0].elevation+min)*scale);
+			DrawTower(tmp*100*pixel_count+j*pixel_count+((tmp+1)*towerWidthScale)+towerWidthScale/2,(-elevations[i][0].elevation)*scale,towerWidthScale,h[2][i]*scale,scale);
+			ctx.fillStyle="#00aa00";
+			tmp++;
+			for(j = 0;j<100;j++)////////elevations;
+			{
+			ctx.fillRect(tmp*100*pixel_count+j*pixel_count+((tmp+1)*towerWidthScale),-min*scale,1*pixel_count,(-elevations[i][j].elevation+min)*scale);
+			}
+			
+		}
+		for(counter=count-1;counter>=0;counter--)
+		{
+		if(markers[counter])
+		{
+		for(i = count-2;i>=0;i--)
+		{
+		if(elevations[i])
+		{
+		switch(document.getElementById("point"+(i+1)).querySelector("[myid='Label']").getAttribute("value"))
+				{
+				case 'A':ctx.fillStyle="#F76058";
+					break;
+				case 'B':ctx.fillStyle="#6058F7";
+					break;
+				case 'C':ctx.fillStyle="#B442FD";
+					break;
+				case 'D':ctx.fillStyle="#60F758";
+					break;
+				case 'E':ctx.fillStyle="#F8EC7F";
+					break;
+				}
+		ctx.fillRect((tmp+1)*100*pixel_count-1+((tmp+1)*towerWidthScale),-min*scale,towerWidthScale,(-elevations[i][99].elevation+min)*scale);
+		DrawTower((tmp+1)*100*pixel_count-1+((tmp+1)*towerWidthScale)+towerWidthScale/2,(-elevations[i][99].elevation)*scale,towerWidthScale,h[2][counter]*scale,scale);
+		break;
+		}
+		}
+		break;
+		}
+		}
+		j=0;
+		for(i = 0;i<count;i++)
+		{
+		if(markers[i])
+		{
+		if(prev == null)prev = i;
+		else
+		if(elevations[i])
+		{
+		DrawSin((j)*100*pixel_count+towerWidthScale/2+j*towerWidthScale,(elevations[prev][0].elevation+h[1][prev])*-scale,(j+1)*100*pixel_count+towerWidthScale/2+(j+1)*towerWidthScale,(elevations[i][0].elevation+h[0][i])*-scale,0,"#000000");
+		DrawSin((j)*100*pixel_count+towerWidthScale/2+j*towerWidthScale,(elevations[prev][0].elevation+h[1][prev])*-scale,(j+1)*100*pixel_count+towerWidthScale/2+(j+1)*towerWidthScale,(elevations[i][0].elevation+h[0][i])*-scale,Math.PI*3/4,"#888888");
+		//DrawAntenna((j)*100*pixel_count+towerWidthScale/2+j*towerWidthScale,(elevations[prev][0].elevation+h[1][prev])*-scale,Math.PI/4);
+		/*var D=(((j+1)*100*pixel_count+towerWidthScale/2+(j+1)*towerWidthScale)-((j)*100*pixel_count+towerWidthScale/2+j*towerWidthScale));
+		ctx.beginPath();
+		ctx.arc(D/2+towerWidthScale/2,Math.sqrt(R*R-D*D/4),R,Math.PI/2+Math.acos((2*R*R-D*D)/(2*R*R))/2,Math.PI/2-Math.acos((2*R*R-D*D)/(2*R*R))/2);
+		ctx.closePath();
+		console.log(D/2,Math.sqrt(R*R-D*D/4),R,-Math.PI/2-Math.acos((2*R*R-D*D)/(2*R*R))/2,-Math.PI/2+Math.acos((2*R*R-D*D)/(2*R*R))/2);
+		ctx.stroke();*/
+		//DrawSin((j)*100*pixel_count+towerWidthScale/2+j*towerWidthScale,(elevations[prev][0].elevation+h[prev])*-scale,(j+1)*100*pixel_count+towerWidthScale/2+(j+1)*towerWidthScale,(elevations[i][0].elevation+h[i])*-scale,Math.PI,"#888888");
+		//DrawSin((j)*100*pixel_count+towerWidthScale/2+j*towerWidthScale,(elevations[prev][0].elevation+h[prev])*-scale,(j+1)*100*pixel_count+towerWidthScale/2+(j+1)*towerWidthScale,(elevations[i][0].elevation+h[i])*-scale,3*Math.PI/2,"#cccccc");
+		prev = i;
+		j++;
+		}
+		else 
+		{
+		//var angle = abs((j)*100*pixel_count+towerWidthScale/2+j*towerWidthScale-(j+1)*100*pixel_count+towerWidthScale/2+(j+1)*towerWidthScale)
+		DrawSin((j)*100*pixel_count+towerWidthScale/2+j*towerWidthScale,(elevations[prev][0].elevation+h[1][prev])*-scale,(j+1)*100*pixel_count+towerWidthScale/2+(j+1)*towerWidthScale,(elevations[prev][99].elevation+h[0][i])*-scale,0,"#000000");
+		DrawSin((j)*100*pixel_count+towerWidthScale/2+j*towerWidthScale,(elevations[prev][0].elevation+h[1][prev])*-scale,(j+1)*100*pixel_count+towerWidthScale/2+(j+1)*towerWidthScale,(elevations[prev][99].elevation+h[0][i])*-scale,Math.PI*3/4,"#888888");
+		//DrawAntenna((j)*100*pixel_count+towerWidthScale/2+j*towerWidthScale,(elevations[prev][0].elevation+h[1][prev])*-scale,Math.PI/4);
+		//DrawSin((j)*100*pixel_count+towerWidthScale/2+j*towerWidthScale,(elevations[prev][0].elevation+h[prev])*-scale,(j+1)*100*pixel_count+towerWidthScale/2+(j+1)*towerWidthScale,(elevations[prev][99].elevation+h[i])*-scale,Math.PI,"#888888");
+		//DrawSin((j)*100*pixel_count+towerWidthScale/2+j*towerWidthScale,(elevations[prev][0].elevation+h[prev])*-scale,(j+1)*100*pixel_count+towerWidthScale/2+(j+1)*towerWidthScale,(elevations[prev][99].elevation+h[i])*-scale,3*Math.PI/2,"#cccccc");
+		}
+		}
+		}
+		/*if(towerWidthScale>towerWidth)
+		ctx.scale((towerCount*towerWidthScale+100*(towerCount-1))/(canvas.width-(padding_left+padding_right+scaleWidth)),1);
+		else*/ ctx.scale((towerCount*towerWidthScale+100*pixel_count*(towerCount-1))/(canvas.width-(padding_left+padding_right+scaleWidth)),1);
+		
+		
+		var widthScale = (towerCount*towerWidthScale+100*pixel_count*(towerCount-1))/(canvas.width-(padding_left+padding_right+scaleWidth));
+		for(i=0;i<count-1;i++)
+		{
+		offset=((h[2][i+1]-h[0][i+1])*towerWidth/2/h[2][i+1])+2;
+		offset1=((h[2][i]-h[1][i])*towerWidth/2/h[2][i])+2;
+		angle = Math.atan(((((elevations[i][0].elevation+h[1][i])*-scale)-((elevations[i][99].elevation+h[0][i+1])*-scale)))/((((i+1)*100*pixel_count+towerWidthScale/2+(i+1)*towerWidthScale)/widthScale)-(((i)*100*pixel_count+towerWidthScale/2+i*towerWidthScale)/widthScale)+offset1-offset))
+		DrawAntenna(((i)*100*pixel_count+towerWidthScale/2+i*towerWidthScale)/widthScale+offset1,(elevations[i][0].elevation+h[1][i])*-scale+2,-angle+Math.PI/2,0.8);
+		DrawAntenna(((i+1)*100*pixel_count+towerWidthScale/2+(i+1)*towerWidthScale)/widthScale-offset,(elevations[i][99].elevation+h[0][i+1])*-scale+2,-angle-Math.PI/2,0.8);
+		}
+
+		ctx.font="12px Arial";////////vertibu skala
+		ctx.strokeStyle="#aaffff";
+		ctx.fillStyle="#000000";
+		ctx.beginPath();
+		for(i=parseInt(min*scale/((canvas.height-(padding_top+padding_bottom))/10));i<=parseInt(max*scale/((canvas.height-(padding_top+padding_bottom))/10));i++)
+		{
+			ctx.moveTo(0,i*-((canvas.height-(padding_top+padding_bottom))/10));
+			ctx.lineTo(canvas.width-padding_right-scaleWidth-padding_left,i*-((canvas.height-(padding_top+padding_bottom))/10));
+			ctx.fillText((i*((canvas.height-(padding_top+padding_bottom))/10)/scale).toFixed(2),-scaleWidth,i*-((canvas.height-(padding_top+padding_bottom))/10));
+		}
+		ctx.closePath();
+		ctx.stroke();
+		
+		
+		ctx.translate(-scaleWidth-padding_left,-(canvas.height-10+min*scale));
+		for(i = 0;i<count-1;i++)
+		{
+		if(elevations[i])
+		document.getElementById("point"+i).querySelector("[myid='height']").innerHTML=elevations[i][0].elevation.toFixed(2)+" mvjl";
+		else break;
+		}
+		if(count > 1)
+		document.getElementById("point"+i).querySelector("[myid='height']").innerHTML=elevations[i-1][99].elevation.toFixed(2)+" mvjl";
+	}
+}
+function Markerinput(el,n)
+{
+	document.getElementById("point"+n).querySelector("[myid='Addres']").value = '';
+	var Lat=document.getElementById("point"+n).querySelector("[myid='Lat']").value;
+	var Lon=document.getElementById("point"+n).querySelector("[myid='Lon']").value;
+	if(el.value == '')el.value = 0;
+	if(!isNaN(Lat) && !isNaN(Lon))
+	{
+		var Loc = new google.maps.LatLng(Lat,Lon);
+		placeMarker(Loc,n);
+	}
+	var site = $(el).parent().parent().parent().parent().attr('id');  
+	
+	var Pieces = site.split('point');
+	if((Pieces[1] - 1) >= 0)
+	{
+		var prevFrame = $('#content').find('div[id = '+(Pieces[1] - 1)+']');
+		var Frame = $('#content').find('div[id = '+Pieces[1]+']');
+		var prevFrameID = $(prevFrame).find('select[name = Version]');
+		var FrameID = $(Frame).find('select[name = Version]');
+		
+		$(prevFrameID).each(function() 
+		{
+			prev_calc(this); 
+		});
+		$(FrameID).each(function() 
+		{
+			prev_calc(this); 
+		});		
+	}
+	else
+	{
+		var Frame = $('#content').find('div[id = '+Pieces[1]+']');
+		var FrameID = $(Frame).find('select[name = Version]');
+		$(FrameID).each(function() 
+		{
+			prev_calc(this); 
+		});			
+	}
+}
+
+function DrawAntenna(xm,ym,angle,scale)
+{
+var canvas = document.getElementById("TopoMap");
+var ctx = canvas.getContext("2d");
+var antenna_length = 7*scale,antenna_width = 2*scale;
+var x,y;
+var r = 7*scale;
+x = xm+Math.sin(angle)*r;
+y = ym-Math.cos(angle)*r;
+ctx.fillStyle="#000000";
+ctx.beginPath();
+ctx.arc(x,y,r,0+angle,Math.PI+angle);
+ctx.lineTo(x-Math.cos(angle)*antenna_width,y-Math.sin(angle)*antenna_width);
+ctx.lineTo(x-(Math.sin(-angle)*antenna_length),y-(Math.cos(-angle)*antenna_length));
+ctx.lineTo(x+Math.cos(angle)*antenna_width,y+Math.sin(angle)*antenna_width);
+ctx.closePath();
+ctx.fill();
+ctx.beginPath();
+ctx.arc(x-(Math.sin(-angle)*antenna_length),y-(Math.cos(-angle)*antenna_length),2,0,2*Math.PI);
+ctx.closePath();
+ctx.fillStyle="#000000";
+ctx.fill();
+}
+
+function scroll()
+{
+if(oldHref != window.location.href)
+{
+	oldHref=window.location.href;
+	oldHref=oldHref.slice(0,-1);
+	window.location.href=oldHref;
+}
+}
+function AddPoint()
+{
+if(count >= 5 || !markers[count-1]) 
+{
+return false;
+}	
+	var Template = document.getElementById("point0").cloneNode(true);//document.importNode(document.getElementById("points").childNodes[0],true);
+	Template.setAttribute("id","point"+(count));
+	
+	
+	Template.querySelector("[myid='Label']").setAttribute("src",String.fromCharCode(65+count)+".png");
+	Template.querySelector("[myid='Label']").setAttribute("value",String.fromCharCode(65+count));
+	Template.querySelector("[myid='Addres']").value='';
+	Template.querySelector("[myid='Lon']").value='';
+	Template.querySelector("[myid='Lat']").value='';
+	Template.querySelector("[myid='Lat']").setAttribute("onchange","Markerinput(this,"+(count)+")");
+	Template.querySelector("[myid='Lon']").value='';
+	Template.querySelector("[myid='arrowsup']").setAttribute("src","arrows_up.png");
+	Template.querySelector("[myid='arrowsup']").setAttribute("onclick","switchM("+(count)+",'up')");
+	Template.querySelector("[myid='arrowsup']").setAttribute("style","display:inline");
+	Template.querySelector("[myid='arrowsdown']").setAttribute("onclick","switchM("+(count)+",'down')");
+	Template.querySelector("[myid='arrowsdown']").setAttribute("style","display:none");
+	Template.querySelector("[myid='Lon']").setAttribute("onchange","Markerinput(this,"+(count)+")");
+	Template.querySelector("[myid='h']").value='10';
+	Template.querySelector("[myid='h']").style.display='inline';
+	Template.querySelector("[myid='h1']").style.display='none';
+	Template.querySelector("[src='delete.png']").style.display="inline";
+	document.getElementById("points").appendChild(Template);
+	document.getElementById("point"+(count-1)).querySelector("[myid='arrowsdown']").setAttribute("style","display:inline");
+	document.getElementById("point"+(count-1)).querySelector("[myid='h1']").setAttribute("style","display:inline");
+	document.getElementById("point"+(count-1)).querySelector("[myid='h1']").value=document.getElementById("point"+(count-1)).querySelector("[myid='h']").value;
+	document.getElementById("point"+(count-1)).querySelector("[src='delete.png']").style.display="none";
+	if(document.getElementById("point"+(count-1)).querySelector("[myid='h1']").value)document.getElementById("point"+(count-1)).querySelector("[myid='h1']").value=10;
+	markers[count] = null;
+	elevations[count] = null;
+	var defaultBounds = new google.maps.LatLngBounds(
+		new google.maps.LatLng(-90, -180),
+		new google.maps.LatLng(90, 180));
+
+	var options = {
+	bounds:defaultBounds,
+	types: ['geocode']
+	};
+	input=document.getElementById("point"+(count)).querySelector("[myid='Addres']");
+	autocomplete[count] = new google.maps.places.Autocomplete(input,options);
+	google.maps.event.addListener(autocomplete[count], 'place_changed',
+	function() {PlaceChange(parseInt(Template.getAttribute("id")[5]),
+	autocomplete[parseInt(Template.getAttribute("id")[5])].getPlace())});
+	
+	
+	var LI = document.createElement("li");
+	LI.setAttribute("id","li"+(count-1));
+	var List = document.getElementById("nav");
+	List.insertBefore(LI,List.childNodes[List.childNodes.length-6]);
+	var Href = document.createElement("a");
+	Href.setAttribute("myid","link_href");
+	Href.setAttribute("href","#"+(count-1)+"t");
+	LI.appendChild(Href);
+	var dist = document.createElement("div");
+	dist.setAttribute("myid","Dist");
+	Href.appendChild(dist);
+	var arr = document.createElement("img");
+	arr.setAttribute("src","arrow.png");
+	arr.setAttribute("myid","link_status");
+	arr.style = "width:100%;height:20px";
+	Href.appendChild(arr);
+	var fr = document.createElement("div");
+	fr.setAttribute("myid","fr");
+	Href.appendChild(fr);
+	
+	LI = document.createElement("li");
+	LI.setAttribute("myid","Label"+count);
+	LI.style="padding-top:10px";
+	var point = document.createElement("img");
+	point.setAttribute("src",String.fromCharCode(65+count)+".png");
+	point.setAttribute("value",String.fromCharCode(65+count));
+	LI.appendChild(point);
+	List.insertBefore(LI,List.childNodes[List.childNodes.length-6]);
+	spawn(count - 1);
+	++count;
+	CheckAdd();
+	return true;
+}
+function drag(ev)///////nav pielietota
+{
+ev.dataTransfer.setData("text",ev.target.id);
+console.log(ev.target);
+}
+function allowDrop(ev)///nav pielietota
+{
+ev.preventDefault();
+}
+function drop(ev)/////nav pielietota
+{
+ev.preventDefault();
+var data = ev.dataTransfer.getData("text");
+ev.target.appendChild(document.getElementById(data));
+console.log(data);
+}
+function switchM(nr,dir)
+{
+var temp;
+var el1,el2;
+var next_nr;
+if(dir == 'up')
+{
+next_nr = nr-1;
+}
+else
+{
+next_nr = nr+1;
+}
+if(markers[nr] && markers[next_nr])
+{
+el1 = document.getElementById("point"+nr);
+el2 = document.getElementById("point"+next_nr);
+
+temp = el1.querySelector("[myid='Addres']").value;
+el1.querySelector("[myid='Addres']").value = el2.querySelector("[myid='Addres']").value;
+el2.querySelector("[myid='Addres']").value = temp;
+
+temp = el1.querySelector("[myid='Lat']").value;
+el1.querySelector("[myid='Lat']").value = el2.querySelector("[myid='Lat']").value;
+el2.querySelector("[myid='Lat']").value = temp;
+
+temp = el1.querySelector("[myid='Lon']").value;
+el1.querySelector("[myid='Lon']").value = el2.querySelector("[myid='Lon']").value;
+el2.querySelector("[myid='Lon']").value = temp;
+
+temp = el1.querySelector("[myid='h']").value;
+el1.querySelector("[myid='h']").value = el2.querySelector("[myid='h']").value;
+el2.querySelector("[myid='h']").value = temp;
+
+temp = el1.querySelector("[myid='h1']").value;
+el1.querySelector("[myid='h1']").value = el2.querySelector("[myid='h1']").value;
+el2.querySelector("[myid='h1']").value = temp;
+
+/*temp = el1.querySelector("[myid='Label']").getAttribute("src");
+el1.querySelector("[myid='Label']").setAttribute("src",el2.querySelector("[myid='Label']").getAttribute("src"));
+el2.querySelector("[myid='Label']").setAttribute("src",temp);
+//console.log(temp);
+var sel = "[src = '"+el1.querySelector("[myid='Label']").getAttribute("src")+"']";
+//console.log(document.getElementById("nav").querySelector(sel));
+var e1 = document.getElementById("nav").querySelector(sel);
+sel = "[src = '"+el2.querySelector("[myid='Label']").getAttribute("src")+"']";
+var e2 = document.getElementById("nav").querySelector(sel);
+
+temp = e1.getAttribute("value");
+e1.setAttribute("value",e2.getAttribute("value"));
+e2.setAttribute("value",temp);
+
+temp = e1.getAttribute("src");
+e1.setAttribute("src",e2.getAttribute("src"));
+e2.setAttribute("src",temp);
+
+temp = el1.querySelector("[myid='Label']").getAttribute("value");
+el1.querySelector("[myid='Label']").setAttribute("value",el2.querySelector("[myid='Label']").getAttribute("value"));
+el2.querySelector("[myid='Label']").setAttribute("value",temp);*/
+
+temp = el1.querySelector("[myid='height']").value;
+el1.querySelector("[myid='height']").value = el2.querySelector("[myid='height']").value;
+el2.querySelector("[myid='height']").value = temp;
+
+//var loc = new google.maps.LatLng(el1.querySelector("[myid='Lat']").value,el1.querySelector("[myid='Lon']").value);
+
+//var loc1 = new google.maps.LatLng(el2.querySelector("[myid='Lat']").value,el2.querySelector("[myid='Lon']").value);
+
+//google.maps.event.clearListeners(markers[nr],'drag');
+//google.maps.event.clearListeners(markers[nr],'dragend');
+
+//google.maps.event.clearListeners(markers[next_nr],'drag');
+//google.maps.event.clearListeners(markers[next_nr],'dragend');
+
+temp = markers[nr].getPosition();
+markers[nr].setPosition(markers[next_nr].getPosition());
+markers[next_nr].setPosition(temp);
+
+//AddMarkerListener(nr,nr);
+//AddMarkerListener(next_nr,next_nr);
+/*temp = markers[nr].getLabel();
+markers[nr].setLabel(markers[next_nr].getLabel());
+markers[next_nr].setLabel(temp);
+markers[nr].setPosition(loc);
+markers[next_nr].setPosition(loc1);*/
+
+RemoveFromPath(nr);
+AddToPath(nr);
+RemoveFromPath(next_nr);
+AddToPath(next_nr);
+
+if(nr==0 || next_nr==0)
+{
+document.getElementById("point0").querySelector("[myid='h1']").value=document.getElementById("point0").querySelector("[myid='h']").value;
+document.getElementById("point0").querySelector("[myid='h']").value=0;
+if(count > 2)
+document.getElementById("point1").querySelector("[myid='h']").value=document.getElementById("point1").querySelector("[myid='h1']").value;
+}
+
+
+if(nr==(count-1) || next_nr==(count-1))
+{
+document.getElementById("point"+(count-1)).querySelector("[myid='h']").value=document.getElementById("point"+(count-1)).querySelector("[myid='h1']").value;
+document.getElementById("point"+(count-1)).querySelector("[myid='h1']").value=0;
+if(count > 2)
+document.getElementById("point"+(count-2)).querySelector("[myid='h1']").value=document.getElementById("point"+(count-2)).querySelector("[myid='h']").value;
+} 
+
+
+if(dir == 'up')
+{
+	if(nr == 1)//pirmais
+	{
+	elevations[next_nr]=flipArray(elevations[next_nr]);
+	
+	///check cashe if no nr,nr+1 then else take from cache
+	if(count>2)
+	{
+	getTopo(nr,nr+1);
+	
+	//document.getElementById("li"+nr).querySelector("[myid='link_label']").innerHTML=
+	//document.getElementById("point"+nr).querySelector("[myid='Label']").innerHTML+"->"+
+	//document.getElementById("point"+(nr+1)).querySelector("[myid='Label']").innerHTML;
+	}
+	else DrawTopo();
+	///if isnot in cache then add to cache
+	//document.getElementById("li"+next_nr).querySelector("[myid='link_label']").innerHTML=
+	//document.getElementById("point"+next_nr).querySelector("[myid='Label']").innerHTML+"->"+
+	//document.getElementById("point"+(next_nr+1)).querySelector("[myid='Label']").innerHTML;
+	}
+	else if(nr == (count-1))//pedejais
+	{
+	elevations[next_nr]=flipArray(elevations[next_nr]);
+	if(count>2)
+	{
+	getTopo(next_nr-1,next_nr);
+	
+	//document.getElementById("li"+(next_nr-1)).querySelector("[myid='link_label']").innerHTML=
+	//document.getElementById("point"+(next_nr-1)).querySelector("[myid='Label']").innerHTML+"->"+
+	//document.getElementById("point"+next_nr).querySelector("[myid='Label']").innerHTML;
+	}
+	else DrawTopo();
+	//document.getElementById("li"+next_nr).querySelector("[myid='link_label']").innerHTML=
+	//document.getElementById("point"+next_nr).querySelector("[myid='Label']").innerHTML+"->"+
+	//document.getElementById("point"+(next_nr+1)).querySelector("[myid='Label']").innerHTML;
+	}
+	else//pa vidu
+	{
+	elevations[next_nr]=flipArray(elevations[next_nr]);
+	
+	getTopo(next_nr-1,next_nr);
+	getTopo(nr,nr+1);
+	
+	/*document.getElementById("li"+nr).querySelector("[myid='link_label']").innerHTML=
+	document.getElementById("point"+nr).querySelector("[myid='Label']").innerHTML+"->"+
+	document.getElementById("point"+(nr+1)).querySelector("[myid='Label']").innerHTML;
+	
+	document.getElementById("li"+(next_nr-1)).querySelector("[myid='link_label']").innerHTML=
+	document.getElementById("point"+(next_nr-1)).querySelector("[myid='Label']").innerHTML+"->"+
+	document.getElementById("point"+next_nr).querySelector("[myid='Label']").innerHTML;
+	
+	document.getElementById("li"+next_nr).querySelector("[myid='link_label']").innerHTML=
+	document.getElementById("point"+next_nr).querySelector("[myid='Label']").innerHTML+"->"+
+	document.getElementById("point"+(next_nr+1)).querySelector("[myid='Label']").innerHTML;
+	*/}
+}
+else//dir==down
+{
+	if(nr == 0)//pirmais
+	{
+	elevations[nr]=flipArray(elevations[nr]);
+	if(count > 2)
+	{
+	getTopo(next_nr,next_nr+1);
+	
+	//document.getElementById("li"+next_nr).querySelector("[myid='link_label']").innerHTML=
+	//document.getElementById("point"+next_nr).querySelector("[myid='Label']").innerHTML+"->"+
+	//document.getElementById("point"+(next_nr+1)).querySelector("[myid='Label']").innerHTML;
+	}
+	else DrawTopo();
+	//document.getElementById("li"+nr).querySelector("[myid='link_label']").innerHTML=
+	//document.getElementById("point"+nr).querySelector("[myid='Label']").innerHTML+"->"+
+	//document.getElementById("point"+(nr+1)).querySelector("[myid='Label']").innerHTML;
+	}
+	else if(nr == (count-2))//pedejais
+	{
+	elevations[nr]=flipArray(elevations[nr]);
+	if(count > 2)
+	{
+	getTopo(nr-1,nr);
+	
+	//document.getElementById("li"+(nr-1)).querySelector("[myid='link_label']").innerHTML=
+	//document.getElementById("point"+(nr-1)).querySelector("[myid='Label']").innerHTML+"->"+
+	//document.getElementById("point"+nr).querySelector("[myid='Label']").innerHTML;
+	}
+	else DrawTopo();
+	//document.getElementById("li"+nr).querySelector("[myid='link_label']").innerHTML=
+	//document.getElementById("point"+nr).querySelector("[myid='Label']").innerHTML+"->"+
+	//document.getElementById("point"+(nr+1)).querySelector("[myid='Label']").innerHTML;
+	}
+	else//pa vidu
+	{
+	elevations[nr]=flipArray(elevations[nr]);
+	
+	getTopo(nr-1,nr);
+
+	getTopo(next_nr,next_nr+1);
+	//switch
+	/*document.getElementById("li"+(nr-1)).querySelector("[myid='link_label']").innerHTML=
+	document.getElementById("point"+(nr-1)).querySelector("[myid='Label']").innerHTML+"->"+
+	document.getElementById("point"+nr).querySelector("[myid='Label']").innerHTML;
+	
+	document.getElementById("li"+nr).querySelector("[myid='link_label']").innerHTML=
+	document.getElementById("point"+nr).querySelector("[myid='Label']").innerHTML+"->"+
+	document.getElementById("point"+(nr+1)).querySelector("[myid='Label']").innerHTML;
+	
+	document.getElementById("li"+next_nr).querySelector("[myid='link_label']").innerHTML=
+	document.getElementById("point"+next_nr).querySelector("[myid='Label']").innerHTML+"->"+
+	document.getElementById("point"+(next_nr+1)).querySelector("[myid='Label']").innerHTML;*/
+	}
+}
+
+/*CheckTopo(nr);
+CheckTopo(next_nr);*/
+}
+}
+function flipArray(a)
+{
+var n_array = []
+for(var i = 0;i<a.length;i++)
+{
+n_array[a.length-i-1]=a[i];
+}
+return n_array;
+}
+</script>
+</head>
+
+<body style="margin:auto; margin-top:65px;min-width:512px;max-width:1024px;max-height:1000px" onhashchange="scroll()">
+
+
+<ul id="nav">
+<li>
+	<a href="#MapFramet">
+	<img src="map.png" style="width:auto;height:55px;">
+	</a>
+</li>
+<li myid="Label0">
+<img src="A.png" value="A" style="padding-top:10px">
+</li>
+<li id="li0">
+	<a myid="link_href" href="#0t">
+		<div myid="Dist"></div>
+		<img myid="link_status" src="arrow.png" style="width:100%;height:20px;">
+		<div myid="fr"></div>
+	</a>
+</li>
+<li myid="Label1">
+<img src="B.png" value="B" style="padding-top:10px">
+</li>
+<li id="addButton">
+	<img myid="enabled" src="plus.png" style="width:45px;height:45px;display:none;" onclick="AddPoint()">
+	<img myid="disabled" src="plus_disabled.png" style="width:45px;height:45px;display:inline;">
+</li>
+<li myid="gear">
+<img src="gear.png" style="width:45px;height:45px" onclick="alert('settings')">
+</li>
+<li>
+<img src="question.png" style="width:45px;height:45px" onclick="alert('info')">
+</li>
+</ul>
+
+<div id="MapFrame">
+<div style="float:right;padding-top:3px;">
+<div id="googleMap" style="width:512px;height:400px;"></div>
+<div style="display:flex;">
+<table border ="1">
+<tr><td colspan = "2"><h4>Climate</h4></td><tr>
+<tr>
+	<td>Rain Zone:</td>
+	<td><select id="RainZone" onchange = "changeRainzone(count)">
+	<option value="A">A:8mm/h</option>
+	<option value="B">B:12mm/h</option>
+	<option value="C">C:15mm/h</option>
+	<option value="D">D:19mm/h</option>
+	<option value="E">E:22mm/h</option>
+	<option value="F">F:28mm/h</option>
+	<option value="G">G:30mm/h</option>
+	<option value="H">H:32mm/h</option>
+	<option value="J">J:35mm/h</option>
+	<option value="K">K:42mm/h</option>
+	<option value="L">L:60mm/h</option>
+	<option value="M">M:63mm/h</option>
+	<option value="N">N:95mm/h</option>
+	<option value="Q">Q:115mm/h</option>
+	<option value="P">P:145mm/h</option>
+	</select>
+	</td>
+</tr>
+<tr>
+	<td>Annual temperature:</td>
+	<td><input type="number" step="any" id="Temperature" onchange="getTemperature()"></td>
+</tr>
+</table>
+</div>
+
+</div>
+<div id="points" style="display:inline-block;max-width:512px;float:left;">
+<table border="1" id="point0" style="max-width:510px" width="100%">
+	<tr>
+		<td rowspan="3" width="35px">
+			<img value="A" src="A.png" myid="Label">
+		</td>
+		<td style="text-align:right" width="90">
+			Address:
+		</td>
+		<td>
+			<input myid="Addres" placeholder="Enter your address" type="text">
+		</td>
+		<td rowspan="3" style="max-width:30px">
+			<img myid="arrowsup" alt="switch" src="arrows_up.png" width="25px" height="30px" style="display:none" align="middle" onclick="switchM(0,'up')">
+			<img myid="arrowsdown" alt="switch" src="arrows_down.png" width="25px" height="30px" align="middle" onclick="switchM(0,'down')">
+			<img src="delete.png" onclick="Del()" style="display:none" width="25px" height="25px">
+		</td>
+	</tr>
+	<tr>
+		<td style="text-align:right">
+			GPS:
+		</td>
+		<td>
+			<input myid="Lat" type="number" placeholder="Lat" step="any" onchange="Markerinput(this,0)">
+			<input myid="Lon" type="number" placeholder="Lon" step="any" onchange="Markerinput(this,0)">
+		</td>
+	</tr>
+	<tr>
+		<td style="text-align:right">
+			Tower Height:
+		</td>
+		<td>
+			<input type="number" value="0" myid="h" placeholder="m" onchange="changeHeight(this)" style="display:none">
+			<div myid="height" style="float:right"></div>
+			<input type="number" value="10" myid="h1" placeholder="m" onchange="changeHeight(this)">
+		</td>
+	</tr>
+</table>
+<table border="1" id="point1" style="max-width:510px" width="100%">
+	<tr>
+		<td rowspan="3" width="35px">
+			<img value="B" src="B.png" myid="Label">
+		</td>
+		<td style="text-align:right" width="90">
+			Address:
+		</td>
+		<td>
+			<input myid="Addres" placeholder="Enter your address" type="text">
+		</td>
+		<td rowspan="3" style="max-width:30px">
+			<img myid="arrowsup" alt="switch" src="arrows_up.png" width="25px" height="30px" align="middle" onclick="switchM(1,'up')">
+			<img myid="arrowsdown" alt="switch" src="arrows_down.png" style="display:none" width="25px" height="30px" align="middle" onclick="switchM(1,'down')">
+			<img src="delete.png" onclick="Del()" width="25px" height="25px" style="display:none">
+		</td>
+	</tr>
+	<tr>
+		<td style="text-align:right">
+			GPS:
+		</td>
+		<td>
+			<input myid="Lat" type="number" placeholder="Lat" step="any" onchange="Markerinput(this,1)">
+			<input myid="Lon" type="number" placeholder="Lon" step="any" onchange="Markerinput(this,1)">
+		</td>
+	</tr>
+	<tr>
+		<td style="text-align:right">
+			Tower Height:
+		</td>
+		<td>
+			<input type="number" value="10" myid="h" placeholder="m" onchange="changeHeight(this)">
+			<div myid="height" style="float:right"></div>
+			<input type="number" value="0" myid="h1" placeholder="m" onchange="changeHeight(this)" style="display:none">
+		</td>
+	</tr>
+</table></div>
+
+<div>
+<canvas id="TopoMap" width="508" height="280" style="border:1px solid #000000;">
+		N/A
+</canvas>
+</div>
+<div style="clear:both"></div>
+</div>
+<div id = "content">
+
+</div> 
+</body>
+<script src="js/bootstrap.min.js"></script>
+</html>
