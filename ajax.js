@@ -3,7 +3,11 @@ $(document).ready(function()
 	
 
 });
-
+function roundToTwo(num)
+{    
+	//http://stackoverflow.com/questions/11832914/round-to-at-most-2-decimal-places-in-javascript
+    return +(Math.round(num + "e+2")  + "e-2");
+}
 var good = "#16E41A";
 var almost = "#E4B416";
 var bad = "#D9674B";
@@ -33,7 +37,7 @@ function manageVersionChange(el)
 			$('#'+site).find('div[class = Antenna_FD]').hide();
 			$('#'+site).find('tr[class = FD_params]').hide();
 			$('#'+site).find('tr[class = Primary]').show();
-			$('#'+site).find('tr[class = extra_Transmitter]').hide();
+			$('#'+site).find('tr[class = extra_Transmitter]').show();
 		}
 		if(version == 2)
 		{
@@ -94,15 +98,16 @@ function manageVersionChange(el)
 function verChange(el)
 {
 		var site = $(el).parent().parent().parent().parent().parent().parent().attr('id'); //Iegūst galvenā div elementa ID.  
-		var tmp_prod_select = prodSelect = $('#'+site+'').find('select[name=Productx1]').val();
+		var tmp_prod_select = $('#'+site+'').find('select[name=Productx1]').val();
 		var l_AntennaA = $('#'+site).find('div[name=tmp_Antenna_A]').val();
 		var l_AntennaB = $('#'+site).find('div[name=tmp_Antenna_B]').val();
 		var prodSelect = $('#'+site+'').find('select[name=Productx1]').empty();
 		var version = $('#'+site+'').find('select[name = Version]').val();		
 		var Frequency = $('#'+site+'').find('select[name=Frequency]').val();
-		$('#'+site+'').find('select[name = Antenas_amount]').val('');
+		console.log("FREKVENCE pie versijas maiņas: "+Frequency); 
 		var antennaManuf = $('#'+site+'').find('select[name=AntennaManuf]').val();
-		
+		var version = $('#'+site).find('select[name = Version]').val();
+		var Modulation = $('#'+site+'').find('select[name=rModulation]').val();
 		if(version == 1)
 		{
 			$('#'+site).find('div[name=l_AntennaA]').text("Antenna "+l_AntennaA);
@@ -112,8 +117,22 @@ function verChange(el)
 		{
 			$('#'+site).find('div[name=l_AntennaASD]').text("Antenna "+l_AntennaA+ " SD");
 			$('#'+site).find('div[name=l_AntennaBSD]').text("Antenna "+l_AntennaB+ " SD");
-			$('#'+site).find('div[name=l_sd_sep_A]').text("SD separation for antenna "+l_AntennaA+ ": ");
-			$('#'+site).find('div[name=l_sd_sep_B]').text("SD separation for antenna "+l_AntennaB+ ": ");			
+			$('#'+site).find('div[name=l_sd_sep_A]').text("SD sep. antenna "+l_AntennaA+ ": ");
+			$('#'+site).find('div[name=l_sd_sep_B]').text("SD sep. antenna "+l_AntennaB+ ": ");			
+		}
+		if(version == 4)
+		{
+			var Select_Value = $('#'+site).find('select[name = Antenas_amount]').val();
+			var reload_SelectValue = $('#'+site).find('select[name = Antenas_amount]').val('');
+			if(isset(Select_Value))
+			{
+				$('#'+site).find('select[name = Antenas_amount]').val(Select_Value);
+				console.log( "Reload select value: " + Select_Value);
+				var warn_ant_am =  $('#'+site).find('span[name = Ant_amount_War]');	
+				$(warn_ant_am).removeClass( "glyphicon glyphicon-remove" ).addClass( "glyphicon glyphicon-ok" );
+				$(warn_ant_am).css("color", good);
+			}
+			else console.log("SELECT VALUE: " +Select_Value);
 		}
 		$.post( "AjaxFunctions.php", { Version: version}, function(response)
 		{	
@@ -130,6 +149,10 @@ function verChange(el)
 				getAntennaManuf(el, Frequency);
 			}
 		}).done(function(){
+			if(isset(Modulation))
+			{
+				changeFEC(el);
+			}
 			prev_calc(el);
 			if(!isset(prodSelect.val()))
 			{
@@ -144,18 +167,15 @@ function verChange(el)
 			$(warn_version).removeClass( "glyphicon glyphicon-remove" ).addClass( "glyphicon glyphicon-ok" );
 			$(warn_version).css("color", good);
 		}
-		var warn_ant_am =  $('#'+site+'').find('span[name = Ant_amount_War]');	
-		$(warn_ant_am).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
-		$(warn_ant_am).css("color", bad);	
 }
 function prodChange(el)
 {
 	var site = $(el).parent().parent().parent().parent().parent().parent().attr('id'); //Iegūst galvenā div elementa ID. 
-	var product = $('#'+site+'').find('select[name = Productx1]').val();
-	var version = $('#'+site+'').find('select[name = Version]').val();
-	var ProdID = $('#'+site+'').find('div[name = ProdID]').empty();
-	var odu = $('#'+site+'').find('select[name = Odu]').val(1);
-	var tmp_freq = $('#'+site+'').find('select[name=Frequency]').val();
+	var product = $('#'+site).find('select[name = Productx1]').val();
+	var version = $('#'+site).find('select[name = Version]').val();
+	var ProdID = $('#'+site).find('div[name = ProdID]').empty();
+	var odu = $('#'+site).find('select[name = Odu]').val(1);
+	var tmp_freq = $('#'+site).find('select[name=Frequency]').val();
 	if(version == 1)
 	{
 		odu = 0; 
@@ -177,20 +197,20 @@ function prodChange(el)
 		{
 			oduChange(el);
 		}
-		var warn_odu =  $('#'+site+'').find('span[name = Odu_War]');	
+		var warn_odu =  $('#'+site).find('span[name = Odu_War]');	
 		$(warn_odu).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 		$(warn_odu).css("color", bad);
 	}
 	
 	if(isset(product))
 	{			
-		var warn_product =  $('#'+site+'').find('span[name = Prod_War]');	
+		var warn_product =  $('#'+site).find('span[name = Prod_War]');	
 		$(warn_product).removeClass( "glyphicon glyphicon-remove" ).addClass( "glyphicon glyphicon-ok" );
 		$(warn_product).css("color", good);
 	}
 	if(isset(odu))
 	{			
-		var warn_product =  $('#'+site+'').find('span[name = Odu_War]');	
+		var warn_product =  $('#'+site).find('span[name = Odu_War]');	
 		$(warn_product).removeClass( "glyphicon glyphicon-remove" ).addClass( "glyphicon glyphicon-ok" );
 		$(warn_product).css("color", good);
 	}
@@ -198,10 +218,10 @@ function prodChange(el)
 function oduChange(el)
 {
 	var site = $(el).parent().parent().parent().parent().parent().parent().attr('id'); //Iegūst galvenā div elementa ID. 
-	var product = $('#'+site+'').find('select[name = Productx1]').val();
-	var version = $('#'+site+'').find('select[name = Version]').val();
-	var odu = $('#'+site+'').find('select[name = Odu]').val();
-	var ProdID = $('#'+site+'').find('div[name = ProdID]').empty();
+	var product = $('#'+site).find('select[name = Productx1]').val();
+	var version = $('#'+site).find('select[name = Version]').val();
+	var odu = $('#'+site).find('select[name = Odu]').val();
+	var ProdID = $('#'+site).find('div[name = ProdID]').empty();
 	if(version != 1)
 	{
 		$.ajax
@@ -211,13 +231,13 @@ function oduChange(el)
 			type: 'post',
 			success: function(result)
 			{
-				getFrequency(el, result);
 				$(ProdID).val(result);
+				getFrequency(el, result);
 			}
-		});	
+		})
 		if(isset(odu))
 		{
-			var warn_odu =  $('#'+site+'').find('span[name = Odu_War]');	
+			var warn_odu =  $('#'+site).find('span[name = Odu_War]');	
 			$(warn_odu).removeClass( "glyphicon glyphicon-remove" ).addClass( "glyphicon glyphicon-ok" );
 			$(warn_odu).css("color", good);
 		}
@@ -226,13 +246,14 @@ function oduChange(el)
 function getFrequency(el, ProdID)
 {
 	var site = $(el).parent().parent().parent().parent().parent().parent().attr('id'); 
-	
-	var tmp_freq = $('#'+site+'').find('select[name=Frequency]').val();
-	var version = $('#'+site+'').find('select[name = Version]').val();
+	console.log("getFrequency tiek izsaukts:!!!")
+	var tmp_freq = $('#'+site).find('select[name=Frequency]').val();
+	var version = $('#'+site).find('select[name = Version]').val();
 	var SelectDisabled = ""; 
+	var Select_Value = $('#'+site).find('select[name = Antenas_amount]').val();
 	if(version != 4)
 	{
-		var freqSelect = $('#'+site+'').find('select[name=Frequency]').empty();
+		var freqSelect = $('#'+site).find('select[name=Frequency]').empty();
 		$.post( "AjaxFunctions.php", { func: 'frequence', ProdID: ProdID}, function(response)
 		{	
 			var Data = $.parseJSON(response);
@@ -260,12 +281,17 @@ function getFrequency(el, ProdID)
 				$(warn_odu).css("color", good);
 			}
 		}).done(function(){
-			
+			if(isset($(freqSelect).val()))
+			{
+				console.log("FreqSelect: "+$(freqSelect).val());
+				changeFEC(el);
+			}
 			prev_calc(el);
 		}); 
 	}
 	else if(version == 4 && !isset(tmp_freq)) 
 	{
+		console.log("Izsauc to,kur nav set tmp_freq");
 		var freqSelect = $('#'+site+'').find('select[name=Frequency]').empty();
 		var tmp_freqSelect_FD = $('#'+site+'').find('select[name=Frequency_FD]').val();
 		var freqSelect_FD = $('#'+site+'').find('select[name=Frequency_FD]').empty();
@@ -285,29 +311,101 @@ function getFrequency(el, ProdID)
 				if(item.value == tmp_freqSelect_FD) $(freqSelect_FD).val(item.value);
 			});
 		}).done(function(){
+			if(!isset($(freqSelect).val()))
+			{ 
+				var warn_odu =  $('#'+site+'').find('span[name = Freq_War]');	
+				$(warn_odu).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
+				$(warn_odu).css("color", bad);	
+			}
+			else
+			{
+				if(Select_Value == 2)
+				{
+					console.log("FreqChange kur version jābūt 4!");
+					var Modulation = $('#'+site+'').find('select[name=rModulation]').val();
+					var FEC =  $('#'+site).find('select[name=FEC]').val();
+					if(isset(Modulation) && isset(FEC))
+					{
+						changeFEC(el); 
+					}
+					changeAntennaManuf(el);	
+					$('#'+site).find('div[class = Antenna_FD]').show();
+					$('#'+site).find('tr[class = FD_params]').show();
+					var l_AntennaA = $('#'+site).find('div[name=tmp_Antenna_A]').val();
+					var l_AntennaB = $('#'+site).find('div[name=tmp_Antenna_B]').val();
+					$('#'+site).find('div[name=l_AntennaAFD]').text("Antenna "+l_AntennaA+ " FD");
+					$('#'+site).find('div[name=l_AntennaBFD]').text("Antenna "+l_AntennaB+ " FD");
+				}
+				var warn_odu =  $('#'+site+'').find('span[name = Freq_War]');	
+				$(warn_odu).removeClass( "glyphicon glyphicon-remove" ).addClass( "glyphicon glyphicon-ok" );
+				$(warn_odu).css("color", good);
+			}
 			prev_calc(el);
 		}); 
 	}
 	else if(version == 4 && isset(tmp_freq))
 	{
-		var freqSelect = tmp_freq;
+		console.log("tmp_freq: "+tmp_freq);
+		console.log("Izsauc to,kur ir set tmp_freq");
+		var freqSelect = $('#'+site+'').find('select[name=Frequency]').empty();
 		var tmp_freqSelect_FD = $('#'+site+'').find('select[name=Frequency_FD]').val();
 		var freqSelect_FD = $('#'+site+'').find('select[name=Frequency_FD]').empty();
 		$.post( "AjaxFunctions.php", { func: 'frequence', ProdID: ProdID}, function(response)
 		{	
 			var Data = $.parseJSON(response);
+			$('<option value="" disabled selected value>Please select frequency</option>').appendTo(freqSelect);
 			$('<option value="" disabled selected value>Please select frequency FD</option>').appendTo(freqSelect_FD);
 			$.each(Data, function(i, item)
 			{
+				$('<option value="' + item.value + '">' + item.value + '</option>').appendTo(freqSelect);
+				if(item.value == tmp_freq)
+				{
+					$(freqSelect).val(item.value);
+				}
 				$('<option value="' + item.value + '">' + item.value + '</option>').appendTo(freqSelect_FD);
 				if(item.value == tmp_freqSelect_FD) $(freqSelect_FD).val(item.value);
 			});
 		}).done(function(){
+			if(!isset($(freqSelect).val()))
+			{ 
+				var warn_odu =  $('#'+site+'').find('span[name = Freq_War]');	
+				$(warn_odu).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
+				$(warn_odu).css("color", bad);	
+			}
+			else
+			{
+				if(Select_Value == 2)
+				{
+					console.log("FreqChange kur version jābūt 4!");
+					var Modulation = $('#'+site+'').find('select[name=rModulation]').val();
+					var FEC =  $('#'+site).find('select[name=FEC]').val();
+					if(isset(Modulation) && isset(FEC))
+					{
+						changeFEC(el); 
+					}
+					changeAntennaManuf(el);	
+					$('#'+site).find('div[class = Antenna_FD]').show();
+					$('#'+site).find('tr[class = FD_params]').show();
+					var l_AntennaA = $('#'+site).find('div[name=tmp_Antenna_A]').val();
+					var l_AntennaB = $('#'+site).find('div[name=tmp_Antenna_B]').val();
+					$('#'+site).find('div[name=l_AntennaAFD]').text("Antenna "+l_AntennaA+ " FD");
+					$('#'+site).find('div[name=l_AntennaBFD]').text("Antenna "+l_AntennaB+ " FD");
+				}
+				var warn_odu =  $('#'+site+'').find('span[name = Freq_War]');	
+				$(warn_odu).removeClass( "glyphicon glyphicon-remove" ).addClass( "glyphicon glyphicon-ok" );
+				$(warn_odu).css("color", good);
+			}
 			if(isset(tmp_freqSelect_FD))
 			{
 				var warn_version =  $('#'+site).find('span[name = Freq_FD_War]');	
 				$(warn_version).removeClass( "glyphicon glyphicon-remove" ).addClass( "glyphicon glyphicon-ok" );
 				$(warn_version).css("color", good);
+			}
+			else
+			{
+				var warn_version =  $('#'+site).find('span[name = Freq_FD_War]');	
+				$(warn_version).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
+				$(warn_version).css("color", bad);
 			}
 			prev_calc(el);
 		}); 
@@ -331,6 +429,11 @@ function FreqChange(el)
 		});
 		getAntennaManuf(el, freqSelect);
 	}).done(function(){
+		if(isset($(bandSelect).val()))
+		{
+			console.log("Mainam FEC pie FreqChange"); 
+			changeFEC(el);
+		}
 		prev_calc(el);
 	}); 
 	if(isset(freqSelect))
@@ -342,20 +445,19 @@ function FreqChange(el)
 }
 function changeFEC(el)
 {
-	console.log("FEC TIEK MAINĪTS!");
 	var site = $(el).parent().parent().parent().parent().parent().parent().attr('id'); 
-	var version = $('#'+site+'').find('select[name = Version]').val();
-	var ProdID = ProdID = $('#'+site+'').find('div[name = ProdID]').val();
-	var Modulation = $('#'+site+'').find('select[name=rModulation]').val();
-	var FEC =  $('#'+site+'').find('select[name=FEC]').val();
-	var Frequency = $('#'+site+'').find('select[name=Frequency]').val();
-	var BandwidthTMP = $('#'+site+'').find('select[name=Bandwidth]').val();
+	var version = $('#'+site).find('select[name = Version]').val();
+	var ProdID = $('#'+site).find('div[name = ProdID]').val();
+	var Modulation = $('#'+site).find('select[name=rModulation]').val();
+	var FEC =  $('#'+site).find('select[name=FEC]').val();
+	var Frequency = $('#'+site).find('select[name=Frequency]').val();
+	var BandwidthTMP = $('#'+site).find('select[name=Bandwidth]').val();
 	var BandSplit = BandwidthTMP.split("|");
 	var Bandwidth = BandSplit[0];
 	var Standart = BandSplit[1]; 
 	var capacity = $('#'+site+'').find('span[name=capacity]').text('');
-	var tmp_Transmitter = $('#'+site+'').find('select[name=Transmitter]').val();
-	var transmitterSelect = $('#'+site+'').find('select[name=Transmitter]').empty();
+	var tmp_Transmitter = $('#'+site).find('select[name=Transmitter]').val();
+	var transmitter_FD = $('#'+site).find('select[name = Transmitter_FD]').val(); 
 	$.post( "AjaxFunctions.php", { func: 'Capacity', ProdID: ProdID, Modulation: Modulation, Bandwidth: Bandwidth, Standart: Standart, FEC: FEC }, function(response)
 	{	
 		var Data = $.parseJSON(response);
@@ -364,133 +466,163 @@ function changeFEC(el)
 		$(capacity).text('For capacities up to: '+item.capacity+'Mbps');
 		}); 
 	});	
-	if(version != 4)
+	/*if(version == 1)
 	{
+		var transmitterSelect = $('#'+site).find('select[name=Transmitter]').empty();
 		$.post( "AjaxFunctions.php", { func: 'Transmitter', ProdID: ProdID, Modulation: Modulation, Frequency: Frequency}, function(response)
-		{	
-			var Data = $.parseJSON(response);
-			$('<option value="" disabled selected value>Please select transmitter power</option>').appendTo(transmitterSelect);
-			$.each(Data, function(i, item)
-			{
-				var MinPower = item.MinPower;
-				var MaxPower = item.MaxPower;
-				var MinHighPower = item.MinHighPower;
-				var MaxHighPower = item.MaxHighPower;
-				if(!isset(MinHighPower) && !isset(MaxHighPower))
+			{	
+				var Data = $.parseJSON(response);
+				$('<option value="" disabled selected value>Please select transmitter power</option>').appendTo(transmitterSelect);
+				$.each(Data, function(i, item)
 				{
+					var MinPower = item.MinPower;
+					var MaxPower = item.MaxPower;
 					for(var i = MinPower; i <= MaxPower; i++)
 					{
 						$('<option value="'+i+'">'+i+'</option>').appendTo(transmitterSelect);
 						if(i == tmp_Transmitter) $(transmitterSelect).val(i);
 					}
-				}
-				if(!isset(MinPower) && !isset(MaxPower))
+				}); 
+			}).done(function(){
+				if(isset(tmp_Transmitter))
 				{
-					for(var i = MinHighPower; i <= MaxHighPower; i++)
-					{
-						$('<option value="'+i+'">'+i+'</option>').appendTo(transmitterSelect);
-						if(i == tmp_Transmitter) $(transmitterSelect).val(i);
-					}
+					var warn_trans =  $('#'+site+'').find('span[name = Trans_War]');	
+					$(warn_trans).removeClass( "glyphicon glyphicon-remove" ).addClass( "glyphicon glyphicon-ok" );
+					$(warn_trans).css("color", good);
 				}
-				else if (isset(MinPower) && isset(MaxPower) && isset(MinHighPower) && isset(MaxHighPower))
+				if(isset(FEC))
 				{
-					for(var i = MinPower; i <= MaxHighPower; i++)
-					{
-						$('<option value="'+i+'">'+i+'</option>').appendTo(transmitterSelect);
-						if(i == tmp_Transmitter) $(transmitterSelect).val(i);
-					}
+					var warn_FEC =  $('#'+site+'').find('span[name = FEC_War]');	
+					$(warn_FEC).removeClass( "glyphicon glyphicon-remove" ).addClass( "glyphicon glyphicon-ok" );
+					$(warn_FEC).css("color", good);
 				}
-			}); 
-		}).done(function(){
-			if(isset(tmp_Transmitter))
+				prev_calc(el);
+			}); 			
+	}*/
+	//else
+	//{
+		var tmp_power_select = $('#'+site).find('select[name=tx_power_select]').val();
+		var power_select = $('#'+site).find('select[name=tx_power_select]').empty();
+		//if(version != 1)
+		//{
+			if(ProdID == 5 || ProdID == 7 || ProdID == 9)
 			{
-				var warn_trans =  $('#'+site+'').find('span[name = Trans_War]');	
-				$(warn_trans).removeClass( "glyphicon glyphicon-remove" ).addClass( "glyphicon glyphicon-ok" );
-				$(warn_trans).css("color", good);
+				$.post( "AjaxFunctions.php", { func: 'Transmitter', ProdID: ProdID, Modulation: Modulation, Frequency: Frequency}, function(response)
+				{	
+					var Data = $.parseJSON(response);
+					$('<option value="" disabled selected value>Please select power type</option>').appendTo(power_select);
+					$.each(Data, function(i, item)
+					{
+						var MaxHighPower = item.MaxHighPower;
+						if(MaxHighPower > 0)
+						{
+							$('<option value="2">High power radio</option>').appendTo(power_select);
+							if(tmp_power_select == 2) $(power_select).val(2);
+						}
+					}); 
+				}).done(function(){
+					//console.log("TMP POWER PIE DONE: "+tmp_power_select);
+					changePower(el);
+					if($(power_select).val() == 2)
+					{
+						var warn_trans =  $('#'+site).find('span[name = tx_power_select]');	
+						$(warn_trans).removeClass( "glyphicon glyphicon-remove" ).addClass( "glyphicon glyphicon-ok" );
+						$(warn_trans).css("color", good);						
+					}
+					else
+					{
+						var warn_trans =  $('#'+site).find('span[name = tx_power_select]');	
+						$(warn_trans).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
+						$(warn_trans).css("color", bad);						
+					}
+					if(isset(FEC))
+					{
+						var warn_FEC =  $('#'+site+'').find('span[name = FEC_War]');	
+						$(warn_FEC).removeClass( "glyphicon glyphicon-remove" ).addClass( "glyphicon glyphicon-ok" );
+						$(warn_FEC).css("color", good);
+					}
+				});		
 			}
-			if(isset(FEC))
+			else
 			{
-				var warn_FEC =  $('#'+site+'').find('span[name = FEC_War]');	
-				$(warn_FEC).removeClass( "glyphicon glyphicon-remove" ).addClass( "glyphicon glyphicon-ok" );
-				$(warn_FEC).css("color", good);
-			}
-			prev_calc(el);
-		}); 
+				$('#'+site).find('tr[class = extra_Transmitter]').show();
+				$.post( "AjaxFunctions.php", { func: 'Transmitter', ProdID: ProdID, Modulation: Modulation, Frequency: Frequency}, function(response)
+				{	
+					var Data = $.parseJSON(response);
+					$('<option value="" disabled selected value>Please select power type</option>').appendTo(power_select);
+					$.each(Data, function(i, item)
+					{
+						var MinPower = item.MinPower;
+						var MaxPower = item.MaxPower;
+						var MinHighPower = item.MinHighPower;
+						var MaxHighPower = item.MaxHighPower;
+						if(MaxPower > 0 && MaxHighPower > 0)
+						{
+							$('<option value="1">Normal power radio</option>').appendTo(power_select);
+							$('<option value="2">High power radio</option>').appendTo(power_select);
+							if(tmp_power_select == 1)
+							{
+								console.log("Iestatam pirmo vērtību");
+								$(power_select).val(1);
+							}
+							if(tmp_power_select == 2)
+							{
+								console.log("Iestatam otro vertību: "+tmp_power_select);
+								$(power_select).val(2);
+							}
+							//console.log("TMP POWER SELECT: "+tmp_power_select);
+						}
+						if(MaxHighPower > 0 && MaxPower == 0)
+						{
+							$('<option value="2">High power radio</option>').appendTo(power_select);
+							if(tmp_power_select == 2) $(power_select).val(2);
+						}
+						if(MaxPower > 0 && !isset(MaxHighPower))
+						{
+							$('<option value="1">Normal power radio</option>').appendTo(power_select);
+							if(tmp_power_select == 1) $(power_select).val(1);
+						}
+					}); 
+				}).done(function(){
+					//console.log("TMP POWER PIE DONE: "+tmp_power_select);
+					changePower(el);
+					if(isset($(power_select).val()))
+					{
+						var warn_trans =  $('#'+site).find('span[name = tx_power_select]');	
+						$(warn_trans).removeClass( "glyphicon glyphicon-remove" ).addClass( "glyphicon glyphicon-ok" );
+						$(warn_trans).css("color", good);						
+					}
+					else
+					{
+						var warn_trans =  $('#'+site).find('span[name = tx_power_select]');	
+						$(warn_trans).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
+						$(warn_trans).css("color", bad);						
+					}
+					if(isset(FEC))
+					{
+						var warn_FEC =  $('#'+site+'').find('span[name = FEC_War]');	
+						$(warn_FEC).removeClass( "glyphicon glyphicon-remove" ).addClass( "glyphicon glyphicon-ok" );
+						$(warn_FEC).css("color", good);
+					}
+				});					
+			}	
+		//}
+	//}
+	if(isset(tmp_Transmitter))
+	{
+		var warn_trans =  $('#'+site+'').find('span[name = Trans_War]');	
+		$(warn_trans).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
+		$(warn_trans).css("color", bad);
 	}
-	else
+	if(isset(transmitter_FD))
 	{
-		var tmp_Transmitter_FD = $('#'+site+'').find('select[name = Transmitter_FD]').val();
-		var transmitter_FD = $('#'+site+'').find('select[name = Transmitter_FD]').empty(); 
-		console.log("Transmitter power parameters: "+ProdID+" "+Modulation+" "+Frequency);
-		$.post( "AjaxFunctions.php", { func: 'Transmitter', ProdID: ProdID, Modulation: Modulation, Frequency: Frequency}, function(response)
-		{	
-			var Data = $.parseJSON(response);
-			$('<option value="" disabled selected value>Please select transmitter power</option>').appendTo(transmitterSelect);
-			$('<option value="" disabled selected value>Please select transmitter power</option>').appendTo(transmitter_FD);
-			$.each(Data, function(i, item)
-			{
-				var MinPower = item.MinPower;
-				var MaxPower = item.MaxPower;
-				var MinHighPower = item.MinHighPower;
-				var MaxHighPower = item.MaxHighPower;
-				
-				if(!isset(MinHighPower) && !isset(MaxHighPower))
-				{
-					for(var i = MinPower; i <= MaxPower; i++)
-					{
-						$('<option value="'+i+'">'+i+'</option>').appendTo(transmitterSelect);
-						$('<option value="'+i+'">'+i+'</option>').appendTo(transmitter_FD);
-						if(i == tmp_Transmitter) $(transmitterSelect).val(i);
-						if(i == tmp_Transmitter_FD) $(transmitter_FD).val(i);
-					}
-				}
-				else if (!isset(MinPower) && !isset(MaxPower))
-				{
-					for(var i = MinHighPower; i <= MaxHighPower; i++)
-					{
-						$('<option value="'+i+'">'+i+'</option>').appendTo(transmitterSelect);
-						$('<option value="'+i+'">'+i+'</option>').appendTo(transmitter_FD);
-						if(i == tmp_Transmitter) $(transmitterSelect).val(i);
-						if(i == tmp_Transmitter_FD) $(transmitter_FD).val(i);
-					}
-				}
-				else if (isset(MinPower) && isset(MaxPower) && isset(MinHighPower) && isset(MaxHighPower))
-				{
-					for(var i = MinPower; i <= MaxHighPower; i++)
-					{
-						$('<option value="'+i+'">'+i+'</option>').appendTo(transmitterSelect);
-						$('<option value="'+i+'">'+i+'</option>').appendTo(transmitter_FD);
-						if(i == tmp_Transmitter) $(transmitterSelect).val(i);
-						if(i == tmp_Transmitter_FD) $(transmitter_FD).val(i);
-					}
-				}
-			}); 
-		}).done(function(){
-			if(isset(tmp_Transmitter_FD))
-			{
-				var warn_Trans_FD =  $('#'+site+'').find('span[name = Trans_FD_War]');	
-				$(warn_Trans_FD).removeClass( "glyphicon glyphicon-remove" ).addClass( "glyphicon glyphicon-ok" );
-				$(warn_Trans_FD).css("color", good);
-			}
-			if(isset(tmp_Transmitter))
-			{
-				var warn_trans =  $('#'+site+'').find('span[name = Trans_War]');	
-				$(warn_trans).removeClass( "glyphicon glyphicon-remove" ).addClass( "glyphicon glyphicon-ok" );
-				$(warn_trans).css("color", good);
-			}
-			if(isset(FEC))
-			{
-				var warn_FEC =  $('#'+site+'').find('span[name = FEC_War]');	
-				$(warn_FEC).removeClass( "glyphicon glyphicon-remove" ).addClass( "glyphicon glyphicon-ok" );
-				$(warn_FEC).css("color", good);
-			}			
-			prev_calc(el);
-		});	
+		var warn_Trans_FD =  $('#'+site+'').find('span[name = Trans_FD_War]');	
+		$(warn_Trans_FD).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
+		$(warn_Trans_FD).css("color", bad);
 	}
 }
 function changeModulation(el)
 {
-	console.log("MODULĀCIJA TIEK IZMAINĪTA!"); 
 	var site = $(el).parent().parent().parent().parent().parent().parent().attr('id'); 
 	var BandwidthTMP = $('#'+site+'').find('select[name=Bandwidth]').val();
 	var BandSplit = BandwidthTMP.split("|");
@@ -501,7 +633,7 @@ function changeModulation(el)
 	var ProdID = $('#'+site+'').find('div[name = ProdID]').val();
 	var Frequency = $('#'+site+'').find('select[name=Frequency]').val();
 	var Modulation = $('#'+site+'').find('select[name=rModulation]').val();
-	
+
 	$.post( "AjaxFunctions.php", { func: 'getFEC', Prod: ProdID, Frequency: Frequency, Bandwidth: Bandwidth, Standart: Standart, Modulation: Modulation}, function(response)
 	{	
 		var Data = $.parseJSON(response);
@@ -519,11 +651,10 @@ function changeModulation(el)
 				if(item.FEC == tmp_FEC)
 				{		
 					$(FEC).val(item.FEC);	
-					console.log("Tāds FEC jau eksistē, atstājam veco. ");
 				}
 		}); 
 	}).done(function(){	
-		if(isset(FEC))
+		if(isset(tmp_FEC))
 		{
 			changeFEC(el);
 			var warn_FEC =  $('#'+site+'').find('span[name = FEC_War]');	
@@ -550,10 +681,10 @@ function changeRainzone(count)
 function getAntennaManuf(el, Frequency)
 {
 	var site = $(el).parent().parent().parent().parent().parent().parent().attr('id'); 
-	var ProdID =  $('#'+site+'').find('div[name = ProdID]').val();
-	//var Frequency = $('#'+site+'').find('select[name=Frequency]').val();
-	var tmp_antennaManuf = $('#'+site+'').find('select[name=AntennaManuf]').val();
-	var antennaManuf = $('#'+site+'').find('select[name=AntennaManuf]').empty();
+	var ProdID =  $('#'+site).find('div[name = ProdID]').val();
+	//var Frequency = $('#'+site).find('select[name=Frequency]').val();
+	var tmp_antennaManuf = $('#'+site).find('select[name=AntennaManuf]').val();
+	var antennaManuf = $('#'+site).find('select[name=AntennaManuf]').empty();
 	if(ProdID != 0)
 	{
 		$.post( "AjaxFunctions.php", { func: 'antennaManuf', ProdID: ProdID, Frequency: Frequency}, function(response)
@@ -565,7 +696,6 @@ function getAntennaManuf(el, Frequency)
 				$('<option value="'+item.ID+'">'+item.Name+'</option>').appendTo(antennaManuf);
 				if(item.ID == tmp_antennaManuf)
 				{
-					console.log("Old values are equal to the new ones. Item.ID = "+item.ID+ " Manuf: " +tmp_antennaManuf);
 					$(antennaManuf).val(item.ID);
 					changeAntennaManuf(el);	
 				}
@@ -573,10 +703,16 @@ function getAntennaManuf(el, Frequency)
 		}).done(function(){
 			if(isset(antennaManuf))
 			{
-				var warn =  $('#'+site+'').find('span[name = Manuf_War]');	
+				var warn =  $('#'+site).find('span[name = Manuf_War]');	
 				$(warn).removeClass( "glyphicon glyphicon-remove" ).addClass( "glyphicon glyphicon-ok" );
 				$(warn).css("color", good);
-			}	
+			}
+			else
+			{
+				var warn =  $('#'+site).find('span[name = Manuf_War]');	
+				$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
+				$(warn).css("color", bad);				
+			}
 			prev_calc(el);
 		}); 
 	}
@@ -587,7 +723,6 @@ function changeAntennaManuf(el)
 	var version = $('#'+site+'').find('select[name = Version]').val();
 	var antennaManuf = $('#'+site+'').find('select[name=AntennaManuf]').val();
 	var Frequency = $('#'+site+'').find('select[name=Frequency]').val();
-	console.log("Version at changeAntennaManuf: "+version+ " AntennaManuf: "+antennaManuf+" Frequency: "+Frequency);
 	var tmp_diameter_a = $('#'+site+'').find('select[name = diameter_A]').val();
 	var tmp_diameter_b = $('#'+site+'').find('select[name = diameter_B]').val();
 	
@@ -626,7 +761,6 @@ function changeAntennaManuf(el)
 		}
 		if(version == 2)
 		{
-			console.log("Version2 gets called");
 			var mode = $('#'+site+'').find('select[name = AntennaMode]').val();
 			if(mode == 1)
 			{
@@ -695,7 +829,6 @@ function changeAntennaManuf(el)
 				var tmp_diameter_B_SD = $('#'+site+'').find('select[name = diameter_B_SD]').val();
 				var diameter_A_SD = $('#'+site+'').find('select[name = diameter_A_SD]').empty();
 				var diameter_B_SD = $('#'+site+'').find('select[name = diameter_B_SD]').empty();
-				console.log("This gets called"); 
 				$.post( "AjaxFunctions.php", { func: 'antennaDiameter', antennaManuf: antennaManuf, Frequency: Frequency}, function(response)
 				{	
 					var Data = $.parseJSON(response);
@@ -737,9 +870,10 @@ function changeAntennaManuf(el)
 		}
 		if(version == 4)
 		{
-			var amount = $('#'+site+'').find('select[name = Antenas_amount]').val();
+			var amount = $('#'+site).find('select[name = Antenas_amount]').val();
 			if(amount == 1)
 			{
+				console.log("Amount of Antennas. Frekvence: "+Frequency+" AntennaManuf: "+antennaManuf);
 				$.post( "AjaxFunctions.php", { func: 'antennaDiameter', antennaManuf: antennaManuf, Frequency: Frequency}, function(response)
 				{	
 					var Data = $.parseJSON(response);
@@ -770,6 +904,8 @@ function changeAntennaManuf(el)
 				var tmp_diameter_B_FD = $('#'+site+'').find('select[name = diameter_B_FD]').val();
 				var diameter_A_FD = $('#'+site+'').find('select[name = diameter_A_FD]').empty();
 				var diameter_B_FD = $('#'+site+'').find('select[name = diameter_B_FD]').empty(); 
+				
+				console.log("Amount of Antennas. Frekvence: "+Frequency+" AntennaManuf: "+antennaManuf);
 				
 				$.post( "AjaxFunctions.php", { func: 'antennaDiameter', antennaManuf: antennaManuf, Frequency: Frequency}, function(response)
 				{	
@@ -823,6 +959,178 @@ function changeAntennaManuf(el)
 		var warn_manuf =  $('#'+site+'').find('span[name = Manuf_War]');	
 		$(warn_manuf).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
 		$(warn_manuf).css("color", bad);
+	}
+}
+function changePower(el)
+{
+	console.log("Mainam jaudu ");
+	var site = $(el).parent().parent().parent().parent().parent().parent().attr('id');
+	var version = $('#'+site).find('select[name = Version]').val();
+	var ProdID =  $('#'+site+'').find('div[name = ProdID]').val();
+	var Modulation = $('#'+site+'').find('select[name=rModulation]').val();
+	var power_select = $('#'+site).find('select[name=tx_power_select]').val();
+	var Frequency = $('#'+site+'').find('select[name=Frequency]').val();
+	var tmp_Transmitter = $('#'+site).find('select[name=Transmitter]').val();	
+	//console.log("TMP TRANSMITTER: "+tmp_Transmitter);
+	var transmitterSelect = $('#'+site+'').find('select[name=Transmitter]').empty();
+	if(version != 4)
+	{
+		$.post( "AjaxFunctions.php", { func: 'Transmitter', ProdID: ProdID, Modulation: Modulation, Frequency: Frequency}, function(response)
+			{	
+				var Data = $.parseJSON(response);
+				$('<option value="" disabled selected value>Please select transmitter power</option>').appendTo(transmitterSelect);
+				$.each(Data, function(i, item)
+				{
+					var MinPower = parseInt(item.MinPower);
+					var MaxPower = parseInt(item.MaxPower);
+					var MinHighPower = parseInt(item.MinHighPower);
+					var MaxHighPower = parseInt(item.MaxHighPower);
+					if(power_select == 1)
+					{
+						for(var i = MinPower; i <= MaxPower; i++)
+						{
+							$('<option value="'+i+'">'+i+'</option>').appendTo(transmitterSelect);
+							if(i == tmp_Transmitter) $(transmitterSelect).val(i);
+						}							
+					}					
+					if(power_select == 2)
+					{
+						for(var i = MinHighPower; i <= MaxHighPower; i++)
+						{
+							$('<option value="'+i+'">'+i+'</option>').appendTo(transmitterSelect);
+							if(i == tmp_Transmitter) $(transmitterSelect).val(i);
+						}							
+					}
+				}); 
+			}).done(function(){
+				if(isset(power_select))
+				{
+					var warn_trans =  $('#'+site).find('span[name = tx_power_select]');	
+					$(warn_trans).removeClass( "glyphicon glyphicon-remove" ).addClass( "glyphicon glyphicon-ok" );
+					$(warn_trans).css("color", good);
+				}
+				if(isset(tmp_Transmitter))
+				{
+					var warn_trans =  $('#'+site+'').find('span[name = Trans_War]');	
+					$(warn_trans).removeClass( "glyphicon glyphicon-remove" ).addClass( "glyphicon glyphicon-ok" );
+					$(warn_trans).css("color", good);
+				}
+				prev_calc(el);
+			}); 			
+	}
+	if(version == 4)
+	{
+		console.log("Versija ir 4"); 
+		var Select_Value = $('#'+site).find('select[name = Antenas_amount]').val();
+		if(Select_Value == 2)
+		{
+			var tmp_Transmitter_FD = $('#'+site+'').find('select[name = Transmitter_FD]').val();
+			var transmitter_FD = $('#'+site+'').find('select[name = Transmitter_FD]').empty(); 
+			$.post( "AjaxFunctions.php", { func: 'Transmitter', ProdID: ProdID, Modulation: Modulation, Frequency: Frequency}, function(response)
+			{	
+				var Data = $.parseJSON(response);
+				$('<option value="" disabled selected value>Please select transmitter power</option>').appendTo(transmitterSelect);
+				$('<option value="" disabled selected value>Please select transmitter power</option>').appendTo(transmitter_FD);
+				$.each(Data, function(i, item)
+				{
+					var MinPower = parseInt(item.MinPower);
+					var MaxPower = parseInt(item.MaxPower);
+					var MinHighPower = parseInt(item.MinHighPower);
+					var MaxHighPower = parseInt(item.MaxHighPower);
+					console.log("Pie Select_Val 2 MinPower: "+MinPower+" MaxPOWER: "+MaxPower+" MinHighPower: "+MinHighPower+" MaxHighPower: "+MaxHighPower);
+					
+					
+					if(power_select == 1)
+					{
+						for(var i = MinPower; i <= MaxPower; i++)
+						{
+							$('<option value="'+i+'">'+i+'</option>').appendTo(transmitterSelect);
+							$('<option value="'+i+'">'+i+'</option>').appendTo(transmitter_FD);
+							if(i == tmp_Transmitter) $(transmitterSelect).val(i);
+							if(i == tmp_Transmitter_FD) $(transmitter_FD).val(i);
+						}							
+					}					
+					if(power_select == 2)
+					{
+						for(var i = MinHighPower; i <= MaxHighPower; i++)
+						{
+							$('<option value="'+i+'">'+i+'</option>').appendTo(transmitterSelect);
+							$('<option value="'+i+'">'+i+'</option>').appendTo(transmitter_FD);
+							if(i == tmp_Transmitter) $(transmitterSelect).val(i);
+							if(i == tmp_Transmitter_FD) $(transmitter_FD).val(i);
+						}							
+					} 
+				});
+			}).done(function(){
+					if(isset(tmp_Transmitter_FD))
+					{
+						var warn_Trans_FD =  $('#'+site+'').find('span[name = Trans_FD_War]');	
+						$(warn_Trans_FD).removeClass( "glyphicon glyphicon-remove" ).addClass( "glyphicon glyphicon-ok" );
+						$(warn_Trans_FD).css("color", good);
+					}
+					if(isset(tmp_Transmitter))
+					{
+						var warn_trans =  $('#'+site+'').find('span[name = Trans_War]');	
+						$(warn_trans).removeClass( "glyphicon glyphicon-remove" ).addClass( "glyphicon glyphicon-ok" );
+						$(warn_trans).css("color", good);
+					}
+					if(isset(power_select))
+					{
+						var warn_trans =  $('#'+site).find('span[name = tx_power_select]');	
+						$(warn_trans).removeClass( "glyphicon glyphicon-remove" ).addClass( "glyphicon glyphicon-ok" );
+						$(warn_trans).css("color", good);
+					}
+					prev_calc(el);
+			});				
+		}
+		if(Select_Value == 1)
+		{
+			$.post( "AjaxFunctions.php", { func: 'Transmitter', ProdID: ProdID, Modulation: Modulation, Frequency: Frequency}, function(response)
+				{	
+					var Data = $.parseJSON(response);
+					$('<option value="" disabled selected value>Please select transmitter power</option>').appendTo(transmitterSelect);
+					$.each(Data, function(i, item)
+					{
+						var MinPower = parseInt(item.MinPower);
+						var MaxPower = parseInt(item.MaxPower);
+						var MinHighPower = parseInt(item.MinHighPower);
+						var MaxHighPower = parseInt(item.MaxHighPower);
+						console.log("Pie Select_Val 1 MinPower: "+MinPower+" MaxPOWER: "+MaxPower+" MinHighPower: "+MinHighPower+" MaxHighPower: "+MaxHighPower);
+						console.log("Outside MinPower: " +MinPower+" MinPower+1: "+(MinPower + 1)+" powerSelect: "+ power_select);
+						if(power_select == 1)
+						{
+							console.log("MinPower: " +MinPower+" MinPower+1: "+(MinPower + 1));
+							for(var i = MinPower; i <= MaxPower; i++)
+							{
+								$('<option value="'+i+'">'+i+'</option>').appendTo(transmitterSelect);
+								if(i == tmp_Transmitter) $(transmitterSelect).val(i);
+							}							
+						}					
+						if(power_select == 2)
+						{
+							for(var i = MinHighPower; i <= MaxHighPower; i++)
+							{
+								$('<option value="'+i+'">'+i+'</option>').appendTo(transmitterSelect);
+								if(i == tmp_Transmitter) $(transmitterSelect).val(i);
+							}							
+						}
+					}); 
+				}).done(function(){
+					if(isset(power_select))
+					{
+						var warn_trans =  $('#'+site).find('span[name = tx_power_select]');	
+						$(warn_trans).removeClass( "glyphicon glyphicon-remove" ).addClass( "glyphicon glyphicon-ok" );
+						$(warn_trans).css("color", good);
+					}
+					if(isset(tmp_Transmitter))
+					{
+						var warn_trans =  $('#'+site+'').find('span[name = Trans_War]');	
+						$(warn_trans).removeClass( "glyphicon glyphicon-remove" ).addClass( "glyphicon glyphicon-ok" );
+						$(warn_trans).css("color", good);
+					}
+					prev_calc(el);
+				}); 		
+		}
 	}
 }
 function getTemperature()
@@ -1032,7 +1340,6 @@ function change_B_Diameter_FD(el)
 }
 function changeTrans(el)
 {
-	console.log("TRansmitter power tiek izmainīts!")
 	var site = $(el).parent().parent().parent().parent().parent().parent().attr('id'); 
 	var Transmitter = $('#'+site+'').find('select[name=Transmitter]').val();
 	if(isset(Transmitter))
@@ -1108,27 +1415,24 @@ function changeAntennaMode(el)
 function ChangeAmountofAntenas(el)
 {
 	var site = $(el).parent().parent().parent().parent().parent().parent().attr('id'); 
+	var tmp_Transmitter = $('#'+site).find('select[name=Transmitter]').val();	
+	console.log("Transmitter pie change amount of antennas: "+tmp_Transmitter);
+	if(!isset(tmp_Transmitter))
+	{
+		changeFEC(el);
+		changeAntennaManuf(el);			
+	}
 	var Select_Value = $('#'+site).find('select[name = Antenas_amount]').val();
 	if(Select_Value == 1)
 	{
-		$('#'+site+'').find('div[class = Antenna_FD]').hide();
-		$('#'+site+'').find('tr[class = FD_params]').hide();
+		$('#'+site).find('div[class = Antenna_FD]').hide();
+		$('#'+site).find('tr[class = FD_params]').hide();
+		changeAntennaManuf(el);	
 	}
 	if(Select_Value == 2)
 	{
 		var ProdID = $('#'+site).find('div[name = ProdID]').val();
-		$.when(getFrequency(el, ProdID)).done(function()
-		{
-			var Frequency = $('#'+site).find('select[name=Frequency]').val();
-			console.log("Version4 gets called, PRodID : "+ProdID+" Frequency: "+Frequency);
-			changeModulation(el);
-			$('#'+site).find('div[class = Antenna_FD]').show();
-			$('#'+site).find('tr[class = FD_params]').show();
-			var l_AntennaA = $('#'+site).find('div[name=tmp_Antenna_A]').val();
-			var l_AntennaB = $('#'+site).find('div[name=tmp_Antenna_B]').val();
-			$('#'+site).find('div[name=l_AntennaAFD]').text("Antenna "+l_AntennaA+ " FD");
-			$('#'+site).find('div[name=l_AntennaBFD]').text("Antenna "+l_AntennaB+ " FD");
-		});
+		getFrequency(el, ProdID);
 	}
 	if(isset(Select_Value))
 	{
@@ -1136,7 +1440,6 @@ function ChangeAmountofAntenas(el)
 		$(warn_ant_am).removeClass( "glyphicon glyphicon-remove" ).addClass( "glyphicon glyphicon-ok" );
 		$(warn_ant_am).css("color", good);
 	}
-	changeAntennaManuf(el);	
 	//prev_calc(el);
 }
 function sd_Sep_for_a(el)
@@ -1237,7 +1540,6 @@ function change_Div_Freq(el)
 }
 function bandwidthChange(el)
 {
-	console.log("Channel bandwidth mainās!");
 	var site = $(el).parent().parent().parent().parent().parent().parent().attr('id'); 
 	var ProdID = ProdID =  $('#'+site+'').find('div[name = ProdID]').val();
 	var tmp_Modulation = $('#'+site+'').find('select[name=rModulation]').val();
@@ -2118,6 +2420,12 @@ function prev_calc(el)
 	}
 	if(version == 4)
 	{
+		if(!isset(antennaManuf))
+		{
+			var warn =  $('#'+site+'').find('span[name = Manuf_War]');	
+			$(warn).removeClass( "glyphicon glyphicon-ok" ).addClass( "glyphicon glyphicon-remove" );
+			$(warn).css("color", bad);
+		}	
 		if(Antenna_Amount == 1)
 		{ 
 			if(ProdID && version && Odu && Frequency && Bandwidth && FEC && Temperature && Modulation && RainZone && LatA && LatB && LonA && LonB && Transmitter && Antenna_Amount && AntennaHeightA && AntennaHeightB && antennaManuf && diameter_a && diameter_b && Main_Freq && Div_Freq && Losses)
@@ -2302,7 +2610,7 @@ function prev_calc(el)
 						$(Fade_Margin).text(''+item.FadeMargin+' dBm');
 						$(EIRP).text(''+item.EIRP+' dBm');
 					
-						var min_RSSI = 0.02 * (parseFloat(item.RXThreshold) + 90);
+						var min_RSSI = roundToTwo(0.02 * (parseFloat(item.RXThreshold) + 90));
 						var max_RSSI = 1.2; 
 					
 						$('#'+site+'').find('td[class = rsl_label]').text('> '+item.RXThreshold+'dBm');	

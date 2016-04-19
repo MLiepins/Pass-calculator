@@ -1280,7 +1280,7 @@ return n_array;
 <div id="googleMap" style="width:512px;height:400px;"></div>
 <div style="display:flex;">
 <table border ="1">
-<tr><td colspan = "2"><h4>Climate</h4></td><tr>
+<tr><td colspan = "4"><h4>Climate</h4></td><tr>
 <tr>
 	<td>Rain Zone:</td>
 	<td><select id="RainZone" onchange = "changeRainzone(count)">
@@ -1301,10 +1301,8 @@ return n_array;
 	<option value="P">P:145mm/h</option>
 	</select>
 	</td>
-</tr>
-<tr>
 	<td>Annual temperature:</td>
-	<td><input type="number" step="any" id="Temperature" onchange="getTemperature()"></td>
+	<td><input type="number" step="any" id="Temperature" onchange="getTemperature()" value="0"></td>
 </tr>
 </table>
 </div>

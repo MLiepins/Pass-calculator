@@ -5,8 +5,11 @@
 
 .static
 {
-	width: 22em; 
-	max-width: 1000px; 
+	width: 20em !important; 
+}
+.antennaSelect
+{
+	width: 9.3em;
 }
 #TableWidth
 {
@@ -20,7 +23,7 @@
 .float_Left{
 	
 	float: left; 
-	margin-right: 10px;
+	margin-right: 5px;
 	margin-top: 10px;
 }
 .float_Right{
@@ -32,5 +35,12 @@
 	clear: left;
 }
 .table-nonfluid {
-   width: 36em !important;
+   width: 36.1em !important;
+}
+
+.input-width{
+	width: 9.3em;
+}
+.float-right{
+	float: right; 
 }

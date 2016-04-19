@@ -37,7 +37,8 @@ function echoProduct($prod, $odu)
 }
 function getFrequence($conn, $ProdID)
 {
-	$sql = "SELECT `FrequencyBand` FROM `tx_power` WHERE `Product_ID` = $ProdID GROUP BY `FrequencyBand` ORDER BY `FrequencyBand` ASC";
+	//$sql = "SELECT `FrequencyBand` FROM `tx_power` WHERE `Product_ID` = $ProdID GROUP BY `FrequencyBand` ORDER BY `FrequencyBand` ASC";
+	$sql = "SELECT `FrequencyBand` FROM `rx_treshold` WHERE `ProductID` = $ProdID GROUP BY `FrequencyBand` ORDER BY `FrequencyBand` ASC";
 	$result = $conn->query($sql);
 	while($row = mysqli_fetch_assoc($result))
 	{
